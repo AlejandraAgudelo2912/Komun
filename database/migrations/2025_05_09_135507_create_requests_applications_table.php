@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->text('message')->nullable();
             $table->decimal('proposed_price', 10, 2)->nullable();
             $table->integer('estimated_duration')->nullable();
-            $table->json('availability')->nullable(); 
+            $table->json('availability')->nullable();
             $table->timestamps();
         });
     }
