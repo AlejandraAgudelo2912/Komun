@@ -12,36 +12,26 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
+        $user = auth()->user();
+        
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->hasRole('god')) {
+            return redirect()->route('god.dashboard');
+        } elseif ($user->hasRole('verificator')) {
+            return redirect()->route('verificator.dashboard');
+        } elseif ($user->hasRole('assistant')) {
+            return redirect()->route('assistant.dashboard');
+        } elseif ($user->hasRole('needHelp')) {
+            return redirect()->route('needhelp.dashboard');
+        }
+        
         return view('dashboard');
     })->name('dashboard');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-});
-
-Route::middleware(['auth', 'role:god'])->group(function () {
-    Route::get('/god/dashboard', function () {
-        return view('god.dashboard');
-    })->name('god.dashboard');
-});
-
-Route::middleware(['auth', 'role:verificator'])->group(function () {
-    Route::get('/verificator/dashboard', function () {
-        return view('verificator.dashboard');
-    })->name('verificator.dashboard');
-});
-
-Route::middleware(['auth', 'role:assistant'])->group(function () {
-    Route::get('/assistant/dashboard', function () {
-        return view('assistant.dashboard');
-    })->name('assistant.dashboard');
-});
-
-Route::middleware(['auth', 'role:needHelp'])->group(function () {
-    Route::get('/needhelp/dashboard', function () {
-        return view('needhelp.dashboard');
-    })->name('needhelp.dashboard');
-});
+require __DIR__.'/roles/admin.php';
+require __DIR__.'/roles/god.php';
+require __DIR__.'/roles/verificator.php';
+require __DIR__.'/roles/assistant.php';
+require __DIR__.'/roles/needhelp.php';
