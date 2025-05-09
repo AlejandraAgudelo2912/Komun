@@ -3,30 +3,24 @@
 namespace App\Http\Controllers\NeedHelp\Request;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateRequestRequest;
 use App\Models\Request;
-use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\RedirectResponse;
 
 class UpdateController extends Controller
 {
-    public function __invoke(HttpRequest $request, Request $requestModel): RedirectResponse
-    {
-        if ($request->user()->id !== $requestModel->user_id) {
-            abort(403);
-        }
 
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'location' => 'required|string|max:255',
-            'deadline' => 'required|date|after:today',
+    public function __invoke(UpdateRequestRequest $request, Request $requestModel): RedirectResponse
+    {
+        $requestModel->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'location' => $request->location,
+            'deadline' => $request->deadline,
         ]);
 
-        $requestModel->update($validated);
-
-        return redirect()
-            ->route('needhelp.requests.index')
+        return redirect()->route('needhelp.requests.index')
             ->with('success', 'Solicitud actualizada correctamente.');
     }
 } 

@@ -3,27 +3,24 @@
 namespace App\Http\Controllers\Admin\Request;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateRequestRequest;
 use App\Models\Request;
-use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\RedirectResponse;
 
 class UpdateController extends Controller
 {
-    public function __invoke(HttpRequest $request, Request $requestModel): RedirectResponse
+    public function __invoke(UpdateRequestRequest $request, Request $requestModel): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'location' => 'required|string|max:255',
-            'deadline' => 'required|date|after:today',
-            'status' => 'required|in:pending,approved,rejected,completed',
+        $requestModel->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'location' => $request->location,
+            'deadline' => $request->deadline,
+            'status' => $request->status,
         ]);
 
-        $requestModel->update($validated);
-
-        return redirect()
-            ->route('admin.requests.index')
+        return redirect()->route('admin.requests.index')
             ->with('success', 'Solicitud actualizada correctamente.');
     }
 } 

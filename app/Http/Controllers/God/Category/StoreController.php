@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Category;
+namespace App\Http\Controllers\God\Category;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
@@ -16,7 +16,7 @@ class StoreController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('admin.categories.index')
+        return redirect()->route('god.categories.index')
             ->with('success', 'Categoría creada correctamente.');
     }
 } 
