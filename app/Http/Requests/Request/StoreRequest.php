@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Request;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequestRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -23,8 +23,8 @@ class UpdateRequestRequest extends FormRequest
             'location' => ['nullable', 'string', 'max:255'],
             'max_applications' => ['nullable', 'integer', 'min:1', 'max:10'],
             'help_notes' => ['nullable', 'string'],
-            'is_urgent' => ['sometimes', 'boolean'],
-            'is_verified' => ['sometimes', 'boolean'],
+            'is_urgent' => ['nullable', 'boolean'],
+            'is_verified' => ['nullable', 'boolean'],
         ];
     }
 
@@ -47,8 +47,6 @@ class UpdateRequestRequest extends FormRequest
             'max_applications.integer' => 'El número máximo de aplicaciones debe ser un número entero',
             'max_applications.min' => 'El número máximo de aplicaciones debe ser al menos 1',
             'max_applications.max' => 'El número máximo de aplicaciones no puede ser mayor a 10',
-            'is_urgent.boolean' => 'El campo urgente debe ser verdadero o falso',
-            'is_verified.boolean' => 'El campo verificado debe ser verdadero o falso',
         ];
     }
 } 

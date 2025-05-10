@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->boolean('is_urgent')->default(false);
             $table->boolean('is_verified')->default(false);
             $table->integer('max_applications')->default(1);
+            $table->text('help_notes')->nullable();
             $table->timestamps();
         });
     }

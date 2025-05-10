@@ -24,9 +24,9 @@ class Request extends Model
         'is_urgent',
         'is_verified',
         'max_applications',
+        'help_notes',
     ];
 
-   
     protected $casts = [
         'deadline' => 'datetime',
         'is_urgent' => 'boolean',
@@ -39,4 +39,13 @@ class Request extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function assistant(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assistant_id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 } 
