@@ -12,8 +12,7 @@ class DestroyController extends Controller
     {
         $request->delete();
 
-        return redirect()
-            ->route('admin.requests.index')
+        return redirect()->route('admin.requests.index')
             ->with('success', 'Solicitud eliminada correctamente.');
     }
 } 
