@@ -8,8 +8,7 @@ class StoreReviewRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->id === $this->route('request')->user_id || 
-               $this->user()->hasRole(['admin', 'god']);
+        return true;
     }
 
     public function rules(): array

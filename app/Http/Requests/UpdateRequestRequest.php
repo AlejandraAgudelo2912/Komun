@@ -8,11 +8,7 @@ class UpdateRequestRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        if (in_array($this->user()->role, ['admin', 'god'])) {
-            return true;
-        }
-
-        return $this->user()->id === $this->route('request')->user_id;
+        return true;
     }
 
     public function rules(): array

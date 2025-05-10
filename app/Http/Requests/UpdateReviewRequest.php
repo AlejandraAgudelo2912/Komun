@@ -8,8 +8,7 @@ class UpdateReviewRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->id === $this->route('review')->user_id || 
-               $this->user()->hasRole(['admin', 'god']);
+        return true;
     }
 
   

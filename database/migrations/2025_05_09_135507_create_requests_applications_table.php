@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('request_application', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('request_id')->constrained('request')->onDelete('cascade');
+            $table->foreignId('request_id')->constrained('requests')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('status', ['pending', 'accepted', 'rejected', 'cancelled'])->default('pending');
             $table->text('message')->nullable();
