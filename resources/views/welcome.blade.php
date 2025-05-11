@@ -72,7 +72,7 @@
                         </a>
 
                         <!-- Mis Ayudas -->
-                        <a href="{{ route('assistant.helps.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                        <a href="{{ route('assistant.requests.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
                             <i class="fas fa-hands-helping text-blue-600 text-2xl mr-3"></i>
                             <div>
                                 <h3 class="font-semibold text-gray-900">Mis Ayudas</h3>

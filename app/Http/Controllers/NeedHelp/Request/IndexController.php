@@ -11,7 +11,10 @@ class IndexController extends Controller
 {
     public function __invoke(HttpRequest $request): View
     {
-        $requests = $request->user()->requests;
+        $requests = Request::where('user_id', auth()->id())
+            ->with(['category', 'applicants'])
+            ->latest()
+            ->get();
         
         return view('needhelp.requests.index', compact('requests'));
     }

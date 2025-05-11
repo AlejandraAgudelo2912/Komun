@@ -20,6 +20,7 @@ class ReviewSeeder extends Seeder
 
         $reviews = [
             [
+
                 'rating' => 5,
                 'comment' => 'Excelente servicio, muy profesional y puntual.',
             ],
@@ -42,14 +43,15 @@ class ReviewSeeder extends Seeder
         ];
 
         foreach ($requests as $request) {
-            if (rand(0, 1)) { 
+            if (rand(0, 1)) {
                 Review::create([
                     'rating' => $reviews[array_rand($reviews)]['rating'],
                     'comment' => $reviews[array_rand($reviews)]['comment'],
                     'request_id' => $request->id,
                     'user_id' => $users->random()->id,
+                    'assistant_id' => $users->random()->id,
                 ]);
             }
         }
     }
-} 
+}

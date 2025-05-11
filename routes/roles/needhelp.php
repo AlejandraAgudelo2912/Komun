@@ -16,7 +16,8 @@ Route::middleware(['auth', 'role:needHelp'])->prefix('needhelp')->name('needhelp
     Route::get('/requests', App\Http\Controllers\NeedHelp\Request\IndexController::class)->name('requests.index');
     Route::get('/requests/create', App\Http\Controllers\NeedHelp\Request\CreateController::class)->name('requests.create');
     Route::post('/requests', App\Http\Controllers\NeedHelp\Request\StoreController::class)->name('requests.store');
+    Route::get('/requests/{request}', App\Http\Controllers\NeedHelp\Request\ShowController::class)->name('requests.show');
     Route::get('/requests/{request}/edit', App\Http\Controllers\NeedHelp\Request\EditController::class)->name('requests.edit');
     Route::put('/requests/{request}', App\Http\Controllers\NeedHelp\Request\UpdateController::class)->name('requests.update');
     Route::delete('/requests/{request}', App\Http\Controllers\NeedHelp\Request\DestroyController::class)->name('requests.destroy');
-}); 
+});

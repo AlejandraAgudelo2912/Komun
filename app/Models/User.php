@@ -66,4 +66,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function appliedRequests()
+    {
+        return $this->belongsToMany(Request::class, 'request_application')
+                    ->withPivot('status', 'message', 'proposed_price', 'estimated_duration', 'availability')
+                    ->withTimestamps();
+    }
 }

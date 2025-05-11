@@ -11,8 +11,11 @@ class IndexController extends Controller
 {
     public function __invoke(HttpRequest $request): View
     {
-        $requests = $request->user()->requests;
-        
+        $requests = Request::where('status', 'pending')
+            ->with(['category', 'user'])
+            ->latest()
+            ->get();
+
         return view('assistant.requests.index', compact('requests'));
     }
 } 

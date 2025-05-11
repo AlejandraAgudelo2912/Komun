@@ -1,106 +1,62 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Mis Solicitudes') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Solicitudes Disponibles') }}
+            </h2>
+            <x-welcome-button />
+        </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-semibold">Lista de Solicitudes</h3>
-                        <a href="{{ route('assistant.requests.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Crear Nueva Solicitud
-                        </a>
-                    </div>
+                    @if($requests->isEmpty())
+                        <p class="text-gray-500 text-center py-4">No hay solicitudes disponibles en este momento.</p>
+                    @else
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            @foreach($requests as $request)
+                                <div class="border rounded-lg p-4 bg-white">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h3 class="text-lg font-semibold">{{ $request->title }}</h3>
+                                        <span class="px-3 py-1 rounded text-sm bg-yellow-100 text-yellow-800">
+                                            Pendiente
+                                        </span>
+                                    </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Título
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Estado
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Prioridad
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Categoría
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Fecha Límite
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Verificación
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Acciones
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @foreach($requests as $request)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $request->title }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($request->status === 'pending') bg-yellow-100 text-yellow-800
-                                                @elseif($request->status === 'in_progress') bg-blue-100 text-blue-800
-                                                @elseif($request->status === 'completed') bg-green-100 text-green-800
-                                                @elseif($request->status === 'cancelled') bg-red-100 text-red-800
-                                                @endif">
-                                                {{ ucfirst($request->status) }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($request->priority === 'low') bg-green-100 text-green-800
-                                                @elseif($request->priority === 'medium') bg-yellow-100 text-yellow-800
-                                                @elseif($request->priority === 'high') bg-red-100 text-red-800
-                                                @endif">
-                                                {{ ucfirst($request->priority) }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $request->category->name }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $request->deadline->format('d/m/Y') }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($request->is_verified) bg-green-100 text-green-800
-                                                @else bg-yellow-100 text-yellow-800
-                                                @endif">
-                                                {{ $request->is_verified ? 'Verificada' : 'Pendiente' }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <div class="flex space-x-2">
-                                                <a href="{{ route('assistant.requests.edit', $request) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
-                                                <form action="{{ route('assistant.requests.destroy', $request) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?')">
-                                                        Eliminar
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                    <p class="text-gray-600 mb-4 line-clamp-2">{{ $request->description }}</p>
+
+                                    <div class="grid grid-cols-2 gap-2 text-sm mb-4">
+                                        <div>
+                                            <p class="text-gray-500">Categoría</p>
+                                            <p class="font-medium">{{ $request->category->name }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Ubicación</p>
+                                            <p class="font-medium">{{ $request->location }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Fecha límite</p>
+                                            <p class="font-medium">{{ $request->deadline->format('d/m/Y') }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Solicitante</p>
+                                            <p class="font-medium">{{ $request->user->name }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex justify-end">
+                                        <a href="{{ route('assistant.requests.show', $request) }}" class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-600">
+                                            Ver detalles
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout> 
+</x-app-layout>

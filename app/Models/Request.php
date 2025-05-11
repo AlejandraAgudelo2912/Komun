@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Request extends Model
 {
@@ -47,5 +48,12 @@ class Request extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function applicants()
+    {
+        return $this->belongsToMany(User::class, 'request_application')
+                    ->withPivot('status', 'message', 'proposed_price', 'estimated_duration', 'availability')
+                    ->withTimestamps();
     }
 } 

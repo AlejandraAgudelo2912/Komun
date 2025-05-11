@@ -13,9 +13,6 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('status', ['pending', 'accepted', 'rejected', 'cancelled'])->default('pending');
             $table->text('message')->nullable();
-            $table->decimal('proposed_price', 10, 2)->nullable();
-            $table->integer('estimated_duration')->nullable();
-            $table->json('availability')->nullable();
             $table->timestamps();
         });
     }

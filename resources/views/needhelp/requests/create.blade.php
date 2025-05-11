@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Crear Nueva Solicitud') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Crear Nueva Solicitud') }}
+            </h2>
+            <x-welcome-button />
+        </div>
     </x-slot>
 
     <div class="py-12">
@@ -13,57 +16,44 @@
                         @csrf
 
                         <div>
-                            <x-input-label for="title" :value="__('Título')" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title')" required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('title')" />
+                            <label for="title" class="block text-sm font-medium text-gray-700">Título</label>
+                            <input type="text" name="title" id="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                         </div>
 
                         <div>
-                            <x-input-label for="description" :value="__('Descripción')" />
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description') }}</textarea>
-                            <x-input-error class="mt-2" :messages="$errors->get('description')" />
+                            <label for="description" class="block text-sm font-medium text-gray-700">Descripción</label>
+                            <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required></textarea>
                         </div>
 
                         <div>
-                            <x-input-label for="category_id" :value="__('Categoría')" />
-                            <select id="category_id" name="category_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="">Seleccione una categoría</option>
+                            <label for="category_id" class="block text-sm font-medium text-gray-700">Categoría</label>
+                            <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                                <option value="">Selecciona una categoría</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('category_id')" />
                         </div>
 
                         <div>
-                            <x-input-label for="priority" :value="__('Prioridad')" />
-                            <select id="priority" name="priority" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Baja</option>
-                                <option value="medium" {{ old('priority') == 'medium' ? 'selected' : '' }}>Media</option>
-                                <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>Alta</option>
-                            </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('priority')" />
+                            <label for="location" class="block text-sm font-medium text-gray-700">Ubicación</label>
+                            <input type="text" name="location" id="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                         </div>
 
                         <div>
-                            <x-input-label for="deadline" :value="__('Fecha Límite')" />
-                            <x-text-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline')" required />
-                            <x-input-error class="mt-2" :messages="$errors->get('deadline')" />
+                            <label for="deadline" class="block text-sm font-medium text-gray-700">Fecha límite</label>
+                            <input type="date" name="deadline" id="deadline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                         </div>
 
-                        <div>
-                            <x-input-label for="help_notes" :value="__('Notas Adicionales')" />
-                            <textarea id="help_notes" name="help_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('help_notes') }}</textarea>
-                            <x-input-error class="mt-2" :messages="$errors->get('help_notes')" />
+                        <div class="flex items-center">
+                            <input type="checkbox" name="is_urgent" id="is_urgent" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                            <label for="is_urgent" class="ml-2 block text-sm text-gray-900">¿Es urgente?</label>
                         </div>
 
-                        <div class="flex items-center gap-4">
-                            <x-primary-button>{{ __('Crear Solicitud') }}</x-primary-button>
-                            <a href="{{ route('needhelp.requests.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                {{ __('Cancelar') }}
-                            </a>
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                Crear Solicitud
+                            </button>
                         </div>
                     </form>
                 </div>
