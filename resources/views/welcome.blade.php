@@ -9,6 +9,8 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="antialiased">
     <div class="relative min-h-screen bg-gray-100">
@@ -32,6 +34,117 @@
                 </div>
             </div>
         </header>
+
+        <!-- Quick Navigation Section -->
+        @auth
+        <div class="bg-white py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Acceso Rápido</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    @if(auth()->user()->hasRole('needHelp'))
+                        <!-- Crear Solicitud -->
+                        <a href="{{ route('needhelp.requests.create') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                            <i class="fas fa-plus-circle text-blue-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Crear Solicitud</h3>
+                                <p class="text-sm text-gray-600">Publica una nueva solicitud de ayuda</p>
+                            </div>
+                        </a>
+
+                        <!-- Ver Mis Solicitudes -->
+                        <a href="{{ route('needhelp.requests.index') }}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                            <i class="fas fa-list text-green-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Mis Solicitudes</h3>
+                                <p class="text-sm text-gray-600">Gestiona tus solicitudes</p>
+                            </div>
+                        </a>
+                    @endif
+
+                    @if(auth()->user()->hasRole('assistant'))
+                        <!-- Ver Solicitudes Disponibles -->
+                        <a href="{{ route('assistant.requests.index') }}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                            <i class="fas fa-list text-green-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Solicitudes Disponibles</h3>
+                                <p class="text-sm text-gray-600">Explora solicitudes para ayudar</p>
+                            </div>
+                        </a>
+
+                        <!-- Mis Ayudas -->
+                        <a href="{{ route('assistant.helps.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                            <i class="fas fa-hands-helping text-blue-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Mis Ayudas</h3>
+                                <p class="text-sm text-gray-600">Gestiona tus ayudas activas</p>
+                            </div>
+                        </a>
+                    @endif
+
+                    @if(auth()->user()->hasRole('verificator'))
+                        <!-- Verificar Solicitudes -->
+                        <a href="{{ route('verificator.requests.index') }}" class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
+                            <i class="fas fa-check-circle text-yellow-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Verificar Solicitudes</h3>
+                                <p class="text-sm text-gray-600">Revisa y verifica solicitudes</p>
+                            </div>
+                        </a>
+                    @endif
+
+                    @if(auth()->user()->hasRole('admin'))
+                        <!-- Panel de Administración -->
+                        <a href="{{ route('admin.dashboard') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                            <i class="fas fa-cog text-purple-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Panel de Admin</h3>
+                                <p class="text-sm text-gray-600">Gestiona la plataforma</p>
+                            </div>
+                        </a>
+                    @endif
+
+                    @if(auth()->user()->hasRole('god'))
+                        <!-- Panel de Super Admin -->
+                        <a href="{{ route('god.dashboard') }}" class="flex items-center p-4 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                            <i class="fas fa-crown text-red-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Panel de Super Admin</h3>
+                                <p class="text-sm text-gray-600">Control total del sistema</p>
+                            </div>
+                        </a>
+                    @endif
+
+                    <!-- Categorías (visible para todos los roles) -->
+                    @if(auth()->user()->hasRole('god'))
+                        <a href="{{ route('god.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    @elseif(auth()->user()->hasRole('admin'))
+                        <a href="{{ route('admin.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    @elseif(auth()->user()->hasRole('verificator'))
+                        <a href="{{ route('verificator.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    @elseif(auth()->user()->hasRole('assistant'))
+                        <a href="{{ route('assistant.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    @elseif(auth()->user()->hasRole('needHelp'))
+                        <a href="{{ route('needhelp.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    @endif
+                        <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Categorías</h3>
+                            <p class="text-sm text-gray-600">Explora por categorías</p>
+                        </div>
+                    </a>
+
+                    <!-- Mi Perfil (visible para todos los roles) -->
+                    <a href="{{ route('profile.show') }}" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-user text-gray-600 text-2xl mr-3"></i>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Mi Perfil</h3>
+                            <p class="text-sm text-gray-600">Gestiona tu perfil</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endauth
 
         <!-- Hero Section -->
         <div class="relative py-16 bg-white overflow-hidden">
