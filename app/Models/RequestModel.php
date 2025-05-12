@@ -53,7 +53,7 @@ class RequestModel extends Model
     public function applicants()
     {
         return $this->belongsToMany(User::class, 'request_model_application')
-                    ->withPivot('message')
+                    ->withPivot('message', 'status')
                     ->withTimestamps();
     }
 }

@@ -14,6 +14,6 @@ class ShowController extends Controller
         // Cargar las relaciones necesarias
         $requestModel->load(['category', 'applicants']);
 
-        return view('needhelp.requests.show', compact('request'));
+        return view('needhelp.requests.show', compact('requestModel'));
     }
 }
