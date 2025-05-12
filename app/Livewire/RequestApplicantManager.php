@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Jobs\SendApplicationResponseEmailJob;
 use App\Models\RequestModel;
 use Livewire\Component;
 
@@ -13,12 +14,19 @@ class RequestApplicantManager extends Component
     {
         $this->requestModel->applicants()->updateExistingPivot($userId, ['status' => 'accepted']);
         $this->requestModel->refresh();
-    }
+
+        $applicant = $this->requestModel->applicants->find($userId);
+
+        SendApplicationResponseEmailJob::dispatch($applicant, $this->requestModel, 'accepted');    }
 
     public function rejectApplicant($userId)
     {
         $this->requestModel->applicants()->updateExistingPivot($userId, ['status' => 'rejected']);
         $this->requestModel->refresh();
+
+        $applicant = $this->requestModel->applicants->find($userId);
+
+        SendApplicationResponseEmailJob::dispatch($applicant, $this->requestModel, 'rejected');
     }
 
     public function render()
