@@ -14,47 +14,54 @@
                 <div class="p-6 text-gray-900">
                     <div class="mb-6">
                         <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-2xl font-bold">{{ $request->title }}</h3>
+                            <h3 class="text-2xl font-bold">{{ $requestModel->title }}</h3>
                             <span class="px-3 py-1 rounded text-sm bg-yellow-100 text-yellow-800">
                                 Pendiente
                             </span>
                         </div>
+                        @php
+                            $hasApplied = $requestModel->applicants->contains(auth()->id());
+                        @endphp
 
-                        <p class="text-gray-600 mb-6">{{ $request->description }}</p>
+                        <p class="text-gray-600 mb-6">{{ $requestModel->description }}</p>
 
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                             <div>
                                 <p class="text-gray-500">Categoría</p>
-                                <p class="font-medium">{{ $request->category?->name ?? 'Sin categoría' }}</p>
+                                <p class="font-medium">{{ $requestModel->category?->name ?? 'Sin categoría' }}</p>
                             </div>
                             <div>
                                 <p class="text-gray-500">Ubicación</p>
-                                <p class="font-medium">{{ $request->location }}</p>
+                                <p class="font-medium">{{ $requestModel->location }}</p>
                             </div>
                             <div>
                                 <p class="text-gray-500">Fecha límite</p>
-                                <p class="font-medium">{{ $request->deadline ? $request->deadline->format('d/m/Y') : 'Sin fecha límite' }}</p>
+                                <p class="font-medium">{{ $requestModel->deadline ? $requestModel->deadline->format('d/m/Y') : 'Sin fecha límite' }}</p>
                             </div>
                             <div>
                                 <p class="text-gray-500">Solicitante</p>
-                                <p class="font-medium">{{ $request->user?->name ?? 'Usuario no disponible' }}</p>
+                                <p class="font-medium">{{ $requestModel->user?->name ?? 'Usuario no disponible' }}</p>
                             </div>
                         </div>
 
-                        <form method="POST" action="{{ route('assistant.requests.apply', $request) }}" class="space-y-4">
+                        <form method="POST" action="{{ route('assistant.requests.apply', ['requestModel' => $requestModel->id]) }}" class="space-y-4">
                             @csrf
 
-                            <div>
-                                <label for="message" class="block text-sm font-medium text-gray-700">Mensaje</label>
-                                <textarea name="message" id="message" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required></textarea>
-                            </div>
+                            <textarea name="message" id="message" rows="4"
+                                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                      required {{ $hasApplied ? 'disabled' : '' }}></textarea>
 
-                            <div class="flex justify-end">
-                                <button type="submit" class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-600">
-                                    Aplicar a esta solicitud
-                                </button>
-                            </div>
+                            <button type="submit"
+                                    class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-600 {{ $hasApplied ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                {{ $hasApplied ? 'disabled' : '' }}>
+                                Aplicar a esta solicitud
+                            </button>
                         </form>
+                        @if ($hasApplied)
+                            <div class="mb-4 text-green-600 font-semibold">
+                                Ya has aplicado a esta solicitud.
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

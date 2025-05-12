@@ -20,10 +20,10 @@ class Review extends Model
 
     public function request()
     {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(RequestModel::class);
     }
 
-   
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -33,4 +33,4 @@ class Review extends Model
     {
         return $this->belongsTo(User::class, 'assistant_id');
     }
-} 
+}

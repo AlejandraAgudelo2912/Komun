@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Request;
+use App\Models\RequestModel;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 
-class RequestSeeder extends Seeder
+class RequestModelSeeder extends Seeder
 {
     public function run(): void
     {
@@ -18,7 +18,7 @@ class RequestSeeder extends Seeder
             return;
         }
 
-        $requests = [
+        $requestsModel = [
             [
                 'title' => 'Necesito ayuda con la limpieza semanal',
                 'description' => 'Busco alguien que me ayude con la limpieza de mi casa una vez por semana',
@@ -61,8 +61,8 @@ class RequestSeeder extends Seeder
             ]
         ];
 
-        foreach ($requests as $requestData) {
-            Request::create([
+        foreach ($requestsModel as $requestData) {
+            RequestModel::create([
                 'title' => $requestData['title'],
                 'description' => $requestData['description'],
                 'status' => $requestData['status'],
@@ -74,4 +74,4 @@ class RequestSeeder extends Seeder
             ]);
         }
     }
-} 
+}

@@ -38,6 +38,6 @@ class Category extends Model
 
     public function requests(): HasMany
     {
-        return $this->hasMany(Request::class);
+        return $this->hasMany(RequestModel::class);
     }
-} 
+}

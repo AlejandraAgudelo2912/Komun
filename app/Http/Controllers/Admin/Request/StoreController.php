@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Request;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Request\StoreRequest;
-use App\Models\Request as RequestModel;
+use App\Models\RequestModel as RequestModel;
 use Illuminate\Http\RedirectResponse;
 
 class StoreController extends Controller
@@ -29,4 +29,4 @@ class StoreController extends Controller
         return redirect()->route('admin.requests.index')
             ->with('success', 'Solicitud creada correctamente.');
     }
-} 
+}

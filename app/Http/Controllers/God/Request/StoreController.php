@@ -4,14 +4,14 @@ namespace App\Http\Controllers\God\Request;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequestRequest;
-use App\Models\Request;
+use App\Models\RequestModel;
 use Illuminate\Http\RedirectResponse;
 
 class StoreController extends Controller
 {
     public function __invoke(StoreRequestRequest $request): RedirectResponse
     {
-        $requestModel = Request::create([
+        $requestModel = RequestModel::create([
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
@@ -24,4 +24,4 @@ class StoreController extends Controller
         return redirect()->route('god.requests.index')
             ->with('success', 'Solicitud creada correctamente.');
     }
-} 
+}

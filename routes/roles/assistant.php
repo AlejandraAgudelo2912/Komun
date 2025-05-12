@@ -8,11 +8,15 @@ Route::middleware(['auth', 'role:assistant'])->prefix('assistant')->name('assist
     })->name('dashboard');
 
     Route::get('/requests', App\Http\Controllers\Assistant\Request\IndexController::class)->name('requests.index');
-    Route::get('/requests/{request}', App\Http\Controllers\Assistant\Request\ShowController::class)->name('requests.show');
-    //ruta para solicitar la solicitud de un request
-    Route::get('/requests/apply', App\Http\Controllers\AplyRequestController::class)->name('requests.apply');
-    //ruta para guardar la solicitud de un request
-    Route::post('/requests/apply', App\Http\Controllers\SaveAplyRequestController::class)->name('requests.apply.save');
+    Route::get('/requests/{requestModel}', App\Http\Controllers\Assistant\Request\ShowController::class)->name('requests.show');
+
+    // Ruta para mostrar el formulario de inscripción
+    Route::get('/requests/{requestModel}/apply', App\Http\Controllers\AplyRequestController::class)
+        ->name('requests.apply');
+
+    // Ruta para guardar la inscripción
+    Route::post('/requests/{requestModel}/apply', App\Http\Controllers\SaveAplyRequestController::class)
+        ->name('requests.apply.save');
 
     Route::get('/categories', App\Http\Controllers\Assistant\Category\IndexController::class)->name('categories.index');
 
@@ -22,7 +26,7 @@ Route::middleware(['auth', 'role:assistant'])->prefix('assistant')->name('assist
 
     Route::get('/requests/create', App\Http\Controllers\Assistant\Request\CreateController::class)->name('requests.create');
     Route::post('/requests', App\Http\Controllers\Assistant\Request\StoreController::class)->name('requests.store');
-    Route::get('/requests/{request}/edit', App\Http\Controllers\Assistant\Request\EditController::class)->name('requests.edit');
-    Route::put('/requests/{request}', App\Http\Controllers\Assistant\Request\UpdateController::class)->name('requests.update');
-    Route::delete('/requests/{request}', App\Http\Controllers\Assistant\Request\DestroyController::class)->name('requests.destroy');
+    Route::get('/requests/{requestModel}/edit', App\Http\Controllers\Assistant\Request\EditController::class)->name('requests.edit');
+    Route::put('/requests/{requestModel}', App\Http\Controllers\Assistant\Request\UpdateController::class)->name('requests.update');
+    Route::delete('/requests/{requestModel}', App\Http\Controllers\Assistant\Request\DestroyController::class)->name('requests.destroy');
 });

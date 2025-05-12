@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Verificator\Request;
 
 use App\Http\Controllers\Controller;
-use App\Models\Request;
+use App\Models\RequestModel;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\RedirectResponse;
 
 class UpdateController extends Controller
 {
-    public function __invoke(HttpRequest $request, Request $requestModel): RedirectResponse
+    public function __invoke(HttpRequest $request, RequestModel $requestModel): RedirectResponse
     {
         if ($request->user()->id !== $requestModel->user_id) {
             abort(403);
@@ -29,4 +29,4 @@ class UpdateController extends Controller
             ->route('verificator.requests.index')
             ->with('success', 'Solicitud actualizada correctamente.');
     }
-} 
+}

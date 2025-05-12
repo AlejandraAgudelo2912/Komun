@@ -9,9 +9,9 @@ Route::middleware(['auth', 'role:needHelp'])->prefix('needhelp')->name('needhelp
 
     Route::get('/categories', App\Http\Controllers\NeedHelp\Category\IndexController::class)->name('categories.index');
 
-    Route::post('/reviews/{request}', [NeedHelp\Review\StoreController::class, '__invoke'])->name('reviews.store');
-    Route::put('/reviews/{review}', [NeedHelp\Review\UpdateController::class, '__invoke'])->name('reviews.update');
-    Route::delete('/reviews/{review}', [NeedHelp\Review\DestroyController::class, '__invoke'])->name('reviews.destroy');
+    //Route::post('/reviews/{request}', [NeedHelp\Review\StoreController::class, '__invoke'])->name('reviews.store');
+    //Route::put('/reviews/{review}', [NeedHelp\Review\UpdateController::class, '__invoke'])->name('reviews.update');
+    //Route::delete('/reviews/{review}', [NeedHelp\Review\DestroyController::class, '__invoke'])->name('reviews.destroy');
 
     Route::get('/requests', App\Http\Controllers\NeedHelp\Request\IndexController::class)->name('requests.index');
     Route::get('/requests/create', App\Http\Controllers\NeedHelp\Request\CreateController::class)->name('requests.create');

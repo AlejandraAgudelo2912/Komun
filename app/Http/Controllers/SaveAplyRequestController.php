@@ -1,23 +1,28 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request as HttpRequest;
+use App\Models\RequestModel as RequestModel;
+use Illuminate\Support\Facades\Auth;
 
 class SaveAplyRequestController extends Controller
 {
-    public function __invoke()
+    public function __invoke(HttpRequest $httpRequest, RequestModel $requestModel)
     {
-        //dd para ver el contenido de la solicitud
-        dd(request()->all());
-        // Validate the request data
-        $validatedData = request()->validate([
-            'message' => 'required|string|max:500',
+        // Validar los datos del formulario
+        $validated = $httpRequest->validate([
+            'message' => 'required|string|max:1000',
         ]);
 
-        //se guarda en la tabla requests_applications
-        request()->user()->request_application()->create($validatedData);
+        // Guardar en la tabla pivote
+        $requestModel->applicants()->syncWithoutDetaching([
+            Auth::id() => [
+                'message' => $validated['message'],
+            ]
+        ]);
 
-        return redirect()
-            ->route('home')
-            ->with('success', 'Solicitud enviada correctamente.');
+        // Redireccionar con mensaje de éxito
+        return redirect()->route('assistant.requests.show', $requestModel->id)
+            ->with('success', 'Has aplicado exitosamente a esta solicitud.');
     }
 }

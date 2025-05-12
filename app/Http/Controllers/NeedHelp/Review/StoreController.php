@@ -5,12 +5,12 @@ namespace App\Http\Controllers\NeedHelp\Review;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReviewRequest;
 use App\Models\Review;
-use App\Models\Request;
+use App\Models\RequestModel;
 use Illuminate\Http\RedirectResponse;
 
 class StoreController extends Controller
 {
-    public function __invoke(StoreReviewRequest $request, Request $requestModel): RedirectResponse
+    public function __invoke(StoreReviewRequest $request, RequestModel $requestModel): RedirectResponse
     {
         Review::create([
             'request_id' => $requestModel->id,
@@ -23,4 +23,4 @@ class StoreController extends Controller
         return redirect()->back()
             ->with('success', 'Valoración enviada correctamente.');
     }
-} 
+}

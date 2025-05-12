@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Request extends Model
+class RequestModel extends Model
 {
     use HasFactory;
 
@@ -34,7 +34,7 @@ class Request extends Model
         'is_verified' => 'boolean',
         'max_applications' => 'integer',
     ];
-   
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -52,8 +52,8 @@ class Request extends Model
 
     public function applicants()
     {
-        return $this->belongsToMany(User::class, 'request_application')
-                    ->withPivot('status', 'message', 'proposed_price', 'estimated_duration', 'availability')
+        return $this->belongsToMany(User::class, 'request_model_application')
+                    ->withPivot('message')
                     ->withTimestamps();
     }
-} 
+}

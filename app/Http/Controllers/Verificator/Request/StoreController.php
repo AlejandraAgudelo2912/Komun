@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Verificator\Request;
 
 use App\Http\Controllers\Controller;
-use App\Models\Request;
+use App\Models\RequestModel;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\RedirectResponse;
 
@@ -19,7 +19,7 @@ class StoreController extends Controller
             'deadline' => 'required|date|after:today',
         ]);
 
-        $request = Request::create([
+        $request = RequestModel::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'category_id' => $validated['category_id'],
@@ -33,4 +33,4 @@ class StoreController extends Controller
             ->route('verificator.requests.index')
             ->with('success', 'Solicitud creada correctamente.');
     }
-} 
+}

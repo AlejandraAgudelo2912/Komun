@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Review;
-use App\Models\Request;
+use App\Models\RequestModel;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -11,7 +11,7 @@ class ReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        $requests = Request::where('status', 'completed')->get();
+        $requests = RequestModel::where('status', 'completed')->get();
         $users = User::all();
 
         if ($requests->isEmpty() || $users->isEmpty()) {
@@ -47,7 +47,7 @@ class ReviewSeeder extends Seeder
                 Review::create([
                     'rating' => $reviews[array_rand($reviews)]['rating'],
                     'comment' => $reviews[array_rand($reviews)]['comment'],
-                    'request_id' => $request->id,
+                    'request_models_id' => $request->id,
                     'user_id' => $users->random()->id,
                     'assistant_id' => $users->random()->id,
                 ]);

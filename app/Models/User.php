@@ -69,7 +69,7 @@ class User extends Authenticatable
 
     public function appliedRequests()
     {
-        return $this->belongsToMany(Request::class, 'request_application')
+        return $this->belongsToMany(RequestModel::class, 'request_application')
                     ->withPivot('status', 'message', 'proposed_price', 'estimated_duration', 'availability')
                     ->withTimestamps();
     }

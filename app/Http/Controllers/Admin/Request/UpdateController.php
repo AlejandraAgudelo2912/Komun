@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Admin\Request;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateRequestRequest;
-use App\Models\Request;
+use App\Models\RequestModel;
 use Illuminate\Http\RedirectResponse;
 
 class UpdateController extends Controller
 {
-    public function __invoke(UpdateRequestRequest $request, Request $requestModel): RedirectResponse
+    public function __invoke(UpdateRequestRequest $request, RequestModel $requestModel): RedirectResponse
     {
         $requestModel->update([
             'title' => $request->title,
@@ -23,4 +23,4 @@ class UpdateController extends Controller
         return redirect()->route('admin.requests.index')
             ->with('success', 'Solicitud actualizada correctamente.');
     }
-} 
+}
