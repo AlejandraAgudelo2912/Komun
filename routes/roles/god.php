@@ -8,11 +8,11 @@ Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(func
     })->name('dashboard');
 
     Route::get('/categories', App\Http\Controllers\God\Category\IndexController::class)->name('categories.index');
-   // Route::get('/categories/create', App\Http\Controllers\God\Category\CreateController::class)->name('categories.create');
-    //Route::post('/categories', App\Http\Controllers\God\Category\StoreController::class)->name('categories.store');
-    //Route::get('/categories/{category}/edit', App\Http\Controllers\God\Category\EditController::class)->name('categories.edit');
-    //Route::put('/categories/{category}', App\Http\Controllers\God\Category\UpdateController::class)->name('categories.update');
-    //Route::delete('/categories/{category}', App\Http\Controllers\God\Category\DestroyController::class)->name('categories.destroy');
+    Route::get('/categories/create', App\Http\Controllers\God\Category\CreateController::class)->name('categories.create');
+    Route::post('/categories', App\Http\Controllers\God\Category\StoreController::class)->name('categories.store');
+    Route::get('/categories/{category}/edit', App\Http\Controllers\God\Category\EditController::class)->name('categories.edit');
+    Route::put('/categories/{category}', App\Http\Controllers\God\Category\UpdateController::class)->name('categories.update');
+    Route::delete('/categories/{category}', App\Http\Controllers\God\Category\DestroyController::class)->name('categories.destroy');
 
     //Route::post('/reviews/{request}', [God\Review\StoreController::class, '__invoke'])->name('reviews.store');
     //Route::put('/reviews/{review}', [God\Review\UpdateController::class, '__invoke'])->name('reviews.update');
