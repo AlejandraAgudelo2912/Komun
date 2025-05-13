@@ -4,6 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Application Details') }}
             </h2>
+
             <x-welcome-button />
         </div>
     </x-slot>
@@ -62,6 +63,7 @@
                                 Ya has aplicado a esta solicitud.
                             </div>
                         @endif
+                        <livewire:comments :requestModel="$requestModel" />
                     </div>
                 </div>
             </div>

@@ -56,4 +56,9 @@ class RequestModel extends Model
                     ->withPivot('message', 'status')
                     ->withTimestamps();
     }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
