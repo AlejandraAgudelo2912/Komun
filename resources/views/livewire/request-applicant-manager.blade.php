@@ -27,6 +27,11 @@
                         Rechazar
                     </button>
                 @endif
+                    <button
+                        wire:click="$dispatch('openChatModal', { receiverId: {{ $user->id }}, requestModelId: {{ $requestModel->id }} })"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                        Enviar mensaje
+                    </button>
             </td>
         </tr>
     @endforeach

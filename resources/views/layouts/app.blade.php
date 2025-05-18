@@ -41,5 +41,8 @@
         @stack('modals')
 
         @livewireScripts
+
+        <!-- Componente de Chat Modal -->
+        <livewire:chat-modal />
     </body>
 </html>
