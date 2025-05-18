@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Review;
 use App\Models\RequestModel;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 

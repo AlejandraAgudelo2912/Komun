@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin\Request;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Request\StoreRequest;
+use App\Http\Requests\StoreRequestRequest;
 use App\Models\RequestModel as RequestModel;
 use Illuminate\Http\RedirectResponse;
 
 class StoreController extends Controller
 {
-    public function __invoke(StoreRequest $request): RedirectResponse
+    public function __invoke(StoreRequestRequest $request): RedirectResponse
     {
         RequestModel::create([
             'title' => $request->title,

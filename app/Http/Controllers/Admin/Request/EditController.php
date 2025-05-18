@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Request;
 
 use App\Http\Controllers\Controller;
-use App\Models\RequestModel as RequestModel;
+use App\Models\RequestModel;
 use App\Models\Category;
 use Illuminate\View\View;
 
