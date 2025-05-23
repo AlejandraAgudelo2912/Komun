@@ -15,7 +15,7 @@
              x-transition:leave="transition ease-in duration-200"
              x-transition:leave-start="opacity-100 transform scale-100"
              x-transition:leave-end="opacity-0 transform scale-95"
-             class="bg-white w-full max-w-2xl rounded-lg shadow-xl p-6 relative">
+             class="bg-white w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-lg shadow-xl p-6 relative">
             
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-gray-900">
@@ -31,11 +31,14 @@
                 </button>
             </div>
 
-            @if($receiver)
-                <livewire:chat :receiver="$receiver" :requestModel="$requestModel" :wire:key="'chat-' . $receiver->id" />
-            @else
-                <p class="text-center text-gray-600">Cargando conversación...</p>
-            @endif
+            <div class="overflow-y-auto max-h-[60vh]">
+                @if($receiver)
+                    <livewire:chat :receiver="$receiver" :requestModel="$requestModel" :wire:key="'chat-' . $receiver->id" />
+                @else
+                    <p class="text-center text-gray-600">Cargando conversación...</p>
+                @endif
+            </div>
+
         </div>
     </div>
 </div>
