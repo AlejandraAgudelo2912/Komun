@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\RequestModel;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 
 class ChatModal extends Component
 {
@@ -13,18 +14,14 @@ class ChatModal extends Component
     public $receiver;
     public $requestModel;
 
-    protected $listeners = ['openChatModal' => 'openChatModal'];
-
-    public function openChatModal($receiverId, $requestModelId = null)
+    #[On('openChatModal')]
+    public function openChatModal($data)
     {
-        Log::info('Opening chat modal with data:', [
-            'receiverId' => $receiverId,
-            'requestModelId' => $requestModelId
-        ]);
+        Log::info('Opening chat modal with data:', $data);
 
-        $this->receiver = User::findOrFail($receiverId);
-        if ($requestModelId) {
-            $this->requestModel = RequestModel::findOrFail($requestModelId);
+        $this->receiver = User::findOrFail($data['receiverId']);
+        if (isset($data['requestModelId'])) {
+            $this->requestModel = RequestModel::findOrFail($data['requestModelId']);
         }
 
         Log::info('Chat modal data loaded:', [

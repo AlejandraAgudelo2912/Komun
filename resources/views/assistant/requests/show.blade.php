@@ -20,6 +20,7 @@
                                 Pendiente
                             </span>
                         </div>
+
                         @php
                             $hasApplied = $requestModel->applicants->contains(auth()->id());
                         @endphp
@@ -58,11 +59,21 @@
                                 Aplicar a esta solicitud
                             </button>
                         </form>
+
                         @if ($hasApplied)
                             <div class="mb-4 text-green-600 font-semibold">
                                 Ya has aplicado a esta solicitud.
                             </div>
                         @endif
+
+                        @if ($requestModel->user_id !== auth()->id())
+                            <button
+                                wire:click="$dispatch('openChatModal', { receiverId: {{ $requestModel->user_id }}, requestModelId: {{ $requestModel->id }} })"
+                                class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
+                                Iniciar chat con el solicitante
+                            </button>
+                        @endif
+
                         <livewire:comments :requestModel="$requestModel" />
                     </div>
                 </div>

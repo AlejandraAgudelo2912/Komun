@@ -1,5 +1,5 @@
-<div x-data="{ open: @entangle('show') }">
-    <div x-show="open" 
+<div x-data="{ show: @entangle('show') }" x-cloak>
+    <div x-show="show" 
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
@@ -8,7 +8,7 @@
          x-transition:leave-end="opacity-0"
          class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
         
-        <div x-show="open"
+        <div x-show="show"
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0 transform scale-95"
              x-transition:enter-end="opacity-100 transform scale-100"
@@ -24,7 +24,7 @@
                         - {{ $requestModel->title }}
                     @endif
                 </h3>
-                <button @click="open = false" wire:click="closeModal" class="text-gray-400 hover:text-gray-500">
+                <button @click="show = false" wire:click="closeModal" class="text-gray-400 hover:text-gray-500">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -38,7 +38,12 @@
                     <p class="text-center text-gray-600">Cargando conversación...</p>
                 @endif
             </div>
-
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    [x-cloak] { display: none !important; }
+</style>
+@endpush
