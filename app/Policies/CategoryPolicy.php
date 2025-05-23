@@ -4,19 +4,20 @@ namespace App\Policies;
 
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CategoryPolicy
 {
-   
+    use HandlesAuthorization;
+
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin', 'god']);
+        return true;
     }
 
     public function view(User $user, Category $category): bool
     {
-        return $user->hasRole(['admin', 'god']);
+        return true;
     }
 
     public function create(User $user): bool
@@ -31,7 +32,20 @@ class CategoryPolicy
 
     public function delete(User $user, Category $category): bool
     {
+        if ($category->requests()->exists()) {
+            return false;
+        }
+
         return $user->hasRole(['admin', 'god']);
     }
 
+    public function restore(User $user, Category $category): bool
+    {
+        return $user->hasRole(['admin', 'god']);
+    }
+
+    public function forceDelete(User $user, Category $category): bool
+    {
+        return $user->hasRole('god');
+    }
 } 
