@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -67,11 +68,55 @@ class User extends Authenticatable
         ];
     }
 
+    public function scopeVerified(Builder $query): Builder
+    {
+        return $query->whereNotNull('email_verified_at');
+    }
+
+    public function scopeByRole(Builder $query, string $role): Builder
+    {
+        return $query->role($role);
+    }
+
+    public function scopeSearch(Builder $query, string $search): Builder
+    {
+        return $query->where(function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+        });
+    }
+
+    public function scopeWithActiveRequests(Builder $query): Builder
+    {
+        return $query->whereHas('requests', function ($query) {
+            $query->where('status', 'pending')
+                  ->where(function ($query) {
+                      $query->whereNull('deadline')
+                            ->orWhere('deadline', '>', now());
+                  });
+        });
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(RequestModel::class);
+    }
+
     public function appliedRequests()
     {
         return $this->belongsToMany(RequestModel::class, 'request_model_application')
                     ->withPivot('status', 'message')
                     ->withTimestamps();
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'user_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
     }
 
     public function comments()
