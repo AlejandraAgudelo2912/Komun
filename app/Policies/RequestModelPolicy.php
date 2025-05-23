@@ -77,14 +77,4 @@ class RequestModelPolicy
 
         return $user->hasRole(['admin', 'god']);
     }
-
-    public function manageApplicants(User $user, RequestModel $requestModel): bool
-    {
-        return $user->id === $requestModel->user_id && $requestModel->status === 'pending';
-    }
-
-    public function verify(User $user, RequestModel $requestModel): bool
-    {
-        return $user->hasRole(['admin', 'god', 'verificator']);
-    }
 } 

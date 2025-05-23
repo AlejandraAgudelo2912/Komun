@@ -47,8 +47,4 @@ class CommentPolicy
         return $user->hasRole(['admin', 'god']);
     }
 
-    public function moderate(User $user, Comment $comment): bool
-    {
-        return $user->hasRole(['admin', 'god', 'moderator']);
-    }
 } 
