@@ -11,9 +11,6 @@ class UpdateController extends Controller
 {
     public function __invoke(HttpRequest $request, RequestModel $requestModel): RedirectResponse
     {
-        if ($request->user()->id !== $requestModel->user_id) {
-            abort(403);
-        }
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',

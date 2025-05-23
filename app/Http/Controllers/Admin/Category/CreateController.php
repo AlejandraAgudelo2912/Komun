@@ -13,11 +13,6 @@ class CreateController extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests, DispatchesJobs;
 
-    public function __construct()
-    {
-        $this->authorizeResource(Category::class, 'category');
-    }
-
     public function __invoke(): View
     {
         return view('admin.categories.create');

@@ -11,9 +11,6 @@ class DestroyController extends Controller
 {
     public function __invoke(HttpRequest $request, RequestModel $requestModel): RedirectResponse
     {
-        if ($request->user()->id !== $requestModel->user_id) {
-            abort(403);
-        }
 
         $requestModel->delete();
 

@@ -16,19 +16,14 @@ class StoreController extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests, DispatchesJobs;
 
-    public function __construct()
-    {
-        $this->authorizeResource(Category::class, 'category');
-    }
-
     public function __invoke(StoreCategoryRequest $request): RedirectResponse
     {
         Category::create([
             'name' => $request->name,
             'description' => $request->description,
             'slug' => Str::slug($request->name),
-            'icon' => 'default-icon', // Valor por defecto
-            'color' => '#000000', // Color por defecto
+            'icon' => 'default-icon', 
+            'color' => '#000000', 
         ]);
 
         return redirect()->route('admin.categories.index')

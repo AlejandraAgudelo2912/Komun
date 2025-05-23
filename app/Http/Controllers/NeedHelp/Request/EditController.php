@@ -12,10 +12,6 @@ class EditController extends Controller
 {
     public function __invoke(HttpRequest $request, RequestModel $requestModel): View
     {
-        if ($request->user()->id !== $requestModel->user_id) {
-            abort(403);
-        }
-
         $categories = Category::all();
 
         return view('needhelp.requests.edit', compact('requestModel', 'categories'));

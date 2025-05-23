@@ -11,7 +11,6 @@ class ShowController extends Controller
 {
     public function __invoke(HttpRequest $request, RequestModel $requestModel): View
     {
-        // Cargar las relaciones necesarias
         $requestModel->load(['category', 'applicants']);
 
         return view('needhelp.requests.show', compact('requestModel'));
