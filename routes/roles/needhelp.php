@@ -13,11 +13,31 @@ Route::middleware(['auth', 'role:needHelp'])->prefix('needhelp')->name('needhelp
     //Route::put('/reviews/{review}', [NeedHelp\Review\UpdateController::class, '__invoke'])->name('reviews.update');
     //Route::delete('/reviews/{review}', [NeedHelp\Review\DestroyController::class, '__invoke'])->name('reviews.destroy');
 
-    Route::get('/requests', App\Http\Controllers\NeedHelp\Request\IndexController::class)->name('requests.index');
-    Route::get('/requests/create', App\Http\Controllers\NeedHelp\Request\CreateController::class)->name('requests.create');
-    Route::post('/requests', App\Http\Controllers\NeedHelp\Request\StoreController::class)->name('requests.store');
-    Route::get('/requests/{requestModel}', App\Http\Controllers\NeedHelp\Request\ShowController::class)->name('requests.show');
-    Route::get('/requests/{request}/edit', App\Http\Controllers\NeedHelp\Request\EditController::class)->name('requests.edit');
-    Route::put('/requests/{request}', App\Http\Controllers\NeedHelp\Request\UpdateController::class)->name('requests.update');
-    Route::delete('/requests/{request}', App\Http\Controllers\NeedHelp\Request\DestroyController::class)->name('requests.destroy');
+    Route::get('/requests', App\Http\Controllers\NeedHelp\Request\IndexController::class)
+        ->middleware('can:viewAny,App\Models\RequestModel')
+        ->name('requests.index');
+
+    Route::get('/requests/create', App\Http\Controllers\NeedHelp\Request\CreateController::class)
+        ->middleware('can:create,App\Models\RequestModel')
+        ->name('requests.create');
+
+    Route::post('/requests', App\Http\Controllers\NeedHelp\Request\StoreController::class)
+        ->middleware('can:create,App\Models\RequestModel')
+        ->name('requests.store');
+
+    Route::get('/requests/{requestModel}', App\Http\Controllers\NeedHelp\Request\ShowController::class)
+        ->middleware('can:view,requestModel')
+        ->name('requests.show');
+
+    Route::get('/requests/{requestModel}/edit', App\Http\Controllers\NeedHelp\Request\EditController::class)
+        ->middleware('can:update,requestModel')
+        ->name('requests.edit');
+
+    Route::put('/requests/{requestModel}', App\Http\Controllers\NeedHelp\Request\UpdateController::class)
+        ->middleware('can:update,requestModel')
+        ->name('requests.update');
+
+    Route::delete('/requests/{requestModel}', App\Http\Controllers\NeedHelp\Request\DestroyController::class)
+        ->middleware('can:delete,requestModel')
+        ->name('requests.destroy');
 });

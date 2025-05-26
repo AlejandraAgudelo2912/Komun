@@ -156,6 +156,12 @@
                     <p class="mt-5 max-w-xl mx-auto text-xl text-gray-500">
                         Tu plataforma de ayuda comunitaria donde todos podemos contribuir y recibir apoyo.
                     </p>
+                    <div class="mt-8">
+                    <a href="{{ route('assistant-form.blade.php') }}"
+                    class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold px-6 py-3 rounded-lg shadow-md transition">
+                        ¿Quieres ayudar a la gente?
+                    </a>
+                </div>
                 </div>
             </div>
         </div>
