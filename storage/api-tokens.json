@@ -1,0 +1,27 @@
+{
+    "needHelp": {
+        "email": "needhelp@komun.com",
+        "password": "password",
+        "token": "1|GDOfrDCP5t0CcFxtqrbacRlRKjMk2nvXkq2ZSbdDacee31a0"
+    },
+    "assistant": {
+        "email": "assistant@komun.com",
+        "password": "password",
+        "token": "2|FXQnIUBxs4a1NlxqnMJC1rlkqo7iKrVEYwb7YSAa0cf44776"
+    },
+    "admin": {
+        "email": "admin@komun.com",
+        "password": "password",
+        "token": "3|YqTs2Nauj4ajFyHspZHPqjh65eKQ8ZUMkulgzA8w6766d22c"
+    },
+    "god": {
+        "email": "god@komun.com",
+        "password": "password",
+        "token": "4|p8K4NCUXxiVhm2BEVWZnqE3yPSJwrPNSfFjGaYr1436760bd"
+    },
+    "verificator": {
+        "email": "verificator@komun.com",
+        "password": "password",
+        "token": "5|Dy3obCEkdyGJMHkqRUS3vz2pMKVT5F02eOYPlO8C39c5ba87"
+    }
+}
