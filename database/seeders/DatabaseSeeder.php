@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             RequestModelSeeder::class,
             AssistantSeeder::class,
             ReviewSeeder::class,
+            Artisan::call('komun:backup-db'),
         ]);
 
         User::factory()->create([
