@@ -55,6 +55,15 @@
                                 </div>
                             @endif
                         </div>
+                    @else
+                        <!-- Botón para chatear con el solicitante -->
+                        <div class="mt-8">
+                            <button
+                                wire:click="$dispatch('openChatModal', [{{ $requestModel->user_id }}, {{ $requestModel->id }}])"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
+                                Chatear con el solicitante
+                            </button>
+                        </div>
                     @endif
 
                     <!-- Botón para aplicar (solo para asistentes) -->

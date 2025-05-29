@@ -157,7 +157,7 @@
                         Tu plataforma de ayuda comunitaria donde todos podemos contribuir y recibir apoyo.
                     </p>
                     <div class="mt-8">
-                    <a href="{{ route('assistant-form.blade.php') }}"
+                    <a href="{{ route('assistant.form') }}"
                     class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold px-6 py-3 rounded-lg shadow-md transition">
                         ¿Quieres ayudar a la gente?
                     </a>
