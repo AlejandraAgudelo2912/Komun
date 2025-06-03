@@ -13,15 +13,6 @@
                     <form action="{{ route('assistant.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                         @csrf
 
-                        <!-- Nombre -->
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
-                            <input type="text" name="name" id="name"
-                                value="{{ old('name', $assistant->name ?? '') }}"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Ej. María López" required>
-                        </div>
-
                         <!-- Biografía -->
                         <div>
                             <label for="bio" class="block text-sm font-medium text-gray-700">Biografía</label>
@@ -30,88 +21,26 @@
                                 placeholder="Cuéntanos un poco sobre ti">{{ old('bio', $assistant->bio ?? '') }}</textarea>
                         </div>
 
-                        <!-- Documentos de Verificación -->
-                        <div class="space-y-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
-                            <h3 class="text-lg font-medium text-gray-900">Documentos de Verificación</h3>
-                            <p class="text-sm text-gray-500 mb-4">
-                                Para garantizar la seguridad de nuestra comunidad, necesitamos verificar tu identidad. 
-                                Por favor, sube los siguientes documentos:
-                            </p>
-
-                            <!-- DNI Frente -->
-                            <div>
-                                <label for="dni_front" class="block text-sm font-medium text-gray-700">
-                                    Foto del DNI (Frente)
-                                </label>
-                                <div class="mt-1 flex items-center">
-                                    <input type="file" name="dni_front" id="dni_front" accept="image/jpeg,image/png,application/pdf"
-                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                                        required>
-                                </div>
-                                <p class="mt-1 text-sm text-gray-500">Formatos aceptados: JPG, PNG, PDF. Máximo 5MB</p>
-                            </div>
-
-                            <!-- DNI Reverso -->
-                            <div>
-                                <label for="dni_back" class="block text-sm font-medium text-gray-700">
-                                    Foto del DNI (Reverso)
-                                </label>
-                                <div class="mt-1 flex items-center">
-                                    <input type="file" name="dni_back" id="dni_back" accept="image/jpeg,image/png,application/pdf"
-                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                                        required>
-                                </div>
-                                <p class="mt-1 text-sm text-gray-500">Formatos aceptados: JPG, PNG, PDF. Máximo 5MB</p>
-                            </div>
-
-                            <!-- Selfie con DNI -->
-                            <div>
-                                <label for="selfie_with_dni" class="block text-sm font-medium text-gray-700">
-                                    Selfie sosteniendo el DNI
-                                </label>
-                                <div class="mt-1 flex items-center">
-                                    <input type="file" name="selfie_with_dni" id="selfie_with_dni" accept="image/jpeg,image/png"
-                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                                        required>
-                                </div>
-                                <p class="mt-1 text-sm text-gray-500">
-                                    Por favor, toma una foto de tu rostro sosteniendo el DNI junto a tu cara. 
-                                    Formatos aceptados: JPG, PNG. Máximo 5MB
-                                </p>
-                            </div>
-
-                            <div class="bg-blue-50 border-l-4 border-blue-400 p-4">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <i class="fas fa-info-circle text-blue-400"></i>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-sm text-blue-700">
-                                            Tus documentos serán tratados con la máxima confidencialidad y solo serán utilizados 
-                                            para verificar tu identidad. Una vez verificados, serán eliminados de nuestros servidores.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Disponibilidad -->
                         <div>
                             <label for="availability" class="block text-sm font-medium text-gray-700">Disponibilidad</label>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 @php
-                                    $days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+                                    $days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
                                 @endphp
                                 @foreach($days as $day)
                                     <div>
-                                        <label for="availability_{{ strtolower($day) }}" class="block text-xs font-medium text-gray-600">{{ $day }}</label>
-                                        <input type="text" name="availability[{{ strtolower($day) }}]" id="availability_{{ strtolower($day) }}"
-                                            value="{{ old("availability." . strtolower($day), '') }}"
+                                        <label for="availability_{{ $day }}" class="block text-xs font-medium text-gray-600">{{ ucfirst($day) }}</label>
+                                        <input type="text" name="availability[{{ $day }}]" id="availability_{{ $day }}"
+                                            value="{{ old('availability.$day', '') }}"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Ej. 9-13">
                                     </div>
                                 @endforeach
                             </div>
+                            <p class="mt-1 text-sm text-gray-500">
+                                Ingresa los horarios en formato 24h (ej: 9-13, 14-18)
+                            </p>
                         </div>
 
                         <!-- Habilidades -->
@@ -120,36 +49,89 @@
                             <input type="text" name="skills" id="skills"
                                 value="{{ old('skills', '') }}"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Ej. cocina, primeros auxilios, costura">
+                                placeholder="Ej: cocina, primeros auxilios, costura">
+                            <p class="mt-1 text-sm text-gray-500">
+                                Separa las habilidades con comas
+                            </p>
                         </div>
 
-                        <!-- Años de experiencia -->
+                        <!-- Años de Experiencia -->
                         <div>
-                            <label for="experience_years" class="block text-sm font-medium text-gray-700">Años de experiencia</label>
+                            <label for="experience_years" class="block text-sm font-medium text-gray-700">Años de Experiencia</label>
                             <input type="number" name="experience_years" id="experience_years"
                                 value="{{ old('experience_years', 0) }}"
+                                min="0"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                min="0">
+                                required>
                         </div>
 
                         <!-- Estado -->
                         <div>
                             <label for="status" class="block text-sm font-medium text-gray-700">Estado</label>
                             <select name="status" id="status"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                @foreach(['active', 'inactive', 'suspended'] as $status)
-                                    <option value="{{ $status }}" {{ old('status', 'active') === $status ? 'selected' : '' }}>
-                                        {{ ucfirst($status) }}
-                                    </option>
-                                @endforeach
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                required>
+                                <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Activo</option>
+                                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactivo</option>
+                                <option value="suspended" {{ old('status') == 'suspended' ? 'selected' : '' }}>Suspendido</option>
                             </select>
                         </div>
 
-                        <!-- Submit -->
-                        <div class="text-right">
+                        <!-- Documentos de Verificación -->
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-medium text-gray-900">Documentos de Verificación</h3>
+                            
+                            <!-- DNI Frente -->
+                            <div>
+                                <label for="dni_front" class="block text-sm font-medium text-gray-700">
+                                    DNI (Frente)
+                                </label>
+                                <div class="mt-1 flex items-center">
+                                    <input type="file" name="dni_front" id="dni_front" accept="image/jpeg,image/png"
+                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                        required>
+                                </div>
+                                <p class="mt-1 text-sm text-gray-500">
+                                    Sube una foto clara del frente de tu DNI. Formatos aceptados: JPG, PNG. Máximo 5MB
+                                </p>
+                            </div>
+
+                            <!-- DNI Reverso -->
+                            <div>
+                                <label for="dni_back" class="block text-sm font-medium text-gray-700">
+                                    DNI (Reverso)
+                                </label>
+                                <div class="mt-1 flex items-center">
+                                    <input type="file" name="dni_back" id="dni_back" accept="image/jpeg,image/png"
+                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                        required>
+                                </div>
+                                <p class="mt-1 text-sm text-gray-500">
+                                    Sube una foto clara del reverso de tu DNI. Formatos aceptados: JPG, PNG. Máximo 5MB
+                                </p>
+                            </div>
+
+                            <!-- Selfie con DNI -->
+                            <div>
+                                <label for="selfie" class="block text-sm font-medium text-gray-700">
+                                    Selfie sosteniendo el DNI
+                                </label>
+                                <div class="mt-1 flex items-center">
+                                    <input type="file" name="selfie" id="selfie" accept="image/jpeg,image/png"
+                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                        required>
+                                </div>
+                                <p class="mt-1 text-sm text-gray-500">
+                                    Por favor, toma una foto de tu rostro sosteniendo el DNI junto a tu cara. 
+                                    Formatos aceptados: JPG, PNG. Máximo 5MB
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end">
                             <button type="submit"
-                                class="px-6 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition">
-                                Crear Asistente
+                                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Enviar Solicitud
                             </button>
                         </div>
                     </form>

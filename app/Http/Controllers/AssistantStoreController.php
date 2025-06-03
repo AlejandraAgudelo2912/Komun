@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assistant;
-use App\Models\AssistantVerification;
+use App\Models\AssistantVerificationDocument;
 use Illuminate\Http\Request;
 
 class AssistantStoreController extends Controller
@@ -23,8 +23,18 @@ class AssistantStoreController extends Controller
         ]);
 
         $validated['user_id'] = auth()->id();
-        $validated['availability'] = json_encode($validated['availability'] ?? []);
-        $validated['skills'] = json_encode(explode(',', $validated['skills']));
+        
+        // Convertir availability a un array asociativo de horarios
+        $availability = [];
+        foreach ($validated['availability'] as $day => $hours) {
+            if (!empty($hours)) {
+                $availability[$day] = $hours;
+            }
+        }
+        $validated['availability'] = json_encode($availability);
+        
+        // Convertir skills a un array
+        $validated['skills'] = json_encode(array_map('trim', explode(',', $validated['skills'])));
 
         $assistant = Assistant::create($validated);
 
@@ -32,7 +42,7 @@ class AssistantStoreController extends Controller
         $dniBackPath = $request->file('dni_back')->store('verifications/dni_back', 'public');
         $selfiePath = $request->file('selfie')->store('verifications/selfies', 'public');
 
-        AssistantVerification::create([
+        AssistantVerificationDocument::create([
             'assistant_id' => $assistant->id,
             'dni_front_path' => $dniFrontPath,
             'dni_back_path' => $dniBackPath,
