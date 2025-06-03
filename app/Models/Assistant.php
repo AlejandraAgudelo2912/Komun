@@ -54,6 +54,6 @@ class Assistant extends Model
 
     public function verification()
     {
-        return $this->hasOne(AssistantVerification::class);
+        return $this->hasOne(AssistantVerificationDocument::class);
     }
 }

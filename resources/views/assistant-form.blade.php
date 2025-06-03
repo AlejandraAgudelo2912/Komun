@@ -32,7 +32,7 @@
                                     <div>
                                         <label for="availability_{{ $day }}" class="block text-xs font-medium text-gray-600">{{ ucfirst($day) }}</label>
                                         <input type="text" name="availability[{{ $day }}]" id="availability_{{ $day }}"
-                                            value="{{ old('availability.$day', '') }}"
+                                            value="{{ old("availability.$day", '') }}"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Ej. 9-13">
                                     </div>
