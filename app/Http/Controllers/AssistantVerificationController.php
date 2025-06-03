@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AssistantVerificationDocument;
+use App\Events\AssistantVerificationDocumentEvent;
 use Illuminate\Http\Request;
 
 class AssistantVerificationController extends Controller
@@ -23,6 +24,10 @@ class AssistantVerificationController extends Controller
 
         $user = $verification->assistant->user;
         $user->syncRoles('assistant');
+        $verification->assistant->is_verified = true;
+        $verification->assistant->save();
+
+        event(new AssistantVerificationDocumentEvent($verification));
 
         return back()->with('success', 'Asistente aprobado y rol asignado.');
     }
@@ -36,6 +41,11 @@ class AssistantVerificationController extends Controller
             'status' => 'rejected',
             'rejection_reason' => $request->reason,
         ]);
+
+        $verification->assistant->is_verified = false;
+        $verification->assistant->save();
+
+        event(new AssistantVerificationDocumentEvent($verification));
 
         return back()->with('error', 'Verificación rechazada.');
     }
