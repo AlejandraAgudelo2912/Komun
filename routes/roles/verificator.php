@@ -1,11 +1,17 @@
 <?php
 
+use App\Http\Controllers\AssistantVerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:verificator'])->prefix('verificator')->name('verificator.')->group(function () {
     Route::get('/dashboard', function () {
         return view('verificator.dashboard');
     })->name('dashboard');
+
+
+    Route::get('/verifications', [AssistantVerificationController::class, 'index'])->name('verifications.index');
+    Route::post('/verifications/{id}/approve', [AssistantVerificationController::class, 'approve'])->name('verifications.approve');
+    Route::post('/verifications/{id}/reject', [AssistantVerificationController::class, 'reject'])->name('verifications.reject');
 
     Route::get('/categories', App\Http\Controllers\Verificator\Category\IndexController::class)->name('categories.index');
 

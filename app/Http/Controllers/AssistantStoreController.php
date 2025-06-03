@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assistant;
+use App\Models\AssistantVerification;
 use Illuminate\Http\Request;
 
 class AssistantStoreController extends Controller
@@ -16,18 +17,30 @@ class AssistantStoreController extends Controller
             'skills' => ['nullable', 'string'],
             'experience_years' => ['nullable', 'integer', 'min:0'],
             'status' => ['required', 'in:active,inactive,suspended'],
+            'dni_front' => ['required', 'image'],
+            'dni_back' => ['required', 'image'],
+            'selfie' => ['required', 'image'],
         ]);
 
         $validated['user_id'] = auth()->id();
         $validated['availability'] = json_encode($validated['availability'] ?? []);
         $validated['skills'] = json_encode(explode(',', $validated['skills']));
 
-        Assistant::create($validated);
+        $assistant = Assistant::create($validated);
 
-        //asiganr rol de assitente
-        $user = auth()->user();
-        $user->syncRoles('assistant');
+        $dniFrontPath = $request->file('dni_front')->store('verifications/dni_front', 'public');
+        $dniBackPath = $request->file('dni_back')->store('verifications/dni_back', 'public');
+        $selfiePath = $request->file('selfie')->store('verifications/selfies', 'public');
 
-        return redirect()->route('welcome')->with('success', 'Asistente creado correctamente.');
+        AssistantVerification::create([
+            'assistant_id' => $assistant->id,
+            'dni_front_path' => $dniFrontPath,
+            'dni_back_path' => $dniBackPath,
+            'selfie_path' => $selfiePath,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('welcome')->with('success', 'Tu perfil de asistente se ha enviado para revisión. Un verificador lo evaluará pronto.');
     }
 }
+

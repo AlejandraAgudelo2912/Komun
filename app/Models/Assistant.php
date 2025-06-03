@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Traits\HasRoles;
 
 class Assistant extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, HasRoles;
 
     protected $fillable = [
         'user_id',
@@ -50,4 +51,9 @@ class Assistant extends Model
             ])
             ->withTimestamps();
     }
-} 
+
+    public function verification()
+    {
+        return $this->hasOne(AssistantVerification::class);
+    }
+}

@@ -48,7 +48,7 @@ class UserRoleSeeder extends Seeder
             unset($userData['role']);
             
             $user = User::create($userData);
-            $user->assignRole($role);
+            $user->syncRoles($role);
         }
     }
 } 

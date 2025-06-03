@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +25,8 @@ class DatabaseSeeder extends Seeder
             RequestModelSeeder::class,
             AssistantSeeder::class,
             ReviewSeeder::class,
-            Artisan::call('komun:backup-db'),
+            AssistantVerificationSeeder::class,
+            //Artisan::call('komun:backup-db'),
         ]);
 
         User::factory()->create([
