@@ -40,4 +40,10 @@ Route::middleware(['auth', 'role:needHelp'])->prefix('needhelp')->name('needhelp
     Route::delete('/requests/{requestModel}', App\Http\Controllers\NeedHelp\Request\DestroyController::class)
         ->middleware('can:delete,requestModel')
         ->name('requests.destroy');
+
+    // Rutas para reseñas
+    Route::get('/requests/{requestModel}/review', \App\Http\Controllers\NeedHelp\Review\CreateController::class)
+        ->name('reviews.create');
+    Route::post('/requests/{requestModel}/review', \App\Http\Controllers\NeedHelp\Review\StoreController::class)
+        ->name('reviews.store');
 });

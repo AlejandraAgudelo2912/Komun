@@ -123,4 +123,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'assistant_id');
+    }
+
+    public function updateRating()
+    {
+        $this->update([
+            'total_reviews' => $this->reviews()->count(),
+            'rating' => $this->reviews()->avg('rating') ?? 0
+        ]);
+    }
 }
