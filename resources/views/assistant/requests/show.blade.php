@@ -23,6 +23,10 @@
 
                         @php
                             $hasApplied = $requestModel->applicants->contains(auth()->id());
+                            $isAccepted = $requestModel->applicants()
+                                ->where('user_id', auth()->id())
+                                ->wherePivot('status', 'accepted')
+                                ->exists();
                         @endphp
 
                         <p class="text-gray-600 mb-6">{{ $requestModel->description }}</p>
@@ -66,12 +70,12 @@
                             </div>
                         @endif
 
-                        @if ($requestModel->user_id !== auth()->id())
-                            <button
-                                wire:click="$dispatch('openChatModal', { receiverId: {{ $requestModel->user_id }}, requestModelId: {{ $requestModel->id }} })"
-                                class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
-                                Iniciar chat con el solicitante
-                            </button>
+                        @if ($isAccepted)
+                        <button
+                            onclick="Livewire.dispatch('openChatModal', {{ json_encode([$requestModel->user_id, $requestModel->id]) }})"
+                            class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
+                            Iniciar chat con el solicitante
+                        </button>
                         @endif
 
                         <livewire:comments :requestModel="$requestModel" />
@@ -79,5 +83,7 @@
                 </div>
             </div>
         </div>
+        
     </div>
+    <livewire:chat-modal />
 </x-app-layout>
