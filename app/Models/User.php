@@ -136,4 +136,9 @@ class User extends Authenticatable
             'rating' => $this->reviews()->avg('rating') ?? 0
         ]);
     }
+
+    public function assistant()
+    {
+        return $this->hasOne(Assistant::class);
+    }
 }

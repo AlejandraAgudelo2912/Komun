@@ -7,6 +7,12 @@ Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(func
         return view('god.dashboard');
     })->name('dashboard');
 
+    Route::get('/profiles', App\Http\Controllers\God\Profile\IndexController::class)->name('profiles.index');
+    Route::get('/profiles/{user}/edit', App\Http\Controllers\God\Profile\EditController::class)->name('profiles.edit');
+    Route::put('/profiles/{user}', App\Http\Controllers\God\Profile\UpdateController::class)->name('profiles.update');
+    Route::delete('/profiles/{user}', App\Http\Controllers\God\Profile\DeleteController::class)->name('profiles.delete');
+
+
     Route::get('/categories', App\Http\Controllers\God\Category\IndexController::class)
         ->middleware('can:viewAny,App\Models\Category')
         ->name('categories.index');
