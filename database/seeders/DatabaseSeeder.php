@@ -33,6 +33,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Artisan::call('komun:backup-db');
+        Artisan::call('generate:api-tokens');
     }
 }
