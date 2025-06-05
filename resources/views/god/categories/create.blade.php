@@ -13,19 +13,19 @@
                         @csrf
 
                         <div>
-                            <x-input-label for="name" :value="__('Nombre')" />
+                            <x-label for="name" :value="__('Nombre')" />
                             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
 
                         <div>
-                            <x-input-label for="description" :value="__('Descripción')" />
+                            <x-label for="description" :value="__('Descripción')" />
                             <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
                         <div>
-                            <x-input-label for="is_active" :value="__('Estado')" />
+                            <x-label for="is_active" :value="__('Estado')" />
                             <select id="is_active" name="is_active" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                 <option value="1" {{ old('is_active') == '1' ? 'selected' : '' }}>Activa</option>
                                 <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Inactiva</option>

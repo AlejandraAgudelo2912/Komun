@@ -34,7 +34,6 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    // Ruta para generar PDF de estadísticas de usuario
     Route::get('/user/{user}/stats', [PdfController::class, 'userStats'])
         ->name('user.stats.pdf');
 });

@@ -17,6 +17,11 @@ class StoreController extends Controller
             'category_id' => $request->category_id,
             'location' => $request->location,
             'deadline' => $request->deadline,
+            'priority' => $request->priority,
+            'max_applications' => $request->max_applications,
+            'help_notes' => $request->help_notes,
+            'is_urgent' => $request->has('is_urgent'),
+            'is_verified' => $request->has('is_verified'),
             'status' => 'pending',
             'user_id' => auth()->id(),
         ]);
