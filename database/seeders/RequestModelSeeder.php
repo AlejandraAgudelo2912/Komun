@@ -26,6 +26,10 @@ class RequestModelSeeder extends Seeder
                 'priority' => 'medium',
                 'location' => 'Madrid Centro',
                 'deadline' => now()->addDays(7),
+                'is_urgent' => false,
+                'is_verified' => false,
+                'max_applications' => 3,
+                'help_notes' => 'Preferiblemente por las mañanas',
             ],
             [
                 'title' => 'Clases de matemáticas para mi hijo',
@@ -34,6 +38,10 @@ class RequestModelSeeder extends Seeder
                 'priority' => 'high',
                 'location' => 'Online',
                 'deadline' => now()->addDays(14),
+                'is_urgent' => true,
+                'is_verified' => true,
+                'max_applications' => 1,
+                'help_notes' => 'Necesito alguien con experiencia en enseñanza',
             ],
             [
                 'title' => 'Paseo de perro por las mañanas',
@@ -42,6 +50,10 @@ class RequestModelSeeder extends Seeder
                 'priority' => 'low',
                 'location' => 'Madrid Norte',
                 'deadline' => now()->addDays(30),
+                'is_urgent' => false,
+                'is_verified' => false,
+                'max_applications' => 2,
+                'help_notes' => 'El perro es grande y necesita ejercicio',
             ],
             [
                 'title' => 'Reparación de grifo',
@@ -50,6 +62,10 @@ class RequestModelSeeder extends Seeder
                 'priority' => 'high',
                 'location' => 'Madrid Sur',
                 'deadline' => now()->addDays(2),
+                'is_urgent' => true,
+                'is_verified' => false,
+                'max_applications' => 1,
+                'help_notes' => 'Urgente, está desperdiciando mucha agua',
             ],
             [
                 'title' => 'Cuidado de plantas durante vacaciones',
@@ -58,6 +74,10 @@ class RequestModelSeeder extends Seeder
                 'priority' => 'medium',
                 'location' => 'Madrid Este',
                 'deadline' => now()->addDays(10),
+                'is_urgent' => false,
+                'is_verified' => true,
+                'max_applications' => 2,
+                'help_notes' => 'Algunas plantas necesitan riego diario',
             ]
         ];
 
@@ -69,6 +89,10 @@ class RequestModelSeeder extends Seeder
                 'priority' => $requestData['priority'],
                 'location' => $requestData['location'],
                 'deadline' => $requestData['deadline'],
+                'is_urgent' => $requestData['is_urgent'],
+                'is_verified' => $requestData['is_verified'],
+                'max_applications' => $requestData['max_applications'],
+                'help_notes' => $requestData['help_notes'],
                 'user_id' => $users->random()->id,
                 'category_id' => $categories->random()->id,
             ]);

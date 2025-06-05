@@ -25,13 +25,14 @@ class DatabaseSeeder extends Seeder
             RequestModelSeeder::class,
             AssistantSeeder::class,
             ReviewSeeder::class,
-            AssistantVerificationSeeder::class,
-            //Artisan::call('komun:backup-db'),
+            AssistantVerificationDocumentSeeder::class,
         ]);
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        Artisan::call('komun:backup-db');
     }
 }

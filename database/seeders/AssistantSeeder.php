@@ -18,6 +18,30 @@ class AssistantSeeder extends Seeder
             return;
         }
 
+        Assistant::factory()
+            ->count(5)
+            ->verified()
+            ->active()
+            ->create();
+
+        Assistant::factory()
+            ->count(3)
+            ->unverified()
+            ->active()
+            ->create();
+
+        Assistant::factory()
+            ->count(2)
+            ->verified()
+            ->suspended()
+            ->create();
+
+        Assistant::factory()
+            ->count(1)
+            ->verified()
+            ->inactive()
+            ->create();
+
         $assistants = [
             [
                 'bio' => 'Experto en limpieza y organización del hogar con más de 5 años de experiencia.',
