@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PdfController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,6 +33,10 @@ Route::middleware([
 
         return view('dashboard');
     })->name('dashboard');
+
+    // Ruta para generar PDF de estadísticas de usuario
+    Route::get('/user/{user}/stats', [PdfController::class, 'userStats'])
+        ->name('user.stats.pdf');
 });
 
 require __DIR__.'/roles/admin.php';

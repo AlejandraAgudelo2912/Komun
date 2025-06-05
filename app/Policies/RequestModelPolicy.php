@@ -12,17 +12,17 @@ class RequestModelPolicy
 
     public function viewAny(User $user): bool
     {
-        return true; 
+        return true;
     }
 
     public function view(User $user, RequestModel $requestModel): bool
     {
-        return true; 
+        return true;
     }
 
     public function create(User $user): bool
     {
-        return true; 
+        return true;
     }
 
     public function update(User $user, RequestModel $requestModel): bool
@@ -53,11 +53,11 @@ class RequestModelPolicy
             return false;
         }
 
-        if ($requestModel->status !== 'pending') {
+        if ($requestModel->status !== 'canceled') {
             return false;
         }
 
-        if ($requestModel->max_applications && 
+        if ($requestModel->max_applications &&
             $requestModel->applicants()->count() >= $requestModel->max_applications) {
             return false;
         }
@@ -77,4 +77,4 @@ class RequestModelPolicy
 
         return $user->hasRole(['admin', 'god']);
     }
-} 
+}
