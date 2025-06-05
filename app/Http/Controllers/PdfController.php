@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PdfController extends Controller
@@ -78,6 +79,68 @@ class PdfController extends Controller
         ]);
 
         return $pdf->download("statistics-{$user->name}.pdf");
+    }
+
+    public function usersList(Request $request, $role = null)
+    {
+        $users = User::with(['roles', 'assistant', 'assistant.verification'])
+            ->when($role === 'god', function ($query) {
+                $query->with('permissions');
+            })
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->filled('role'), function ($query) use ($request) {
+                $query->role($request->role);
+            })
+            ->when($request->filled('status'), function ($query) use ($request) {
+                if ($request->status === 'verified') {
+                    $query->whereHas('assistant', function ($q) {
+                        $q->where('is_verified', true);
+                    });
+                } elseif ($request->status === 'unverified') {
+                    $query->whereHas('assistant', function ($q) {
+                        $q->where('is_verified', false);
+                    });
+                }
+            })
+            ->get();
+
+        $pdf = PDF::loadView('pdf.users-list', [
+            'users' => $users,
+            'role' => $role,
+            'filters' => [
+                'search' => $request->search,
+                'role' => $request->role,
+                'status' => $request->status
+            ]
+        ]);
+
+        $pdf->setPaper('a4');
+        $pdf->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'isPhpEnabled' => true,
+            'defaultFont' => 'DejaVu Sans',
+            'margin_top' => 20,
+            'margin_right' => 20,
+            'margin_bottom' => 20,
+            'margin_left' => 20,
+            'chroot' => public_path(),
+            'dpi' => 150,
+            'defaultMediaType' => 'screen',
+            'isFontSubsettingEnabled' => true,
+            'debugKeepTemp' => false,
+            'debugCss' => false,
+            'debugLayout' => false,
+            'logOutputFile' => storage_path('logs/pdf.log'),
+        ]);
+
+        return $pdf->download('usuarios-' . now()->format('Y-m-d') . '.pdf');
     }
 
     private function calculateAverageResponseTime($user)

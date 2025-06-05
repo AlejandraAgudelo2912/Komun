@@ -4,6 +4,13 @@
     <div class="bg-white rounded-lg shadow-lg p-6">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Gestión de Perfiles</h1>
+            <div class="flex space-x-3">
+                <a href="{{ route('god.profiles.pdf', request()->query()) }}" 
+                   class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                    <i class="fas fa-file-pdf mr-2"></i>
+                    Descargar PDF
+                </a>
+            </div>
         </div>
 
         @if(session('success'))

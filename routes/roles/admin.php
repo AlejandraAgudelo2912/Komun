@@ -8,6 +8,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     })->name('dashboard');
 
     Route::get('/profiles', App\Http\Controllers\Admin\Profile\IndexController::class)->name('profiles.index');
+    Route::get('/profiles/pdf', [App\Http\Controllers\PdfController::class, 'usersList'])->name('profiles.pdf');
 
     Route::get('/categories', App\Http\Controllers\Admin\Category\IndexController::class)
         ->middleware('can:viewAny,App\Models\Category')

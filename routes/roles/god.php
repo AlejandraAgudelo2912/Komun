@@ -11,7 +11,7 @@ Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(func
     Route::get('/profiles/{user}/edit', App\Http\Controllers\God\Profile\EditController::class)->name('profiles.edit');
     Route::put('/profiles/{user}', App\Http\Controllers\God\Profile\UpdateController::class)->name('profiles.update');
     Route::delete('/profiles/{user}', App\Http\Controllers\God\Profile\DeleteController::class)->name('profiles.delete');
-
+    Route::get('/profiles/pdf', [App\Http\Controllers\PdfController::class, 'usersList'])->name('profiles.pdf');
 
     Route::get('/categories', App\Http\Controllers\God\Category\IndexController::class)
         ->middleware('can:viewAny,App\Models\Category')

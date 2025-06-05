@@ -1,7 +1,14 @@
 <x-app-layout>     
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Perfiles de Usuarios</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Gestión de Usuarios</h1>
+            <div class="flex space-x-3">
+                <a href="{{ route('admin.profiles.pdf', request()->query()) }}" 
+                   class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                    <i class="fas fa-file-pdf mr-2"></i>
+                    Descargar PDF
+                </a>
+            </div>
         </div>
 
         @if(session('success'))
@@ -17,23 +24,48 @@
         @endif
 
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <form action="{{ route('admin.profiles.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
-                <div class="flex-1">
-                    <input type="text" 
-                           name="search" 
-                           value="{{ request('search') }}"
-                           placeholder="Buscar por nombre o email" 
-                           class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <form action="{{ route('admin.profiles.index') }}" method="GET" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Buscar</label>
+                        <input type="text" 
+                               id="search"
+                               name="search" 
+                               value="{{ request('search') }}"
+                               placeholder="Nombre o email" 
+                               class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Rol</label>
+                        <select name="role" 
+                                id="role"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Todos los roles</option>
+                            <option value="admin" {{ request('role') === 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="assistant" {{ request('role') === 'assistant' ? 'selected' : '' }}>Asistente</option>
+                            <option value="needhelp" {{ request('role') === 'needhelp' ? 'selected' : '' }}>Necesita Ayuda</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Estado Asistente</label>
+                        <select name="status" 
+                                id="status"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Todos los estados</option>
+                            <option value="verified" {{ request('status') === 'verified' ? 'selected' : '' }}>Verificado</option>
+                            <option value="unverified" {{ request('status') === 'unverified' ? 'selected' : '' }}>No verificado</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="flex gap-2">
+                <div class="flex justify-end space-x-2">
                     <button type="submit" 
                             class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
                         <i class="fas fa-search mr-2"></i>Buscar
                     </button>
-                    @if(request()->has('search'))
+                    @if(request()->hasAny(['search', 'role', 'status']))
                         <a href="{{ route('admin.profiles.index') }}" 
                            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors">
-                            <i class="fas fa-times mr-2"></i>Limpiar
+                            <i class="fas fa-times mr-2"></i>Limpiar filtros
                         </a>
                     @endif
                 </div>
@@ -139,7 +171,7 @@
                             <i class="fas fa-users text-4xl"></i>
                         </div>
                         <p class="text-gray-600">No se encontraron usuarios</p>
-                        @if(request()->has('search'))
+                        @if(request()->hasAny(['search', 'role', 'status']))
                             <a href="{{ route('admin.profiles.index') }}" class="text-blue-600 hover:text-blue-800 mt-2 inline-block">
                                 Volver a la lista completa
                             </a>
@@ -148,6 +180,12 @@
                 </div>
             @endforelse
         </div>
+
+        @if($users->hasPages())
+            <div class="mt-6">
+                {{ $users->links() }}
+            </div>
+        @endif
     </div>
 
     @push('styles')
