@@ -15,7 +15,7 @@
     <p style="font-size: 16px;">Gracias por tu generosidad, compromiso y por querer hacer del mundo un lugar mejor.</p>
 
     <div style="text-align: center; margin: 30px 0;">
-        <a href="{{ url('/requests') }}" style="display: inline-block; background-color: #4F46E5; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-size: 16px;">
+        <a href="{{ url('/') }}" style="display: inline-block; background-color: #4F46E5; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-size: 16px;">
             Empezar a ayudar
         </a>
     </div>

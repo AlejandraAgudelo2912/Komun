@@ -26,7 +26,7 @@
     @endif
 
     <div style="margin-top: 30px; text-align: center;">
-        <a href="{{ url('/requests') }}" style="background-color: #4F46E5; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-size: 16px;">
+        <a href="{{ url('/') }}" style="background-color: #4F46E5; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-size: 16px;">
             Ver otras solicitudes
         </a>
     </div>
