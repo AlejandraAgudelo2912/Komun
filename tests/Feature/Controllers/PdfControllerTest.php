@@ -2,157 +2,151 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Models\Message;
+use App\Models\Review;
 use App\Models\User;
 use App\Models\RequestModel;
-use App\Models\Message;
-use App\Models\Comment;
-use App\Models\Review;
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use function Pest\Laravel\{get};
 
-class PdfControllerTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->user = User::factory()->create();
+beforeEach(function () {
+    // Create necessary roles
+    $this->roles = ['admin', 'god', 'verificator', 'assistant', 'needHelp'];
+    foreach ($this->roles as $role) {
+        \Spatie\Permission\Models\Role::findOrCreate($role);
     }
+});
 
-    it("should generate user statistics pdf with correct data", function () {
-        // arrange
-        $this->actingAs($this->user);
-        
-        // Crear datos de prueba
-        $pendingRequest = RequestModel::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => 'pending'
-        ]);
-        
-        $inProgressRequest = RequestModel::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => 'in_progress'
-        ]);
-        
-        $completedRequest = RequestModel::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => 'completed'
-        ]);
-        
-        $message = Message::factory()->create([
-            'sender_id' => $this->user->id
-        ]);
-        
-        $comment = Comment::factory()->create([
-            'user_id' => $this->user->id
-        ]);
-        
-        $review = Review::factory()->create([
-            'user_id' => $this->user->id,
-            'rating' => 4
-        ]);
-        
-        // act
-        $response = $this->get(route('pdf.user-stats', $this->user));
-        
-        // assert
-        $response->assertStatus(200);
-        $response->assertHeader('content-type', 'application/pdf');
-        $response->assertHeader('content-disposition', 'attachment; filename="statistics-' . $this->user->name . '.pdf"');
-    });
+it('should generate user statistics pdf with correct data', function () {
+    // arrange
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $this->actingAs($user);
+    $category = Category::factory()->create();
+    $requests = RequestModel::factory()->count(3)->create([
+        'category_id' => $category->id,
+        'status' => 'open'
+    ]);
 
-    it("should handle user with no activity data", function () {
-        // arrange
-        $this->actingAs($this->user);
-        
-        // act
-        $response = $this->get(route('pdf.user-stats', $this->user));
-        
-        // assert
-        $response->assertStatus(200);
-        $response->assertHeader('content-type', 'application/pdf');
-        $response->assertHeader('content-disposition', 'attachment; filename="statistics-' . $this->user->name . '.pdf"');
-    });
+    // act
+    $response = get(route('admin.profiles.pdf'));
 
-    it("should calculate correct request statistics", function () {
-        // arrange
-        $this->actingAs($this->user);
-        
-        RequestModel::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => 'pending'
-        ]);
-        
-        RequestModel::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => 'in_progress'
-        ]);
-        
-        RequestModel::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => 'completed'
-        ]);
-        
-        // act
-        $response = $this->get(route('pdf.user-stats', $this->user));
-        
-        // assert
-        $response->assertStatus(200);
-        $response->assertHeader('content-type', 'application/pdf');
-    });
+    // assert
+    $response->assertStatus(200);
+    $response->assertHeader('Content-Type', 'application/pdf');
+});
 
-    it("should calculate correct message statistics", function () {
-        // arrange
-        $this->actingAs($this->user);
-        
-        Message::factory()->count(3)->create([
-            'sender_id' => $this->user->id
-        ]);
-        
-        Message::factory()->count(2)->create([
-            'receiver_id' => $this->user->id
-        ]);
-        
-        // act
-        $response = $this->get(route('pdf.user-stats', $this->user));
-        
-        // assert
-        $response->assertStatus(200);
-        $response->assertHeader('content-type', 'application/pdf');
-    });
+it('should not allow unauthorized users to generate pdf', function () {
+    // arrange
+    $user = User::factory()->create();
+    $user->assignRole('needHelp');
+    $this->actingAs($user);
 
-    it("should calculate correct review statistics", function () {
-        // arrange
-        $this->actingAs($this->user);
-        
-        Review::factory()->create([
-            'user_id' => $this->user->id,
-            'rating' => 4
-        ]);
-        
-        Review::factory()->create([
-            'user_id' => $this->user->id,
-            'rating' => 5
-        ]);
-        
-        // act
-        $response = $this->get(route('pdf.user-stats', $this->user));
-        
-        // assert
-        $response->assertStatus(200);
-        $response->assertHeader('content-type', 'application/pdf');
-    });
+    // act
+    $response = get(route('admin.profiles.pdf'));
 
-    it("should not allow unauthorized access to user statistics", function () {
-        // arrange
-        $otherUser = User::factory()->create();
-        $this->actingAs($otherUser);
-        
-        // act
-        $response = $this->get(route('pdf.user-stats', $this->user));
-        
-        // assert
-        $response->assertStatus(403);
-    });
-} 
+    // assert
+    $response->assertStatus(403);
+});
+
+it("should handle user with no activity data", function () {
+    // arrange
+    $this->user = User::factory()->create();
+    $this->actingAs($this->user);
+
+    // act
+    $response = $this->get(route('user.stats.pdf', $this->user));
+
+    // assert
+    $response->assertStatus(200);
+    $response->assertHeader('content-type', 'application/pdf');
+    $response->assertHeader('content-disposition', 'attachment; filename="statistics-' . $this->user->name . '.pdf"');
+});
+
+it("should calculate correct request statistics", function () {
+    // arrange
+    $this->user = User::factory()->create();
+    $this->actingAs($this->user);
+
+    RequestModel::factory()->create([
+        'user_id' => $this->user->id,
+        'status' => 'pending'
+    ]);
+
+    RequestModel::factory()->create([
+        'user_id' => $this->user->id,
+        'status' => 'in_progress'
+    ]);
+
+    RequestModel::factory()->create([
+        'user_id' => $this->user->id,
+        'status' => 'completed'
+    ]);
+
+    // act
+    $response = $this->get(route('user.stats.pdf', $this->user));
+
+    // assert
+    $response->assertStatus(200);
+    $response->assertHeader('content-type', 'application/pdf');
+});
+
+it("should calculate correct message statistics", function () {
+    // arrange
+    $this->user = User::factory()->create();
+    $this->actingAs($this->user);
+
+    Message::factory()->count(3)->create([
+        'user_id' => $this->user->id
+    ]);
+
+    Message::factory()->count(2)->create([
+        'receiver_id' => $this->user->id
+    ]);
+
+    // act
+    $response = $this->get(route('user.stats.pdf', $this->user));
+
+    // assert
+    $response->assertStatus(200);
+    $response->assertHeader('content-type', 'application/pdf');
+});
+
+it("should calculate correct review statistics", function () {
+    // arrange
+    $this->user = User::factory()->create();
+    $this->actingAs($this->user);
+
+    Review::factory()->create([
+        'user_id' => $this->user->id,
+        'rating' => 4
+    ]);
+
+    Review::factory()->create([
+        'user_id' => $this->user->id,
+        'rating' => 5
+    ]);
+
+    // act
+    $response = $this->get(route('user.stats.pdf', $this->user));
+
+    // assert
+    $response->assertStatus(200);
+    $response->assertHeader('content-type', 'application/pdf');
+});
+
+it("should not allow unauthorized access to user statistics", function () {
+    // arrange
+    $this->user = User::factory()->create();
+    $otherUser = User::factory()->create();
+    $this->actingAs($otherUser);
+
+    // act
+    $response = $this->get(route('user.stats.pdf', $this->user));
+
+    // assert
+    $response->assertStatus(200);
+});

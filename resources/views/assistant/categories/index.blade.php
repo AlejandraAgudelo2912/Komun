@@ -11,9 +11,6 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-semibold">Lista de Categorías</h3>
-                        <a href="{{ route('assistant.categories.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Crear Nueva Categoría
-                        </a>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -47,7 +44,7 @@
                                             {{ Str::limit($category->description, 100) }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                                 @if($category->is_active) bg-green-100 text-green-800
                                                 @else bg-red-100 text-red-800
                                                 @endif">
@@ -78,4 +75,4 @@
             </div>
         </div>
     </div>
-</x-app-layout> 
+</x-app-layout>

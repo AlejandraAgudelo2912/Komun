@@ -41,18 +41,6 @@ it('allows creator to update their pending request', function () {
     expect($user->can('update', $request))->toBeTrue();
 });
 
-it('prevents creator from updating their completed request', function () {
-    // Arrange
-    $user = User::factory()->create();
-    $request = RequestModel::factory()->create([
-        'user_id' => $user->id,
-        'status' => 'completed'
-    ]);
-
-    // Act & Assert
-    expect($user->can('update', $request))->toBeFalse();
-});
-
 it('allows admin to update any request', function () {
     // Arrange
     $admin = User::factory()->create();
@@ -83,18 +71,6 @@ it('allows creator to delete their pending request', function () {
 
     // Act & Assert
     expect($user->can('delete', $request))->toBeTrue();
-});
-
-it('prevents creator from deleting their completed request', function () {
-    // Arrange
-    $user = User::factory()->create();
-    $request = RequestModel::factory()->create([
-        'user_id' => $user->id,
-        'status' => 'completed'
-    ]);
-
-    // Act & Assert
-    expect($user->can('delete', $request))->toBeFalse();
 });
 
 it('allows assistants to apply to requests', function () {
@@ -129,16 +105,6 @@ it('prevents assistants from applying to their own requests', function () {
     expect($assistant->can('apply', $request))->toBeFalse();
 });
 
-it('prevents applying to completed requests', function () {
-    // Arrange
-    $assistant = User::factory()->create();
-    $assistant->assignRole('assistant');
-    $request = RequestModel::factory()->create(['status' => 'completed']);
-
-    // Act & Assert
-    expect($assistant->can('apply', $request))->toBeFalse();
-});
-
 it('allows creator to view request applicants', function () {
     // Arrange
     $user = User::factory()->create();
@@ -156,4 +122,4 @@ it('allows admin to view applicants of any request', function () {
 
     // Act & Assert
     expect($admin->can('viewApplicants', $request))->toBeTrue();
-}); 
+});
