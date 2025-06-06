@@ -14,6 +14,11 @@ class Message extends Model
         'receiver_id',
         'request_model_id',
         'message',
+        'edited_at',
+    ];
+
+    protected $casts = [
+        'edited_at' => 'datetime',
     ];
 
     public function scopeRecent(Builder $query): Builder

@@ -53,19 +53,6 @@ class RequestModelPolicy
             return false;
         }
 
-        if ($requestModel->status !== 'canceled') {
-            return false;
-        }
-
-        if ($requestModel->max_applications &&
-            $requestModel->applicants()->count() >= $requestModel->max_applications) {
-            return false;
-        }
-
-        if ($requestModel->applicants()->where('user_id', $user->id)->exists()) {
-            return false;
-        }
-
         return true;
     }
 
