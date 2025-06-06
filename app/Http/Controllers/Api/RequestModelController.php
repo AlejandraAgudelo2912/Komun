@@ -14,9 +14,8 @@ use Illuminate\Support\Facades\Gate;
  *     description="API Endpoints para la gestión de solicitudes"
  * )
  */
-class RequestController extends Controller
+class RequestModelController extends Controller
 {
-
     /**
      * @OA\Get(
      *     path="/api/requests",
@@ -254,10 +253,13 @@ class RequestController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"title","description","category_id"},
+     *             required={"title","description","category_id","location","deadline"},
      *             @OA\Property(property="title", type="string", example="Necesito ayuda con limpieza"),
      *             @OA\Property(property="description", type="string", example="Busco ayuda para limpiar mi casa"),
-     *             @OA\Property(property="category_id", type="integer", example=1)
+     *             @OA\Property(property="category_id", type="integer", example=1),
+     *             @OA\Property(property="location", type="string", example="Calle Falsa 123"),
+     *             @OA\Property(property="deadline", type="string", format="date", example="2024-12-31"),
+     *             @OA\Property(property="status", type="string", enum={"open", "closed", "in_progress", "completed"}, example="open")
      *         )
      *     ),
      *     @OA\Response(
@@ -265,7 +267,30 @@ class RequestController extends Controller
      *         description="Solicitud actualizada exitosamente",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Solicitud actualizada exitosamente"),
-     *             @OA\Property(property="request", type="object")
+     *             @OA\Property(
+     *                 property="request",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="title", type="string", example="Necesito ayuda con limpieza"),
+     *                 @OA\Property(property="description", type="string", example="Busco ayuda para limpiar mi casa"),
+     *                 @OA\Property(property="status", type="string", example="open"),
+     *                 @OA\Property(property="category_id", type="integer", example=1),
+     *                 @OA\Property(property="user_id", type="integer", example=1),
+     *                 @OA\Property(property="location", type="string", example="Calle Falsa 123"),
+     *                 @OA\Property(property="deadline", type="string", format="date", example="2024-12-31"),
+     *                 @OA\Property(
+     *                     property="category",
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Limpieza")
+     *                 ),
+     *                 @OA\Property(
+     *                     property="user",
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Juan Pérez")
+     *                 )
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -286,9 +311,24 @@ class RequestController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, RequestModel $requestModel)
+    public function update(Request $request, $id)
     {
+        $requestModel = RequestModel::findOrFail($id);
+
+        \Log::info('Intentando actualizar solicitud', [
+            'user_id' => auth()->id(),
+            'request_user_id' => $requestModel->user_id,
+            'user_roles' => auth()->user()->getRoleNames(),
+            'user_permissions' => auth()->user()->getAllPermissions()->pluck('name'),
+            'is_owner' => auth()->id() === $requestModel->user_id,
+            'has_admin_role' => auth()->user()->hasRole(['admin', 'god'])
+        ]);
+
         if (Gate::denies('update', $requestModel)) {
+            \Log::warning('Acceso denegado al actualizar solicitud', [
+                'user_id' => auth()->id(),
+                'request_id' => $requestModel->id
+            ]);
             return response()->json(['message' => 'No tienes permiso para actualizar esta solicitud'], 403);
         }
 
@@ -302,6 +342,11 @@ class RequestController extends Controller
         ]);
 
         $requestModel->update($validated);
+
+        \Log::info('Solicitud actualizada exitosamente', [
+            'user_id' => auth()->id(),
+            'request_id' => $requestModel->id
+        ]);
 
         return response()->json([
             'message' => 'Solicitud actualizada exitosamente',
@@ -343,15 +388,34 @@ class RequestController extends Controller
      *     )
      * )
      */
-    public function destroy(RequestModel $requestModel)
+    public function destroy($id)
     {
+        $requestModel = RequestModel::findOrFail($id);
+
+        \Log::info('Intentando eliminar solicitud', [
+            'user_id' => auth()->id(),
+            'request_user_id' => $requestModel->user_id,
+            'user_roles' => auth()->user()->getRoleNames(),
+            'user_permissions' => auth()->user()->getAllPermissions()->pluck('name'),
+            'is_owner' => auth()->id() === $requestModel->user_id,
+            'has_admin_role' => auth()->user()->hasRole(['admin', 'god'])
+        ]);
+
         if (Gate::denies('delete', $requestModel)) {
-            return response()->json(['message' => 'No autorizado'], 403);
+            \Log::warning('Acceso denegado al eliminar solicitud', [
+                'user_id' => auth()->id(),
+                'request_id' => $requestModel->id
+            ]);
+            return response()->json(['message' => 'No tienes permiso para eliminar esta solicitud'], 403);
         }
+
         $requestModel->delete();
 
-        return response()->json([
-            'message' => 'Solicitud eliminada exitosamente'
+        \Log::info('Solicitud eliminada exitosamente', [
+            'user_id' => auth()->id(),
+            'request_id' => $id
         ]);
+
+        return response()->json(['message' => 'Solicitud eliminada exitosamente']);
     }
 }

@@ -9,19 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form action="{{ route('needhelp.requests.update', $request) }}" method="POST" class="space-y-6">
+                    <form action="{{ route('needhelp.requests.update', $requestModel) }}" method="POST" class="space-y-6">
                         @csrf
                         @method('PUT')
 
                         <div>
                             <x-input-label for="title" :value="__('Título')" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $request->title)" required autofocus />
+                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $requestModel->title)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('title')" />
                         </div>
 
                         <div>
                             <x-input-label for="description" :value="__('Descripción')" />
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $request->description) }}</textarea>
+                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $requestModel->description) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
@@ -30,7 +30,7 @@
                                 name="category_id"
                                 label="Categoría"
                                 :options="$categories->pluck('name', 'id')"
-                                :selected="$request->category_id"
+                                :selected="$requestModel->category_id"
                                 required
                             />
                         </div>
@@ -44,20 +44,20 @@
                                     'medium' => 'Media',
                                     'high' => 'Alta'
                                 ]"
-                                :selected="$request->priority"
+                                :selected="$requestModel->priority"
                                 required
                             />
                         </div>
 
                         <div>
                             <x-input-label for="deadline" :value="__('Fecha Límite')" />
-                            <x-text-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline', $request->deadline->format('Y-m-d'))" required />
+                            <x-text-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline', $requestModel->deadline->format('Y-m-d'))" required />
                             <x-input-error class="mt-2" :messages="$errors->get('deadline')" />
                         </div>
 
                         <div>
                             <x-input-label for="help_notes" :value="__('Notas Adicionales')" />
-                            <textarea id="help_notes" name="help_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('help_notes', $request->help_notes) }}</textarea>
+                            <textarea id="help_notes" name="help_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('help_notes', $requestModel->help_notes) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('help_notes')" />
                         </div>
 

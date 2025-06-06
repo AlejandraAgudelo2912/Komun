@@ -27,11 +27,22 @@ class RequestModelPolicy
 
     public function update(User $user, RequestModel $requestModel): bool
     {
-        if ($user->id === $requestModel->user_id) {
+        \Log::info('Verificando política de actualización', [
+            'user_id' => $user->id,
+            'request_user_id' => $requestModel->user_id,
+            'user_roles' => $user->getRoleNames(),
+            'is_owner' => (string) $user->id === (string) $requestModel->user_id,
+            'has_admin_role' => $user->hasRole(['admin', 'god'])
+        ]);
+
+        if ((string) $user->id === (string) $requestModel->user_id) {
+            \Log::info('Usuario es propietario de la solicitud');
             return true;
         }
 
-        return $user->hasRole(['admin', 'god']);
+        $hasAdminRole = $user->hasRole(['admin', 'god']);
+        \Log::info('Usuario tiene rol de administrador', ['has_admin_role' => $hasAdminRole]);
+        return $hasAdminRole;
     }
 
     public function delete(User $user, RequestModel $requestModel): bool

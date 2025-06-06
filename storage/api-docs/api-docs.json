@@ -892,7 +892,7 @@
                     "Solicitudes"
                 ],
                 "summary": "Listar todas las solicitudes",
-                "operationId": "d9786ff19c5d7c51597cf7850f972d8b",
+                "operationId": "bc789f04bd930ad63468d68bec341377",
                 "parameters": [
                     {
                         "name": "status",
@@ -1010,7 +1010,7 @@
                     "Solicitudes"
                 ],
                 "summary": "Crear una nueva solicitud",
-                "operationId": "b52928f74fc4be3b6808819bb42db29c",
+                "operationId": "2be1e37591b4363e43dbf5204030e04d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1092,7 +1092,7 @@
                     "Solicitudes"
                 ],
                 "summary": "Obtener una solicitud específica",
-                "operationId": "14ecb359d916c5f7ec383ff7c1395475",
+                "operationId": "8ea45396903bc467483410c728b845d5",
                 "parameters": [
                     {
                         "name": "id",
@@ -1220,7 +1220,7 @@
                     "Solicitudes"
                 ],
                 "summary": "Actualizar una solicitud",
-                "operationId": "580e4d4ab4a9a210a2305da9c2c63d9b",
+                "operationId": "9d5984ccb5af3ab02d0bef94bf4fd21a",
                 "parameters": [
                     {
                         "name": "id",
@@ -1240,7 +1240,9 @@
                                 "required": [
                                     "title",
                                     "description",
-                                    "category_id"
+                                    "category_id",
+                                    "location",
+                                    "deadline"
                                 ],
                                 "properties": {
                                     "title": {
@@ -1254,6 +1256,25 @@
                                     "category_id": {
                                         "type": "integer",
                                         "example": 1
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "Calle Falsa 123"
+                                    },
+                                    "deadline": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-12-31"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "open",
+                                            "closed",
+                                            "in_progress",
+                                            "completed"
+                                        ],
+                                        "example": "open"
                                     }
                                 },
                                 "type": "object"
@@ -1273,6 +1294,67 @@
                                             "example": "Solicitud actualizada exitosamente"
                                         },
                                         "request": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Necesito ayuda con limpieza"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Busco ayuda para limpiar mi casa"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "open"
+                                                },
+                                                "category_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "location": {
+                                                    "type": "string",
+                                                    "example": "Calle Falsa 123"
+                                                },
+                                                "deadline": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2024-12-31"
+                                                },
+                                                "category": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Limpieza"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Juan Pérez"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
                                             "type": "object"
                                         }
                                     },
@@ -1305,7 +1387,7 @@
                     "Solicitudes"
                 ],
                 "summary": "Eliminar una solicitud",
-                "operationId": "bf30478d602e314b8fedd739cd0db821",
+                "operationId": "00a83ce8136a24530cc04f5bb6cd4803",
                 "parameters": [
                     {
                         "name": "id",
