@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\RequestModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -63,13 +64,9 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        try {
-            $reviews = Review::with(['user:id,username', 'assistant:id,username', 'request'])
-                           ->get();
-            return response()->json($reviews, 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al obtener las reviews', 'error' => $e->getMessage()], 500);
-        }
+        $reviews = Review::with(['user:id', 'assistant:id', 'request'])
+            ->get();
+        return response()->json($reviews, 200);
     }
 
     /**
@@ -129,18 +126,13 @@ class ReviewController extends Controller
      */
     public function show($id)
     {
-        try {
-            $review = Review::with(['user:id,username', 'assistant:id,username', 'request'])
-                          ->find($id);
-
-            if (!$review) {
-                return response()->json(['message' => 'Review no encontrada'], 404);
-            }
-
-            return response()->json($review, 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al obtener la review', 'error' => $e->getMessage()], 500);
+        $review = Review::with(['user:id', 'assistant:id', 'request'])
+            ->find($id);
+        if (!$review) {
+            return response()->json(['message' => 'Review no encontrada'], 404);
         }
+        return response()->json($review, 200);
+
     }
 
     /**
@@ -217,7 +209,10 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Review::class);
+        if (!Gate::allows('create', Review::class)) {
+            return response()->json(['message' => 'No tienes permiso para calificar esta solicitud'], 403);
+        }
+
         $validator = Validator::make($request->all(), [
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string|max:1000',
@@ -237,7 +232,7 @@ class ReviewController extends Controller
             'comment' => $request->comment
         ]);
 
-        return response()->json($review->load(['user:id,username', 'assistant:id,username', 'request']), 201);
+        return response()->json($review->load(['user:id', 'assistant:id', 'request']), 201);
     }
 
     /**
@@ -318,32 +313,32 @@ class ReviewController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'rating' => 'sometimes|integer|min:1|max:5',
-                'comment' => 'sometimes|string|max:1000'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 422);
-            }
-
-            $review = Review::find($id);
-
-            if (!$review) {
-                return response()->json(['message' => 'Review no encontrada'], 404);
-            }
-
-            if ($review->user_id !== Auth::id()) {
-                return response()->json(['message' => 'No tienes permiso para actualizar esta review'], 403);
-            }
-
-            $review->update($request->only(['rating', 'comment']));
-
-            return response()->json($review->load(['user:id,username', 'assistant:id,username', 'request']), 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al actualizar la review', 'error' => $e->getMessage()], 500);
+        $review = Review::find($id);
+        if (!Gate::allows('update', $review)) {
+            return response()->json(['message' => 'No tienes permiso para actualizar esta review'], 403);
         }
+        $validator = Validator::make($request->all(), [
+            'rating' => 'sometimes|integer|min:1|max:5',
+            'comment' => 'sometimes|string|max:1000'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $review = Review::find($id);
+
+        if (!$review) {
+            return response()->json(['message' => 'Review no encontrada'], 404);
+        }
+
+        if ($review->user_id !== Auth::id()) {
+            return response()->json(['message' => 'No tienes permiso para actualizar esta review'], 403);
+        }
+
+        $review->update($request->only(['rating', 'comment']));
+        return response()->json($review->load(['user:id', 'assistant:id', 'request']), 200);
+
     }
 
     /**
@@ -384,22 +379,23 @@ class ReviewController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $review = Review::find($id);
-
-            if (!$review) {
-                return response()->json(['message' => 'Review no encontrada'], 404);
-            }
-
-            if ($review->user_id !== Auth::id()) {
-                return response()->json(['message' => 'No tienes permiso para eliminar esta review'], 403);
-            }
-
-            $review->delete();
-
-            return response()->json(['message' => 'Review eliminada correctamente'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al eliminar la review', 'error' => $e->getMessage()], 500);
+        $review = Review::find($id);
+        if (!Gate::allows('delete', $review)) {
+            return response()->json(['message' => 'No tienes permiso para eliminar esta review'], 403);
         }
+        $review = Review::find($id);
+
+        if (!$review) {
+            return response()->json(['message' => 'Review no encontrada'], 404);
+        }
+
+        if ($review->user_id !== Auth::id()) {
+            return response()->json(['message' => 'No tienes permiso para eliminar esta review'], 403);
+        }
+
+        $review->delete();
+
+        return response()->json(['message' => 'Review eliminada correctamente'], 200);
+
     }
 }

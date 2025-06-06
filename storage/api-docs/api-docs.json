@@ -2094,102 +2094,12 @@
             }
         },
         "/api/users/profile": {
-            "get": {
-                "tags": [
-                    "Usuarios"
-                ],
-                "summary": "Obtener el perfil del usuario autenticado",
-                "operationId": "1ab615e69483636a835d4680956bb15c",
-                "responses": {
-                    "200": {
-                        "description": "Perfil del usuario",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Juan Pérez"
-                                        },
-                                        "username": {
-                                            "type": "string",
-                                            "example": "juanperez"
-                                        },
-                                        "email": {
-                                            "type": "string",
-                                            "example": "juan@example.com"
-                                        },
-                                        "phone": {
-                                            "type": "string",
-                                            "example": "123456789"
-                                        },
-                                        "address": {
-                                            "type": "string",
-                                            "example": "Calle Principal 123"
-                                        },
-                                        "bio": {
-                                            "type": "string",
-                                            "example": "Descripción del usuario"
-                                        },
-                                        "is_assistant": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "is_admin": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "reviews": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object"
-                                            }
-                                        },
-                                        "requests": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "No autenticado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "No autenticado"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
             "put": {
                 "tags": [
                     "Usuarios"
                 ],
                 "summary": "Actualizar el perfil del usuario autenticado",
-                "operationId": "53e8804f42df72054bb2ced447b18a09",
+                "operationId": "bd3a9ff3eb4fcc968fc418d6bbe6168a",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2403,206 +2313,83 @@
                 ]
             }
         },
-        "/api/users/my-requests": {
+        "/api/users": {
             "get": {
                 "tags": [
                     "Usuarios"
                 ],
-                "summary": "Obtener las solicitudes del usuario autenticado",
-                "operationId": "99b6406f453f741f259a4a7d6716998c",
-                "responses": {
-                    "200": {
-                        "description": "Lista de solicitudes",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
+                "summary": "Listar todos los usuarios",
+                "operationId": "566aed8efb436ca506e0ef51a032ecd9",
+                "parameters": [
                     {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/users/my-reviews": {
-            "get": {
-                "tags": [
-                    "Usuarios"
-                ],
-                "summary": "Obtener las reviews realizadas por el usuario autenticado",
-                "operationId": "70de719aa2ffeeb57ee2ed1fdf68a8dd",
-                "responses": {
-                    "200": {
-                        "description": "Lista de reviews",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/users/assisted-requests": {
-            "get": {
-                "tags": [
-                    "Usuarios"
-                ],
-                "summary": "Obtener las solicitudes atendidas por el usuario (solo para asistentes)",
-                "operationId": "9898d6bce138423643d34ce4155c5ecc",
-                "responses": {
-                    "200": {
-                        "description": "Lista de solicitudes atendidas",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object"
-                                    }
-                                }
-                            }
+                        "name": "search",
+                        "in": "query",
+                        "description": "Término de búsqueda para filtrar usuarios por nombre, email o username",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     },
-                    "403": {
-                        "description": "No autorizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "No tienes permiso para acceder a este recurso"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Filtrar usuarios por rol",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "user",
+                                "admin",
+                                "god"
+                            ]
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/users/received-reviews": {
-            "get": {
-                "tags": [
-                    "Usuarios"
                 ],
-                "summary": "Obtener las reviews recibidas por el usuario (solo para asistentes)",
-                "operationId": "540f7f2f4bca81d4a9e51601f99b5661",
                 "responses": {
                     "200": {
-                        "description": "Lista de reviews recibidas",
+                        "description": "Lista de usuarios obtenida exitosamente",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "No autorizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "No tienes permiso para acceder a este recurso"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/users/update-assistant-status": {
-            "put": {
-                "tags": [
-                    "Usuarios"
-                ],
-                "summary": "Actualizar el estado de asistente de un usuario (solo para administradores)",
-                "operationId": "2e025bb1198c1669f30f1cebabbc69fc",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "user_id",
-                                    "is_assistant"
-                                ],
-                                "properties": {
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "is_assistant": {
-                                        "type": "boolean",
-                                        "example": true
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Estado de asistente actualizado exitosamente",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Estado de asistente actualizado correctamente"
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Juan Pérez"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "juan@example.com"
+                                            },
+                                            "username": {
+                                                "type": "string",
+                                                "example": "juanperez"
+                                            },
+                                            "role": {
+                                                "type": "string",
+                                                "example": "user"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
                                         },
-                                        "user": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
+                                        "type": "object"
+                                    }
                                 }
                             }
                         }
                     },
-                    "403": {
+                    "401": {
                         "description": "No autorizado",
                         "content": {
                             "application/json": {
@@ -2610,22 +2397,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "No tienes permiso para realizar esta acción"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Error de validación",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "type": "object"
+                                            "example": "No autenticado"
                                         }
                                     },
                                     "type": "object"

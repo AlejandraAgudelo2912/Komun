@@ -27,18 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('reviews', \App\Http\Controllers\Api\ReviewController::class)
         ->only(['store', 'update', 'destroy']);
 
-    Route::get('users/profile', [UserController::class, 'profile']);
-    Route::put('users/profile', [UserController::class, 'updateProfile']);
-
-    Route::get('user/my-requests', [UserController::class, 'myRequests']);
-    Route::get('user/my-reviews', [UserController::class, 'myReviews']);
-
-    Route::middleware('role:assistant')->group(function () {
-        Route::get('/assisted-requests', [UserController::class, 'assistedRequests']);
-        Route::get('/received-reviews', [UserController::class, 'receivedReviews']);
-    });
-
-    Route::middleware('role:admin')->group(function () {
-        Route::put('/update-assistant-status', [UserController::class, 'updateAssistantStatus']);
-    });
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::put('/users/{user}', [UserController::class, 'update']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy']);
 });
