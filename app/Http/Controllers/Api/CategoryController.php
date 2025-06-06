@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use PHPUnit\Framework\MockObject\GeneratedAsTestStub;
 
 /**
  * @OA\Tag(
@@ -15,7 +16,6 @@ use Illuminate\Support\Facades\Gate;
  */
 class CategoryController extends Controller
 {
-
     /**
      * @OA\Get(
      *     path="/api/categories",
@@ -69,23 +69,17 @@ class CategoryController extends Controller
      *             @OA\Property(property="message", type="string", example="Categoría creada exitosamente"),
      *             @OA\Property(property="category", type="object")
      *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Error de validación"
      *     )
      * )
      */
     public function store(Request $request)
     {
+        if (Gate::denies('create', Category::class)) {
+            return response()->json([
+                'message' => 'No tienes permiso para crear categorías'
+            ], 403);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -127,18 +121,6 @@ class CategoryController extends Controller
      *             @OA\Property(property="created_at", type="string", format="date-time"),
      *             @OA\Property(property="updated_at", type="string", format="date-time")
      *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Categoría no encontrada"
      *     )
      * )
      */
@@ -177,27 +159,18 @@ class CategoryController extends Controller
      *             @OA\Property(property="message", type="string", example="Categoría actualizada exitosamente"),
      *             @OA\Property(property="category", type="object")
      *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Categoría no encontrada"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Error de validación"
      *     )
      * )
      */
     public function update(Request $request, Category $category)
     {
+
+        if (Gate::denies('update', $category)) {
+            return response()->json([
+                'message' => 'No tienes permiso para actualizar esta categoría'
+            ], 403);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -230,120 +203,39 @@ class CategoryController extends Controller
      *         response=200,
      *         description="Categoría eliminada exitosamente",
      *         @OA\JsonContent(
+     *             type="object",
      *             @OA\Property(property="message", type="string", example="Categoría eliminada exitosamente")
      *         )
      *     ),
      *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
      *         response=403,
-     *         description="No autorizado"
+     *         description="No autorizado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="No tienes permiso para eliminar esta categoría")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Categoría no encontrada"
+     *         description="Categoría no encontrada",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Categoría no encontrada")
+     *         )
      *     )
      * )
      */
     public function destroy(Category $category)
     {
+        if (Gate::denies('delete', $category)) {
+            return response()->json([
+                'message' => 'No tienes permiso para eliminar esta categoría'
+            ], 403);
+        }
         $category->delete();
 
         return response()->json([
             'message' => 'Categoría eliminada exitosamente'
         ]);
     }
-
-    /**
-     * @OA\Post(
-     *     path="/api/categories/{id}/restore",
-     *     summary="Restaurar una categoría eliminada",
-     *     tags={"Categorías"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la categoría",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Categoría restaurada exitosamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Categoría restaurada exitosamente"),
-     *             @OA\Property(property="category", type="object")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Categoría no encontrada"
-     *     )
-     * )
-     */
-    public function restore($id)
-    {
-        $category = Category::withTrashed()->findOrFail($id);
-        $category->restore();
-
-        return response()->json([
-            'message' => 'Categoría restaurada exitosamente',
-            'category' => $category
-        ]);
-    }
-
-    /**
-     * @OA\Delete(
-     *     path="/api/categories/{id}/force",
-     *     summary="Eliminar permanentemente una categoría",
-     *     tags={"Categorías"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la categoría",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Categoría eliminada permanentemente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Categoría eliminada permanentemente")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Categoría no encontrada"
-     *     )
-     * )
-     */
-    public function forceDelete($id)
-    {
-        $category = Category::withTrashed()->findOrFail($id);
-
-        $category->forceDelete();
-
-        return response()->json([
-            'message' => 'Categoría eliminada permanentemente'
-        ]);
-    }
-} 
+}

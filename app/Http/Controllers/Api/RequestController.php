@@ -140,6 +140,7 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', RequestModel::class);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -282,6 +283,7 @@ class RequestController extends Controller
      */
     public function update(Request $request, RequestModel $requestModel)
     {
+        $this->authorize('update', $requestModel);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -335,6 +337,7 @@ class RequestController extends Controller
      */
     public function destroy(RequestModel $requestModel)
     {
+        $this->authorize('delete', $requestModel);
         $requestModel->delete();
 
         return response()->json([
@@ -382,6 +385,7 @@ class RequestController extends Controller
      */
     public function apply(Request $request, RequestModel $requestModel)
     {
+        $this->authorize('apply', $requestModel);
         $validated = $request->validate([
             'message' => 'required|string|max:1000'
         ]);

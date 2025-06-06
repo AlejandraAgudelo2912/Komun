@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\RequestModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 /**
  * @OA\Tag(
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
  */
 class CommentController extends Controller
 {
-
     /**
      * @OA\Get(
      *     path="/api/requests/{request_id}/comments",
@@ -37,8 +37,8 @@ class CommentController extends Controller
      *             @OA\Items(
      *                 type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="content", type="string", example="Excelente servicio"),
-     *                 @OA\Property(property="request_id", type="integer", example=1),
+     *                 @OA\Property(property="body", type="string", example="Excelente servicio"),
+     *                 @OA\Property(property="request_model_id", type="integer", example=1),
      *                 @OA\Property(property="user_id", type="integer", example=1),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time"),
@@ -50,17 +50,13 @@ class CommentController extends Controller
      *                 )
      *             )
      *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Solicitud no encontrada"
      *     )
      * )
      */
-    public function index(RequestModel $request)
+    public function index(RequestModel $requestModel)
     {
-        $comments = $request->comments()
-            ->with('user')
+        $comments = $requestModel->comments()
+            ->with('user:id,name')
             ->latest()
             ->paginate(10);
 
@@ -83,51 +79,69 @@ class CommentController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"content"},
-     *             @OA\Property(property="content", type="string", example="Excelente trabajo")
+     *             required={"body"},
+     *             @OA\Property(property="body", type="string", example="Excelente trabajo")
      *         )
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Comentario creado exitosamente",
      *         @OA\JsonContent(
+     *             type="object",
      *             @OA\Property(property="message", type="string", example="Comentario creado exitosamente"),
-     *             @OA\Property(property="comment", type="object")
+     *             @OA\Property(
+     *                 property="comment",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="body", type="string", example="Excelente trabajo"),
+     *                 @OA\Property(property="request_id", type="integer", example=1),
+     *                 @OA\Property(property="user_id", type="integer", example=1),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time"),
+     *                 @OA\Property(
+     *                     property="user",
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Juan Pérez")
+     *                 )
+     *             )
      *         )
      *     ),
      *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Solicitud no encontrada"
-     *     ),
-     *     @OA\Response(
      *         response=422,
-     *         description="Error de validación"
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Los datos proporcionados no son válidos"),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="body",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="El campo body es obligatorio")
+     *                 )
+     *             )
+     *         )
      *     )
      * )
      */
     public function store(Request $request, RequestModel $requestModel)
     {
+        if (!Gate::denies('create')) {
+            return response()->json(['message' => 'No tienes permiso para crear comentarios'], 403);
+        }
+
         $validated = $request->validate([
             'body' => 'required|string|max:1000'
         ]);
 
         $comment = $requestModel->comments()->create([
-            'body' => $validated['body'],
-            'user_id' => Auth::id()
+            'user_id' => Auth::id(),
+            'body' => $validated['body']
         ]);
 
-        return response()->json([
-            'message' => 'Comentario creado exitosamente',
-            'comment' => $comment->load('user')
-        ], 201);
+        return response()->json($comment->load('user:id,name'), 201);
     }
 
     /**
@@ -149,7 +163,7 @@ class CommentController extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="content", type="string", example="Excelente trabajo"),
+     *             @OA\Property(property="body", type="string", example="Excelente trabajo"),
      *             @OA\Property(property="request_id", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example=1),
      *             @OA\Property(property="created_at", type="string", format="date-time"),
@@ -163,16 +177,12 @@ class CommentController extends Controller
      *         )
      *     ),
      *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     ),
-     *     @OA\Response(
      *         response=404,
-     *         description="Comentario no encontrado"
+     *         description="Comentario no encontrado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Comentario no encontrado")
+     *         )
      *     )
      * )
      */
@@ -197,48 +207,82 @@ class CommentController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"content"},
-     *             @OA\Property(property="content", type="string", example="Excelente trabajo")
+     *             required={"body"},
+     *             @OA\Property(property="body", type="string", example="Excelente trabajo")
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Comentario actualizado exitosamente",
      *         @OA\JsonContent(
+     *             type="object",
      *             @OA\Property(property="message", type="string", example="Comentario actualizado exitosamente"),
-     *             @OA\Property(property="comment", type="object")
+     *             @OA\Property(
+     *                 property="comment",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="body", type="string", example="Excelente trabajo"),
+     *                 @OA\Property(property="request_id", type="integer", example=1),
+     *                 @OA\Property(property="user_id", type="integer", example=1),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time"),
+     *                 @OA\Property(
+     *                     property="user",
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Juan Pérez")
+     *                 )
+     *             )
      *         )
      *     ),
      *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
      *         response=403,
-     *         description="No autorizado"
+     *         description="No autorizado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="No tienes permiso para actualizar este comentario")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Comentario no encontrado"
+     *         description="Comentario no encontrado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Comentario no encontrado")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=422,
-     *         description="Error de validación"
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Los datos proporcionados no son válidos"),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="body",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="El campo body es obligatorio")
+     *                 )
+     *             )
+     *         )
      *     )
      * )
      */
     public function update(Request $request, Comment $comment)
     {
+        if (!Gate::denies('update', $comment)) {
+            return response()->json(['message' => 'No tienes permiso para actualizar este comentario'], 403);
+        }
+
         $validated = $request->validate([
             'body' => 'required|string|max:1000'
         ]);
 
         $comment->update($validated);
 
-        return response()->json([
-            'message' => 'Comentario actualizado exitosamente',
-            'comment' => $comment->load('user')
-        ]);
+        return response()->json($comment->load('user:id,name'));
     }
 
     /**
@@ -258,30 +302,36 @@ class CommentController extends Controller
      *         response=200,
      *         description="Comentario eliminado exitosamente",
      *         @OA\JsonContent(
+     *             type="object",
      *             @OA\Property(property="message", type="string", example="Comentario eliminado exitosamente")
      *         )
      *     ),
      *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
      *         response=403,
-     *         description="No autorizado"
+     *         description="No autorizado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="No tienes permiso para eliminar este comentario")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Comentario no encontrado"
+     *         description="Comentario no encontrado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Comentario no encontrado")
+     *         )
      *     )
      * )
      */
     public function destroy(Comment $comment)
     {
+        if (!Gate::denies('delete', $comment)) {
+            return response()->json(['message' => 'No tienes permiso para eliminar este comentario'], 403);
+        }
+
         $comment->delete();
 
-        return response()->json([
-            'message' => 'Comentario eliminado exitosamente'
-        ]);
+        return response()->json(['message' => 'Comentario eliminado correctamente']);
     }
-
 }

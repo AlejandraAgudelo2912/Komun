@@ -1,7 +1,6 @@
 <?php
 
-namespace App\OpenApi;
-
+namespace App\Swagger;
 /**
  * @OA\Info(
  *     version="1.0.0",
@@ -16,12 +15,12 @@ namespace App\OpenApi;
  *         url="https://opensource.org/licenses/MIT"
  *     )
  * )
- * 
+ *
  * @OA\Server(
  *     url=L5_SWAGGER_CONST_HOST,
  *     description="Servidor de API"
  * )
- * 
+ *
  * @OA\SecurityScheme(
  *     securityScheme="bearerAuth",
  *     type="http",
@@ -29,6 +28,7 @@ namespace App\OpenApi;
  *     bearerFormat="JWT"
  * )
  */
-class OpenApiSpec
+class Docs
 {
-} 
+
+}
