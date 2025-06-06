@@ -26,58 +26,74 @@
                         </div>
 
                         <div>
-                            <x-input-label for="category_id" :value="__('Categoría')" />
-                            <select id="category_id" name="category_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="">Seleccione una categoría</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ (old('category_id', $request->category_id) == $category->id) ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('category_id')" />
+                            <x-komun.select
+                                name="category_id"
+                                label="Categoría"
+                                :options="$categories->pluck('name', 'id')"
+                                :selected="$request->category_id"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <x-input-label for="priority" :value="__('Prioridad')" />
-                            <select id="priority" name="priority" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="low" {{ old('priority', $request->priority) == 'low' ? 'selected' : '' }}>Baja</option>
-                                <option value="medium" {{ old('priority', $request->priority) == 'medium' ? 'selected' : '' }}>Media</option>
-                                <option value="high" {{ old('priority', $request->priority) == 'high' ? 'selected' : '' }}>Alta</option>
-                            </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('priority')" />
+                            <x-komun.select
+                                name="priority"
+                                label="Prioridad"
+                                :options="[
+                                    'low' => 'Baja',
+                                    'medium' => 'Media',
+                                    'high' => 'Alta'
+                                ]"
+                                :selected="$request->priority"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <x-input-label for="status" :value="__('Estado')" />
-                            <select id="status" name="status" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="pending" {{ old('status', $request->status) == 'pending' ? 'selected' : '' }}>Pendiente</option>
-                                <option value="in_progress" {{ old('status', $request->status) == 'in_progress' ? 'selected' : '' }}>En Progreso</option>
-                                <option value="completed" {{ old('status', $request->status) == 'completed' ? 'selected' : '' }}>Completada</option>
-                                <option value="cancelled" {{ old('status', $request->status) == 'cancelled' ? 'selected' : '' }}>Cancelada</option>
-                            </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('status')" />
+                            <x-komun.select
+                                name="status"
+                                label="Estado"
+                                :options="[
+                                    'pending' => 'Pendiente',
+                                    'in_progress' => 'En Progreso',
+                                    'completed' => 'Completada',
+                                    'cancelled' => 'Cancelada'
+                                ]"
+                                :selected="$request->status"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <x-input-label for="deadline" :value="__('Fecha Límite')" />
-                            <x-text-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline', $request->deadline->format('Y-m-d'))" required />
-                            <x-input-error class="mt-2" :messages="$errors->get('deadline')" />
+                            <x-komun.date-input
+                                name="deadline"
+                                label="Fecha Límite"
+                                :value="$request->deadline->format('Y-m-d')"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <x-input-label for="verification_notes" :value="__('Notas de Verificación')" />
-                            <textarea id="verification_notes" name="verification_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('verification_notes', $request->verification_notes) }}</textarea>
-                            <x-input-error class="mt-2" :messages="$errors->get('verification_notes')" />
+                            <x-komun.input
+                                name="verification_notes"
+                                label="Notas de Verificación"
+                                type="textarea"
+                                :value="$request->verification_notes"
+                                rows="3"
+                            />
                         </div>
 
                         <div>
-                            <x-input-label for="is_verified" :value="__('Estado de Verificación')" />
-                            <select id="is_verified" name="is_verified" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="1" {{ old('is_verified', $request->is_verified) == '1' ? 'selected' : '' }}>Verificada</option>
-                                <option value="0" {{ old('is_verified', $request->is_verified) == '0' ? 'selected' : '' }}>Pendiente</option>
-                            </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('is_verified')" />
+                            <x-komun.select
+                                name="is_verified"
+                                label="Estado de Verificación"
+                                :options="[
+                                    '1' => 'Verificada',
+                                    '0' => 'Pendiente'
+                                ]"
+                                :selected="$request->is_verified"
+                                required
+                            />
                         </div>
 
                         <div class="flex items-center gap-4">

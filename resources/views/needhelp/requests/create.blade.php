@@ -26,36 +26,41 @@
                         </div>
 
                         <div>
-                            <label for="category_id" class="block text-sm font-medium text-gray-700">Categoría</label>
-                            <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                <option value="">Selecciona una categoría</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
+                            <x-komun.select
+                                name="category_id"
+                                label="Categoría"
+                                :options="$categories->pluck('name', 'id')"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <label for="location" class="block text-sm font-medium text-gray-700">Ubicación</label>
-                            <input type="text" name="location" id="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            <x-komun.input
+                                name="location"
+                                label="Ubicación"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <label for="deadline" class="block text-sm font-medium text-gray-700">Fecha límite</label>
-                            <input type="date" name="deadline" id="deadline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            <x-komun.select
+                                name="priority"
+                                label="Prioridad"
+                                :options="[
+                                    'low' => 'Baja',
+                                    'medium' => 'Media',
+                                    'high' => 'Alta'
+                                ]"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <label for="priority" class="block text-sm font-medium text-gray-700">Prioridad</label>
-                            <select name="priority" id="priority" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                <option value="">Selecciona una prioridad</option>
-                                <option value="low">Baja</option>
-                                <option value="medium">Media</option>
-                                <option value="high">Alta</option>
-                            </select>
-                            @error('priority')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <x-komun.date-input
+                                name="deadline"
+                                label="Fecha Límite"
+                                required
+                            />
                         </div>
 
                         <div>

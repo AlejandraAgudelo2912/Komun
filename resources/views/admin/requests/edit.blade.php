@@ -33,26 +33,24 @@
                         </div>
 
                         <div>
-                            <label for="description" class="block font-medium text-sm text-gray-700">Descripción</label>
-                            <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>{{ old('description', $requestModel->description) }}</textarea>
-                            @error('description')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <x-komun.input
+                                name="description"
+                                label="Descripción"
+                                type="textarea"
+                                :value="$requestModel->description"
+                                rows="4"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <label for="category_id" class="block font-medium text-sm text-gray-700">Categoría</label>
-                            <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                <option value="">Seleccione una categoría</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id', $requestModel->category_id) == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('category_id')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <x-komun.select
+                                name="category_id"
+                                label="Categoría"
+                                :options="$categories->pluck('name', 'id')"
+                                :selected="$requestModel->category_id"
+                                required
+                            />
                         </div>
 
                         <div>
@@ -69,58 +67,68 @@
                         </div>
 
                         <div>
-                            <label for="priority" class="block font-medium text-sm text-gray-700">Prioridad</label>
-                            <select name="priority" id="priority" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                <option value="low" {{ old('priority', $requestModel->priority) == 'low' ? 'selected' : '' }}>Baja</option>
-                                <option value="medium" {{ old('priority', $requestModel->priority) == 'medium' ? 'selected' : '' }}>Media</option>
-                                <option value="high" {{ old('priority', $requestModel->priority) == 'high' ? 'selected' : '' }}>Alta</option>
-                            </select>
-                            @error('priority')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <x-komun.select
+                                name="priority"
+                                label="Prioridad"
+                                :options="[
+                                    'low' => 'Baja',
+                                    'medium' => 'Media',
+                                    'high' => 'Alta'
+                                ]"
+                                :selected="$requestModel->priority"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <label for="location" class="block font-medium text-sm text-gray-700">Ubicación</label>
-                            <input type="text" name="location" id="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" value="{{ old('location', $requestModel->location) }}">
-                            @error('location')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <x-komun.input
+                                name="location"
+                                label="Ubicación"
+                                :value="$requestModel->location"
+                            />
                         </div>
 
                         <div>
-                            <label for="deadline" class="block font-medium text-sm text-gray-700">Fecha Límite</label>
-                            <input type="date" name="deadline" id="deadline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" value="{{ old('deadline', $requestModel->deadline ? $requestModel->deadline->format('Y-m-d') : '') }}" required>
-                            @error('deadline')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <x-komun.date-input
+                                name="deadline"
+                                label="Fecha Límite"
+                                :value="$requestModel->deadline ? $requestModel->deadline->format('Y-m-d') : ''"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <label for="max_applications" class="block font-medium text-sm text-gray-700">Máximo de Aplicaciones</label>
-                            <input type="number" name="max_applications" id="max_applications" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" value="{{ old('max_applications', $requestModel->max_applications) }}" min="1" max="10">
-                            @error('max_applications')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <x-komun.input
+                                name="max_applications"
+                                label="Máximo de Aplicaciones"
+                                type="number"
+                                :value="$requestModel->max_applications"
+                                min="1"
+                                max="10"
+                            />
                         </div>
 
                         <div>
-                            <label for="help_notes" class="block font-medium text-sm text-gray-700">Notas Adicionales</label>
-                            <textarea name="help_notes" id="help_notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('help_notes', $requestModel->help_notes) }}</textarea>
-                            @error('help_notes')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <x-komun.input
+                                name="help_notes"
+                                label="Notas Adicionales"
+                                type="textarea"
+                                :value="$requestModel->help_notes"
+                                rows="3"
+                            />
                         </div>
 
                         <div class="flex items-center space-x-6">
-                            <div class="flex items-center">
-                                <input type="checkbox" name="is_urgent" id="is_urgent" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" {{ old('is_urgent', $requestModel->is_urgent) ? 'checked' : '' }}>
-                                <label for="is_urgent" class="ml-2 block text-sm text-gray-700">Marcar como Urgente</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" name="is_verified" id="is_verified" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" {{ old('is_verified', $requestModel->is_verified) ? 'checked' : '' }}>
-                                <label for="is_verified" class="ml-2 block text-sm text-gray-700">Verificar Solicitud</label>
-                            </div>
+                            <x-komun.checkbox
+                                name="is_urgent"
+                                label="Marcar como Urgente"
+                                :checked="$requestModel->is_urgent"
+                            />
+                            <x-komun.checkbox
+                                name="is_verified"
+                                label="Verificar Solicitud"
+                                :checked="$requestModel->is_verified"
+                            />
                         </div>
 
                         <div class="flex items-center gap-4">

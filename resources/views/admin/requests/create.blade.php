@@ -35,54 +35,50 @@
 
                             <!-- Categoría -->
                             <div>
-                                <label for="category_id" class="block font-medium text-sm text-gray-700">Categoría</label>
-                                <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                    <option value="">Seleccione una categoría</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('category_id')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                                <x-komun.select
+                                    name="category_id"
+                                    label="Categoría"
+                                    :options="$categories->pluck('name', 'id')"
+                                    required
+                                />
                             </div>
 
                             <!-- Prioridad -->
                             <div>
-                                <label for="priority" class="block font-medium text-sm text-gray-700">Prioridad</label>
-                                <select name="priority" id="priority" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                    <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Baja</option>
-                                    <option value="medium" {{ old('priority') == 'medium' ? 'selected' : '' }}>Media</option>
-                                    <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>Alta</option>
-                                </select>
-                                @error('priority')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                                <x-komun.select
+                                    name="priority"
+                                    label="Prioridad"
+                                    :options="[
+                                        'low' => 'Baja',
+                                        'medium' => 'Media',
+                                        'high' => 'Alta'
+                                    ]"
+                                    required
+                                />
                             </div>
 
                             <!-- Estado -->
                             <div>
-                                <label for="status" class="block font-medium text-sm text-gray-700">Estado</label>
-                                <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                    <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pendiente</option>
-                                    <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>En Progreso</option>
-                                    <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Completada</option>
-                                    <option value="cancelled" {{ old('status') == 'cancelled' ? 'selected' : '' }}>Cancelada</option>
-                                </select>
-                                @error('status')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                                <x-komun.select
+                                    name="status"
+                                    label="Estado"
+                                    :options="[
+                                        'pending' => 'Pendiente',
+                                        'in_progress' => 'En Progreso',
+                                        'completed' => 'Completada',
+                                        'cancelled' => 'Cancelada'
+                                    ]"
+                                    required
+                                />
                             </div>
 
                             <!-- Fecha Límite -->
                             <div>
-                                <label for="deadline" class="block font-medium text-sm text-gray-700">Fecha Límite</label>
-                                <input type="date" name="deadline" id="deadline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" value="{{ old('deadline') }}" required>
-                                @error('deadline')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                                <x-komun.date-input
+                                    name="deadline"
+                                    label="Fecha Límite"
+                                    required
+                                />
                             </div>
 
                             <!-- Ubicación -->
@@ -124,14 +120,14 @@
 
                         <!-- Opciones Adicionales -->
                         <div class="flex items-center space-x-6">
-                            <div class="flex items-center">
-                                <input type="checkbox" name="is_urgent" id="is_urgent" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" {{ old('is_urgent') ? 'checked' : '' }}>
-                                <label for="is_urgent" class="ml-2 block text-sm text-gray-700">Marcar como Urgente</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" name="is_verified" id="is_verified" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" {{ old('is_verified') ? 'checked' : '' }}>
-                                <label for="is_verified" class="ml-2 block text-sm text-gray-700">Verificar Solicitud</label>
-                            </div>
+                            <x-komun.checkbox
+                                name="is_urgent"
+                                label="Marcar como Urgente"
+                            />
+                            <x-komun.checkbox
+                                name="is_verified"
+                                label="Verificar Solicitud"
+                            />
                         </div>
 
                         <div class="flex items-center gap-4">

@@ -25,26 +25,25 @@
                         </div>
 
                         <div>
-                            <x-input-label for="category_id" :value="__('Categoría')" />
-                            <select id="category_id" name="category_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="">Seleccione una categoría</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('category_id')" />
+                            <x-komun.select
+                                name="category_id"
+                                label="Categoría"
+                                :options="$categories->pluck('name', 'id')"
+                                required
+                            />
                         </div>
 
                         <div>
-                            <x-input-label for="priority" :value="__('Prioridad')" />
-                            <select id="priority" name="priority" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Baja</option>
-                                <option value="medium" {{ old('priority') == 'medium' ? 'selected' : '' }}>Media</option>
-                                <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>Alta</option>
-                            </select>
-                            <x-input-error class="mt-2" :messages="$errors->get('priority')" />
+                            <x-komun.select
+                                name="priority"
+                                label="Prioridad"
+                                :options="[
+                                    'low' => 'Baja',
+                                    'medium' => 'Media',
+                                    'high' => 'Alta'
+                                ]"
+                                required
+                            />
                         </div>
 
                         <div>
