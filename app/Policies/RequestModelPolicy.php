@@ -27,7 +27,7 @@ class RequestModelPolicy
 
     public function update(User $user, RequestModel $requestModel): bool
     {
-        if ($user->id === $requestModel->user_id && $requestModel->status === 'pending') {
+        if ($user->id === $requestModel->user_id) {
             return true;
         }
 
@@ -36,7 +36,7 @@ class RequestModelPolicy
 
     public function delete(User $user, RequestModel $requestModel): bool
     {
-        if ($user->id === $requestModel->user_id && $requestModel->status === 'pending') {
+        if ($user->id === $requestModel->user_id) {
             return true;
         }
 

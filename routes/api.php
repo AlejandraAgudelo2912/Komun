@@ -20,12 +20,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('categories', CategoryController::class)->except(['index', 'show']);
     Route::apiResource('requests', RequestController::class)->except(['index', 'show']);
-    Route::post('/requests/{requestModel}/apply', [RequestController::class, 'apply']);
-    Route::post('/requests/{requestModel}/verify', [RequestController::class, 'verify']);
 
     Route::post('/requests/{requestModel}/comments', [CommentController::class, 'store']);
     Route::apiResource('comments', CommentController::class)->except(['index', 'show']);
-    Route::post('/comments/{comment}/moderate', [CommentController::class, 'moderate']);
 
     Route::apiResource('reviews', \App\Http\Controllers\Api\ReviewController::class)
         ->only(['store', 'update', 'destroy']);

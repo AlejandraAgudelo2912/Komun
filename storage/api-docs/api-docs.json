@@ -1033,6 +1033,15 @@
                                     "category_id": {
                                         "type": "integer",
                                         "example": 1
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "Calle Falsa 123"
+                                    },
+                                    "deadline": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-12-31"
                                     }
                                 },
                                 "type": "object"
@@ -1333,61 +1342,6 @@
                     },
                     "404": {
                         "description": "Solicitud no encontrada"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/requests/{id}/apply": {
-            "post": {
-                "tags": [
-                    "Solicitudes"
-                ],
-                "summary": "Aplicar a una solicitud como asistente",
-                "operationId": "5536055055a3a2481917833d6149d431",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID de la solicitud",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Aplicación exitosa",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Has aplicado exitosamente a esta solicitud"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "No autenticado"
-                    },
-                    "403": {
-                        "description": "No autorizado"
-                    },
-                    "404": {
-                        "description": "Solicitud no encontrada"
-                    },
-                    "409": {
-                        "description": "Ya has aplicado a esta solicitud"
                     }
                 },
                 "security": [

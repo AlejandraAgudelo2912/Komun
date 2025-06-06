@@ -272,7 +272,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        if (!Gate::denies('update', $comment)) {
+        if (Gate::denies('update', $comment)) {
             return response()->json(['message' => 'No tienes permiso para actualizar este comentario'], 403);
         }
 
@@ -326,7 +326,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        if (!Gate::denies('delete', $comment)) {
+        if (Gate::denies('delete', $comment)) {
             return response()->json(['message' => 'No tienes permiso para eliminar este comentario'], 403);
         }
 

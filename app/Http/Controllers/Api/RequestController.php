@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RequestModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 /**
  * @OA\Tag(
@@ -113,7 +114,9 @@ class RequestController extends Controller
      *             required={"title","description","category_id"},
      *             @OA\Property(property="title", type="string", example="Necesito ayuda con limpieza"),
      *             @OA\Property(property="description", type="string", example="Busco ayuda para limpiar mi casa"),
-     *             @OA\Property(property="category_id", type="integer", example=1)
+     *             @OA\Property(property="category_id", type="integer", example=1),
+     *             @OA\Property(property="location", type="string", example="Calle Falsa 123"),
+     *             @OA\Property(property="deadline", type="string", format="date", example="2026-12-31")
      *         )
      *     ),
      *     @OA\Response(
@@ -140,7 +143,9 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', RequestModel::class);
+        if (Gate::denies( 'create', RequestModel::class)) {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -283,7 +288,10 @@ class RequestController extends Controller
      */
     public function update(Request $request, RequestModel $requestModel)
     {
-        $this->authorize('update', $requestModel);
+        if (Gate::denies('update', $requestModel)) {
+            return response()->json(['message' => 'No tienes permiso para actualizar esta solicitud'], 403);
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -337,67 +345,13 @@ class RequestController extends Controller
      */
     public function destroy(RequestModel $requestModel)
     {
-        $this->authorize('delete', $requestModel);
+        if (Gate::denies('delete', $requestModel)) {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
         $requestModel->delete();
 
         return response()->json([
             'message' => 'Solicitud eliminada exitosamente'
-        ]);
-    }
-
-    /**
-     * @OA\Post(
-     *     path="/api/requests/{id}/apply",
-     *     summary="Aplicar a una solicitud como asistente",
-     *     tags={"Solicitudes"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la solicitud",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Aplicación exitosa",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Has aplicado exitosamente a esta solicitud")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Solicitud no encontrada"
-     *     ),
-     *     @OA\Response(
-     *         response=409,
-     *         description="Ya has aplicado a esta solicitud"
-     *     )
-     * )
-     */
-    public function apply(Request $request, RequestModel $requestModel)
-    {
-        $this->authorize('apply', $requestModel);
-        $validated = $request->validate([
-            'message' => 'required|string|max:1000'
-        ]);
-
-        $requestModel->applicants()->syncWithoutDetaching([
-            Auth::id() => [
-                'message' => $validated['message']
-            ]
-        ]);
-
-        return response()->json([
-            'message' => 'Has aplicado exitosamente a esta solicitud'
         ]);
     }
 }
