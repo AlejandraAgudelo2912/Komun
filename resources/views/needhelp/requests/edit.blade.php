@@ -14,15 +14,15 @@
                         @method('PUT')
 
                         <div>
-                            <x-input-label for="title" :value="__('Título')" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $requestModel->title)" required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('title')" />
+                            <x-label for="title" :value="__('Título')" />
+                            <x-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $requestModel->title)" required autofocus />
+                            <x-input-error :for="'title'" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="description" :value="__('Descripción')" />
+                            <x-label for="description" :value="__('Descripción')" />
                             <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $requestModel->description) }}</textarea>
-                            <x-input-error class="mt-2" :messages="$errors->get('description')" />
+                            <x-input-error :for="'description'" class="mt-2" />
                         </div>
 
                         <div>
@@ -33,6 +33,7 @@
                                 :selected="$requestModel->category_id"
                                 required
                             />
+                            <x-input-error :for="'category_id'" class="mt-2" />
                         </div>
 
                         <div>
@@ -47,25 +48,41 @@
                                 :selected="$requestModel->priority"
                                 required
                             />
+                            <x-input-error :for="'priority'" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="deadline" :value="__('Fecha Límite')" />
-                            <x-text-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline', $requestModel->deadline->format('Y-m-d'))" required />
-                            <x-input-error class="mt-2" :messages="$errors->get('deadline')" />
+                            <x-komun.select
+                                name="status"
+                                label="Estado"
+                                :options="[
+                                    'pending' => 'Pendiente',
+                                    'in_progress' => 'En progreso',
+                                    'completed' => 'Completada',
+                                    'cancelled' => 'Cancelada'
+                                ]"
+                                :selected="$requestModel->status"
+                                required
+                            />
+                            <x-input-error :for="'status'" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="help_notes" :value="__('Notas Adicionales')" />
+                            <x-label for="deadline" :value="__('Fecha Límite')" />
+                            <x-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline', $requestModel->deadline->format('Y-m-d'))" required />
+                            <x-input-error :for="'deadline'" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <x-label for="help_notes" :value="__('Notas Adicionales')" />
                             <textarea id="help_notes" name="help_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('help_notes', $requestModel->help_notes) }}</textarea>
-                            <x-input-error class="mt-2" :messages="$errors->get('help_notes')" />
+                            <x-input-error :for="'help_notes'" class="mt-2" />
                         </div>
 
-                        <div class="flex items-center gap-4">
-                            <x-primary-button>{{ __('Actualizar Solicitud') }}</x-primary-button>
-                            <a href="{{ route('needhelp.requests.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                {{ __('Cancelar') }}
-                            </a>
+                        <div class="flex items-center justify-end mt-4">
+                            <x-button type="submit" class="bg-primary-600 hover:bg-primary-700">
+                                {{ __('Guardar Cambios') }}
+                            </x-button>
                         </div>
                     </form>
                 </div>

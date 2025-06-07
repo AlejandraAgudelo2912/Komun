@@ -3,9 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', App\Http\Controllers\Admin\DashboardController::class)->name('dashboard');
 
     Route::get('/profiles', App\Http\Controllers\Admin\Profile\IndexController::class)->name('profiles.index');
     Route::get('/profiles/pdf', [App\Http\Controllers\PdfController::class, 'usersList'])->name('profiles.pdf');
@@ -38,6 +36,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.index');
 
+    Route::get('/requests/filter', [App\Http\Controllers\FilterController::class, 'filter'])
+        ->middleware('can:viewAny,App\Models\RequestModel')
+        ->name('requests.filter');
+
     Route::get('/requests/create', App\Http\Controllers\Admin\Request\CreateController::class)
         ->middleware('can:create,App\Models\RequestModel')
         ->name('requests.create');
@@ -58,5 +60,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->middleware('can:delete,requestModel')
         ->name('requests.destroy');
 
+    Route::delete('/reviews/{review}', \App\Http\Controllers\Admin\Review\DestroyController::class)
+        ->name('reviews.destroy');
 
 });

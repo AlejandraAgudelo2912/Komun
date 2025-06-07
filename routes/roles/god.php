@@ -41,6 +41,10 @@ Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(func
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.index');
 
+    Route::get('/requests/filter', [App\Http\Controllers\FilterController::class, 'filter'])
+        ->middleware('can:viewAny,App\Models\RequestModel')
+        ->name('requests.filter');
+
     Route::get('/requests/create', App\Http\Controllers\God\Request\CreateController::class)
         ->middleware('can:create,App\Models\RequestModel')
         ->name('requests.create');
@@ -60,5 +64,8 @@ Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(func
     Route::delete('/requests/{requestModel}', App\Http\Controllers\God\Request\DestroyController::class)
         ->middleware('can:delete,requestModel')
         ->name('requests.destroy');
+
+    Route::delete('/reviews/{review}', \App\Http\Controllers\God\Review\DestroyController::class)
+        ->name('reviews.destroy');
 
 });

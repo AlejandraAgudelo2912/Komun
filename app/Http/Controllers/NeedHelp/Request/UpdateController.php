@@ -9,9 +9,14 @@ use Illuminate\Http\RedirectResponse;
 
 class UpdateController extends Controller
 {
-
     public function __invoke(UpdateRequestRequest $request, RequestModel $requestModel): RedirectResponse
     {
+        // Verificar que el usuario es el creador de la solicitud
+        if ($requestModel->user_id !== auth()->id()) {
+            return redirect()->back()
+                ->with('error', 'No tienes permiso para actualizar esta solicitud.');
+        }
+
         $requestModel->update([
             'title' => $request->title,
             'description' => $request->description,
@@ -19,6 +24,7 @@ class UpdateController extends Controller
             'location' => $request->location,
             'deadline' => $request->deadline,
             'priority' => $request->priority,
+            'status' => $request->status,
             'max_applications' => $request->max_applications,
             'help_notes' => $request->help_notes,
             'is_urgent' => $request->has('is_urgent'),

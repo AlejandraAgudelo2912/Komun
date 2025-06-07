@@ -18,9 +18,9 @@ class Review extends Model
         'comment',
     ];
 
-    public function request()
+    public function requestModel()
     {
-        return $this->belongsTo(RequestModel::class, 'request_models_id');
+        return $this->belongsTo(\App\Models\RequestModel::class, 'request_models_id');
     }
 
     public function user()
@@ -31,6 +31,11 @@ class Review extends Model
     public function assistant()
     {
         return $this->belongsTo(User::class, 'assistant_id');
+    }
+
+    public function request()
+    {
+        return $this->requestModel();
     }
 
     // Añadir índices únicos para evitar reseñas duplicadas

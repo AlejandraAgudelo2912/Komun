@@ -4,9 +4,7 @@ use App\Http\Controllers\AssistantVerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:verificator'])->prefix('verificator')->name('verificator.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('verificator.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', App\Http\Controllers\Verificator\DashboardController::class)->name('dashboard');
 
 
     Route::get('/verifications', [AssistantVerificationController::class, 'index'])->name('verifications.index');
@@ -15,7 +13,14 @@ Route::middleware(['auth', 'role:verificator'])->prefix('verificator')->name('ve
 
     Route::get('/categories', App\Http\Controllers\Verificator\Category\IndexController::class)->name('categories.index');
 
-    Route::get('/requests', App\Http\Controllers\Verificator\Request\IndexController::class)->name('requests.index');
+    Route::get('/requests', App\Http\Controllers\Verificator\Request\IndexController::class)
+        ->middleware('can:viewAny,App\Models\RequestModel')
+        ->name('requests.index');
+
+    Route::get('/requests/filter', [App\Http\Controllers\FilterController::class, 'filter'])
+        ->middleware('can:viewAny,App\Models\RequestModel')
+        ->name('requests.filter');
+
     Route::get('/requests/create', App\Http\Controllers\Verificator\Request\CreateController::class)->name('requests.create');
     Route::post('/requests', App\Http\Controllers\Verificator\Request\StoreController::class)->name('requests.store');
     Route::get('/requests/{request}/edit', App\Http\Controllers\Verificator\Request\EditController::class)->name('requests.edit');

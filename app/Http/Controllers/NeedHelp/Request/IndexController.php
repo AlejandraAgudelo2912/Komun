@@ -15,7 +15,8 @@ class IndexController extends Controller
         $requests = RequestModel::where('user_id', auth()->id())
             ->with(['category', 'applicants'])
             ->latest()
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         $categories = Category::all();
 

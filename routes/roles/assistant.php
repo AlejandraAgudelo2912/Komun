@@ -3,13 +3,15 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:assistant'])->prefix('assistant')->name('assistant.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('assistant.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', App\Http\Controllers\Assistant\DashboardController::class)->name('dashboard');
 
     Route::get('/requests', App\Http\Controllers\Assistant\Request\IndexController::class)
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.index');
+
+    Route::get('/requests/filter', [App\Http\Controllers\FilterController::class, 'filter'])
+        ->middleware('can:viewAny,App\Models\RequestModel')
+        ->name('requests.filter');
 
     Route::get('/requests/{requestModel}', App\Http\Controllers\Assistant\Request\ShowController::class)
         ->middleware('can:view,requestModel')
