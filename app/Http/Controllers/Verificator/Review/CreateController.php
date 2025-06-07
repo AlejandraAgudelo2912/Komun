@@ -16,7 +16,7 @@ class CreateController extends Controller
         }
 
         // Verificar que no existe una reseña previa
-        if ($requestModel->review()->exists()) {
+        if ($requestModel->reviews()->exists()) {
             return redirect()->back()->with('error', 'Esta solicitud ya tiene una calificación.');
         }
 

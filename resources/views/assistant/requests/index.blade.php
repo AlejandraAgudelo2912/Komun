@@ -12,6 +12,57 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <form action="{{ route('assistant.requests.filter') }}" method="GET" class="mb-6 bg-gray-50 p-4 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!-- Búsqueda -->
+                            <div>
+                                <label for="search" class="block text-sm font-medium text-gray-700">Buscar</label>
+                                <input type="text" name="search" id="search" value="{{ request('search') }}" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    placeholder="Buscar en título o descripción">
+                            </div>
+
+                            <!-- Categoría -->
+                            <div>
+                                <label for="category_id" class="block text-sm font-medium text-gray-700">Categoría</label>
+                                <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <option value="">Todas las categorías</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Estado -->
+                            <div>
+                                <label for="status" class="block text-sm font-medium text-gray-700">Estado</label>
+                                <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <option value="">Todos los estados</option>
+                                    <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pendiente</option>
+                                    <option value="in_progress" {{ request('status') === 'in_progress' ? 'selected' : '' }}>En progreso</option>
+                                    <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>Completada</option>
+                                    <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Cancelada</option>
+                                </select>
+                            </div>
+
+                            <!-- Ubicación -->
+                            <div>
+                                <label for="location" class="block text-sm font-medium text-gray-700">Ubicación</label>
+                                <input type="text" name="location" id="location" value="{{ request('location') }}" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    placeholder="Filtrar por ubicación">
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex justify-end">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Filtrar
+                            </button>
+                        </div>
+                    </form>
+
                     @if($requestsModel->isEmpty())
                         <p class="text-gray-500 text-center py-4">No hay solicitudes disponibles en este momento.</p>
                     @else

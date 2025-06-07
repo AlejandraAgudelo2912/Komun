@@ -9,19 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form action="{{ route('assistant.requests.update', $request) }}" method="POST" class="space-y-6">
+                    <form action="{{ route('assistant.requests.update', $requestModel) }}" method="POST" class="space-y-6">
                         @csrf
                         @method('PUT')
 
                         <div>
                             <x-input-label for="title" :value="__('Título')" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $request->title)" required autofocus />
+                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $requestModel->title)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('title')" />
                         </div>
 
                         <div>
                             <x-input-label for="description" :value="__('Descripción')" />
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $request->description) }}</textarea>
+                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $requestModel->description) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
@@ -30,7 +30,7 @@
                                 name="category_id"
                                 label="Categoría"
                                 :options="$categories->pluck('name', 'id')"
-                                :selected="$request->category_id"
+                                :selected="$requestModel->category_id"
                                 required
                             />
                         </div>
@@ -44,7 +44,7 @@
                                     'medium' => 'Media',
                                     'high' => 'Alta'
                                 ]"
-                                :selected="$request->priority"
+                                :selected="$requestModel->priority"
                                 required
                             />
                         </div>
@@ -59,7 +59,7 @@
                                     'completed' => 'Completada',
                                     'cancelled' => 'Cancelada'
                                 ]"
-                                :selected="$request->status"
+                                :selected="$requestModel->status"
                                 required
                             />
                         </div>
@@ -68,14 +68,14 @@
                             <x-komun.date-input
                                 name="deadline"
                                 label="Fecha Límite"
-                                :value="$request->deadline->format('Y-m-d')"
+                                :value="$requestModel->deadline->format('Y-m-d')"
                                 required
                             />
                         </div>
 
                         <div>
                             <x-input-label for="assistance_notes" :value="__('Notas de Asistencia')" />
-                            <textarea id="assistance_notes" name="assistance_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('assistance_notes', $request->assistance_notes) }}</textarea>
+                            <textarea id="assistance_notes" name="assistance_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('assistance_notes', $requestModel->assistance_notes) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('assistance_notes')" />
                         </div>
 

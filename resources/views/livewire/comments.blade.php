@@ -1,7 +1,7 @@
 <div>
     <!-- Botón para abrir el modal -->
     <button wire:click="createComment" class="px-4 py-2 bg-blue-500 text-white rounded">
-        Enviar comentario
+        {{ __('Send comment') }}
     </button>
 
     <!-- Modal -->
@@ -9,7 +9,7 @@
         <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
             <div class="bg-white p-6 rounded shadow-md w-full max-w-md">
                 <h2 class="text-lg font-semibold mb-4">
-                    {{ $editingCommentId ? 'Editar Comentario' : 'Nuevo Comentario' }}
+                    {{ $editingCommentId ? __('Edit Comment') : __('New Comment') }}
                 </h2>
 
                 <form wire:submit.prevent="saveComment">
@@ -17,15 +17,15 @@
                         wire:model.defer="commentBody"
                         class="w-full border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                         rows="4"
-                        placeholder="Escribe tu comentario...">
+                        placeholder="{{ __('Write your comment...') }}">
                     </textarea>
 
                     <div class="mt-4 flex justify-end gap-2">
                         <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">
-                            {{ $editingCommentId ? 'Actualizar' : 'Enviar' }}
+                            {{ $editingCommentId ? __('Update') : __('Send') }}
                         </button>
                         <button type="button" wire:click="closeModal" class="px-4 py-2 bg-gray-300 text-black rounded">
-                            Cancelar
+                            {{ __('Cancel') }}
                         </button>
                     </div>
                 </form>

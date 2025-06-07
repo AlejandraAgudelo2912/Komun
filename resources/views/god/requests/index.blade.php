@@ -16,84 +16,119 @@
                         </a>
                     </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Título
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Estado
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Prioridad
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Categoría
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Usuario
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Fecha Límite
-                                    </th>
-                                    <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        Acciones
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @foreach($requests as $request)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $request->title }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($request->status === 'pending') bg-yellow-100 text-yellow-800
-                                                @elseif($request->status === 'in_progress') bg-blue-100 text-blue-800
-                                                @elseif($request->status === 'completed') bg-green-100 text-green-800
-                                                @elseif($request->status === 'cancelled') bg-red-100 text-red-800
-                                                @endif">
-                                                {{ ucfirst($request->status) }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($request->priority === 'low') bg-green-100 text-green-800
-                                                @elseif($request->priority === 'medium') bg-yellow-100 text-yellow-800
-                                                @elseif($request->priority === 'high') bg-red-100 text-red-800
-                                                @endif">
-                                                {{ ucfirst($request->priority) }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $request->category->name }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $request->user->name }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $request->deadline->format('d/m/Y') }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <form action="{{ route('god.requests.filter') }}" method="GET" class="mb-6 bg-gray-50 p-4 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!-- Búsqueda -->
+                            <div>
+                                <label for="search" class="block text-sm font-medium text-gray-700">Buscar</label>
+                                <input type="text" name="search" id="search" value="{{ request('search') }}" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    placeholder="Buscar en título o descripción">
+                            </div>
+
+                            <!-- Categoría -->
+                            <div>
+                                <label for="category_id" class="block text-sm font-medium text-gray-700">Categoría</label>
+                                <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <option value="">Todas las categorías</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Estado -->
+                            <div>
+                                <label for="status" class="block text-sm font-medium text-gray-700">Estado</label>
+                                <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <option value="">Todos los estados</option>
+                                    <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pendiente</option>
+                                    <option value="in_progress" {{ request('status') === 'in_progress' ? 'selected' : '' }}>En progreso</option>
+                                    <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>Completada</option>
+                                    <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Cancelada</option>
+                                </select>
+                            </div>
+
+                            <!-- Ubicación -->
+                            <div>
+                                <label for="location" class="block text-sm font-medium text-gray-700">Ubicación</label>
+                                <input type="text" name="location" id="location" value="{{ request('location') }}" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    placeholder="Filtrar por ubicación">
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex justify-end">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Filtrar
+                            </button>
+                        </div>
+                    </form>
+
+                    @if($requests->isEmpty())
+                        <p class="text-gray-500 text-center py-4">No hay solicitudes disponibles en este momento.</p>
+                    @else
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            @foreach($requests as $request)
+                                <div class="border rounded-lg p-4 {{ $request->status === 'pending' ? 'bg-yellow-50' : ($request->status === 'in_progress' ? 'bg-green-50' : 'bg-gray-50') }}">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h3 class="text-lg font-semibold">{{ $request->title }}</h3>
+                                        <span class="px-3 py-1 rounded text-sm {{ $request->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ($request->status === 'in_progress' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800') }}">
+                                            {{ ucfirst($request->status) }}
+                                        </span>
+                                    </div>
+                                    
+                                    <p class="text-gray-600 mb-4 line-clamp-2">{{ $request->description }}</p>
+                                    
+                                    <div class="grid grid-cols-2 gap-2 text-sm mb-4">
+                                        <div>
+                                            <p class="text-gray-500">Categoría</p>
+                                            <p class="font-medium">{{ $request->category->name }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Ubicación</p>
+                                            <p class="font-medium">{{ $request->location }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Fecha límite</p>
+                                            <p class="font-medium">{{ $request->deadline->format('d/m/Y') }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Usuario</p>
+                                            <p class="font-medium">{{ $request->user->name }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex justify-between items-center">
+                                        <a href="{{ route('god.requests.show', $request) }}" class="text-blue-500 hover:text-blue-700">
+                                            Ver detalles
+                                        </a>
+                                        @if($request->status === 'pending')
                                             <div class="flex space-x-2">
-                                                <a href="{{ route('god.requests.edit', $request) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                                                <a href="{{ route('god.requests.edit', $request) }}" class="text-gray-500 hover:text-gray-700">
+                                                    Editar
+                                                </a>
                                                 <form action="{{ route('god.requests.destroy', $request) }}" method="POST" class="inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?')">
+                                                    <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?')">
                                                         Eliminar
                                                     </button>
                                                 </form>
                                             </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Paginación -->
+                        <div class="mt-6">
+                            {{ $requests->links() }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

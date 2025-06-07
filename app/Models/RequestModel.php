@@ -66,7 +66,7 @@ class RequestModel extends Model
 
     public function scopeNoApplicants(Builder $query): Builder
     {
-        return $query->whereDoesntHave('appliedRequests');
+        return $query->whereDoesntHave('applicants');
     }
 
     public function scopeSearch(Builder $query, string $search): Builder

@@ -9,19 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form action="{{ route('god.requests.update', $request) }}" method="POST" class="space-y-6">
+                    <form action="{{ route('god.requests.update', $requestModel) }}" method="POST" class="space-y-6">
                         @csrf
                         @method('PUT')
 
                         <div>
                             <x-input-label for="title" :value="__('Título')" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $request->title)" required autofocus />
+                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $requestModel->title)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('title')" />
                         </div>
 
                         <div>
                             <x-input-label for="description" :value="__('Descripción')" />
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $request->description) }}</textarea>
+                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $requestModel->description) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
@@ -30,7 +30,7 @@
                             <select id="category_id" name="category_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                 <option value="">Seleccione una categoría</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ (old('category_id', $request->category_id) == $category->id) ? 'selected' : '' }}>
+                                    <option value="{{ $category->id }}" {{ (old('category_id', $requestModel->category_id) == $category->id) ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
@@ -41,9 +41,9 @@
                         <div>
                             <x-input-label for="priority" :value="__('Prioridad')" />
                             <select id="priority" name="priority" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="low" {{ old('priority', $request->priority) == 'low' ? 'selected' : '' }}>Baja</option>
-                                <option value="medium" {{ old('priority', $request->priority) == 'medium' ? 'selected' : '' }}>Media</option>
-                                <option value="high" {{ old('priority', $request->priority) == 'high' ? 'selected' : '' }}>Alta</option>
+                                <option value="low" {{ old('priority', $requestModel->priority) == 'low' ? 'selected' : '' }}>Baja</option>
+                                <option value="medium" {{ old('priority', $requestModel->priority) == 'medium' ? 'selected' : '' }}>Media</option>
+                                <option value="high" {{ old('priority', $requestModel->priority) == 'high' ? 'selected' : '' }}>Alta</option>
                             </select>
                             <x-input-error class="mt-2" :messages="$errors->get('priority')" />
                         </div>
@@ -51,17 +51,17 @@
                         <div>
                             <x-input-label for="status" :value="__('Estado')" />
                             <select id="status" name="status" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="pending" {{ old('status', $request->status) == 'pending' ? 'selected' : '' }}>Pendiente</option>
-                                <option value="in_progress" {{ old('status', $request->status) == 'in_progress' ? 'selected' : '' }}>En Progreso</option>
-                                <option value="completed" {{ old('status', $request->status) == 'completed' ? 'selected' : '' }}>Completada</option>
-                                <option value="cancelled" {{ old('status', $request->status) == 'cancelled' ? 'selected' : '' }}>Cancelada</option>
+                                <option value="pending" {{ old('status', $requestModel->status) == 'pending' ? 'selected' : '' }}>Pendiente</option>
+                                <option value="in_progress" {{ old('status', $requestModel->status) == 'in_progress' ? 'selected' : '' }}>En Progreso</option>
+                                <option value="completed" {{ old('status', $requestModel->status) == 'completed' ? 'selected' : '' }}>Completada</option>
+                                <option value="cancelled" {{ old('status', $requestModel->status) == 'cancelled' ? 'selected' : '' }}>Cancelada</option>
                             </select>
                             <x-input-error class="mt-2" :messages="$errors->get('status')" />
                         </div>
 
                         <div>
                             <x-input-label for="deadline" :value="__('Fecha Límite')" />
-                            <x-text-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline', $request->deadline->format('Y-m-d'))" required />
+                            <x-text-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline', $requestModel->deadline->format('Y-m-d'))" required />
                             <x-input-error class="mt-2" :messages="$errors->get('deadline')" />
                         </div>
 
@@ -70,7 +70,7 @@
                             <select id="user_id" name="user_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                 <option value="">Seleccione un usuario</option>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ (old('user_id', $request->user_id) == $user->id) ? 'selected' : '' }}>
+                                    <option value="{{ $user->id }}" {{ (old('user_id', $requestModel->user_id) == $user->id) ? 'selected' : '' }}>
                                         {{ $user->name }}
                                     </option>
                                 @endforeach
