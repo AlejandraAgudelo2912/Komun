@@ -49,7 +49,6 @@ class PdfController extends Controller
 
             'activity_stats' => [
                 'join_date' => $user->created_at->format('d/m/Y'),
-                'last_login' => $user->last_login_at?->format('d/m/Y H:i') ?? 'N/A',
             ]
         ];
 
@@ -83,32 +82,7 @@ class PdfController extends Controller
 
     public function usersList(Request $request, $role = null)
     {
-        $users = User::with(['roles', 'assistant', 'assistant.verification'])
-            ->when($role === 'god', function ($query) {
-                $query->with('permissions');
-            })
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $search = $request->search;
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%");
-                });
-            })
-            ->when($request->filled('role'), function ($query) use ($request) {
-                $query->role($request->role);
-            })
-            ->when($request->filled('status'), function ($query) use ($request) {
-                if ($request->status === 'verified') {
-                    $query->whereHas('assistant', function ($q) {
-                        $q->where('is_verified', true);
-                    });
-                } elseif ($request->status === 'unverified') {
-                    $query->whereHas('assistant', function ($q) {
-                        $q->where('is_verified', false);
-                    });
-                }
-            })
-            ->get();
+        $users = User::filter($request, $role)->get();
 
         $pdf = PDF::loadView('pdf.users-list', [
             'users' => $users,
@@ -141,28 +115,5 @@ class PdfController extends Controller
         ]);
 
         return $pdf->download('usuarios-' . now()->format('Y-m-d') . '.pdf');
-    }
-
-    private function calculateAverageResponseTime($user)
-    {
-        $requests = $user->requests()
-            ->whereNotNull('first_response_at')
-            ->get();
-
-        if ($requests->isEmpty()) {
-            return 'N/A';
-        }
-
-        $totalMinutes = $requests->sum(function ($request) {
-            return $request->created_at->diffInMinutes($request->first_response_at);
-        });
-
-        $averageMinutes = $totalMinutes / $requests->count();
-
-        if ($averageMinutes < 60) {
-            return round($averageMinutes) . ' minutos';
-        } else {
-            return round($averageMinutes / 60, 1) . ' horas';
-        }
     }
 }
