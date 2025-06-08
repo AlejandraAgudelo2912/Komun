@@ -32,6 +32,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->middleware('can:delete,category')
         ->name('categories.destroy');
 
+    Route::get('/categories/{category}', App\Http\Controllers\Admin\Category\ShowController::class)
+        ->middleware('can:view,category')
+        ->name('categories.show');
+
     Route::get('/requests', App\Http\Controllers\Admin\Request\IndexController::class)
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.index');

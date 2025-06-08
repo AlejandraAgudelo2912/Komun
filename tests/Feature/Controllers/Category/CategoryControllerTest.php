@@ -174,4 +174,85 @@ it('should not allow needHelp to delete category', function () {
     // assert
     $response->assertStatus(403);
     $this->assertDatabaseHas('categories', ['id' => $category->id]);
-}); 
+});
+
+it('muestra la vista de crear categoría', function () {
+    // Llamamos al controlador invocable directamente
+    $response = app()->call(\App\Http\Controllers\Admin\Category\CreateController::class);
+
+    // Verificamos que devuelve la vista correcta
+    expect($response)->toBeInstanceOf(\Illuminate\View\View::class);
+    expect($response->name())->toBe('admin.categories.create');
+});
+
+it('la ruta admin.categories.create responde con éxito', function () {
+    // Creamos un usuario con el rol de admin
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $this->actingAs($user);
+    $response = $this->get(route('admin.categories.create'));
+
+    $response->assertStatus(200);
+    $response->assertViewIs('admin.categories.create');
+});
+
+it('muestra la vista de editar categoría con el modelo correcto', function () {
+    // Creamos una categoría de prueba
+    $category = Category::factory()->create();
+
+    // Invocamos el controlador directamente con el modelo
+    $response = app()->call(\App\Http\Controllers\Admin\Category\EditController::class, ['category' => $category]);
+
+    // Comprobamos que devuelve una vista
+    expect($response)->toBeInstanceOf(\Illuminate\View\View::class);
+    // Comprobamos que la vista es la correcta
+    expect($response->name())->toBe('admin.categories.edit');
+    // Y que el objeto category está pasado a la vista
+    expect($response->getData())->toHaveKey('category');
+    expect($response->getData()['category']->id)->toBe($category->id);
+});
+
+it('la ruta admin.categories.edit responde con éxito y carga la vista con categoría', function () {
+    $category = Category::factory()->create();
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $this->actingAs($user);
+    $response = $this->get(route('admin.categories.edit', ['category' => $category->id]));
+
+    $response->assertStatus(200);
+    $response->assertViewIs('admin.categories.edit');
+    $response->assertViewHas('category', fn($cat) => $cat->id === $category->id);
+});
+
+
+it('muestra la vista de mostrar categoría con el modelo correcto', function () {
+    $category = Category::factory()->create();
+
+    $response = app()->call(\App\Http\Controllers\Admin\Category\ShowController::class, [
+        'category' => $category
+    ]);
+
+    expect($response)->toBeInstanceOf(\Illuminate\View\View::class);
+    expect($response->name())->toBe('admin.categories.show');
+    expect($response->getData())->toHaveKey('category');
+    expect($response->getData()['category']->is($category))->toBeTrue();
+});
+
+it('la ruta admin.categories.show responde con éxito y muestra la categoría', function () {
+    $category = Category::factory()->create();
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $this->actingAs($user);
+
+    // Suponiendo esta ruta:
+    // Route::get('admin/categories/{category}', ShowController::class)->name('admin.categories.show');
+
+    $response = $this->get(route('admin.categories.show', $category));
+
+    $response->assertStatus(200);
+    $response->assertViewIs('admin.categories.show');
+    $response->assertViewHas('category', function ($cat) use ($category) {
+        return $cat->is($category);
+    });
+});
+
