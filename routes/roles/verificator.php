@@ -29,7 +29,6 @@ Route::middleware(['auth', 'role:verificator'])->prefix('verificator')->name('ve
     Route::put('/requests/{request}', App\Http\Controllers\Verificator\Request\UpdateController::class)->name('requests.update');
     Route::delete('/requests/{request}', App\Http\Controllers\Verificator\Request\DestroyController::class)->name('requests.destroy');
 
-    // Rutas para reseñas
     Route::get('/requests/{requestModel}/review', \App\Http\Controllers\Verificator\Review\CreateController::class)
         ->name('reviews.create');
     Route::post('/requests/{requestModel}/review', \App\Http\Controllers\Verificator\Review\StoreController::class)

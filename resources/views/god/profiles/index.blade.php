@@ -1,14 +1,14 @@
 <x-app-layout>
-    
+
 <div class="container mx-auto px-4 py-8">
     <div class="bg-white rounded-lg shadow-lg p-6">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Gestión de Perfiles</h1>
             <div class="flex space-x-3">
-                <a href="{{ route('god.profiles.pdf', request()->query()) }}" 
+                <a href="{{ route('god.profiles.pdf', request()->query()) }}"
                    class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                     <i class="fas fa-file-pdf mr-2"></i>
-                    Descargar PDF
+                    {{__('PDF Export')}}
                 </a>
             </div>
         </div>
@@ -118,11 +118,11 @@
                                     @endforeach
                                 </div>
                             </td>
-                        
+
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($user->assistant)
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                        {{ $user->assistant->status === 'active' ? 'bg-green-100 text-green-800' : 
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        {{ $user->assistant->status === 'active' ? 'bg-green-100 text-green-800' :
                                            ($user->assistant->status === 'inactive' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
                                         {{ ucfirst($user->assistant->status) }}
                                     </span>
@@ -134,8 +134,8 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($user->assistant && $user->assistant->verification)
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                        {{ $user->assistant->verification->status === 'approved' ? 'bg-green-100 text-green-800' : 
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        {{ $user->assistant->verification->status === 'approved' ? 'bg-green-100 text-green-800' :
                                            ($user->assistant->verification->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                                         {{ ucfirst($user->assistant->verification->status) }}
                                     </span>
@@ -146,19 +146,27 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{{ route('god.profiles.edit', $user) }}" 
+                                <a href="{{ route('god.profiles.edit', $user) }}"
                                    class="text-indigo-600 hover:text-indigo-900 mr-3">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
                                 <form action="{{ route('god.profiles.delete', $user) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
+                                    <button type="submit"
                                             class="text-red-600 hover:text-red-900"
                                             onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
                                         <i class="fas fa-trash"></i> Eliminar
                                     </button>
                                 </form>
+                            </td>
+
+                            <!--Descargar pdf -->
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="{{ route('user.stats.pdf', $user) }}"
+                                   class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                    <i class="fas fa-download"></i> Descargar PDF
+                                </a>
                             </td>
                         </tr>
                     @empty
@@ -183,7 +191,7 @@
             <form id="editForm" method="POST" class="space-y-4">
                 @csrf
                 @method('PUT')
-                
+
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
                     <input type="text" name="name" id="name" required
@@ -237,7 +245,7 @@
 function openEditModal(userId) {
     const modal = document.getElementById('editModal');
     const form = document.getElementById('editForm');
-    
+
     // Obtener datos del usuario
     fetch(`/god/profiles/${userId}/edit`)
         .then(response => response.json())
@@ -245,19 +253,19 @@ function openEditModal(userId) {
             form.action = `/god/profiles/${userId}`;
             form.querySelector('[name="name"]').value = data.name;
             form.querySelector('[name="email"]').value = data.email;
-            
+
             // Marcar roles
             data.roles.forEach(role => {
                 const checkbox = form.querySelector(`input[name="roles[]"][value="${role}"]`);
                 if (checkbox) checkbox.checked = true;
             });
-            
+
             // Marcar permisos
             data.permissions.forEach(permission => {
                 const checkbox = form.querySelector(`input[name="permissions[]"][value="${permission}"]`);
                 if (checkbox) checkbox.checked = true;
             });
-            
+
             modal.classList.remove('hidden');
         });
 }
