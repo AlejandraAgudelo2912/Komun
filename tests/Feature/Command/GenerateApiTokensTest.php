@@ -21,9 +21,9 @@ it('genera tokens para todos los roles y guarda el archivo', function () {
 
     $output = Artisan::output();
 
-    expect($output)->toContain('Token generado para needHelp:')
-        ->toContain('Tokens guardados en:')
-        ->toContain('Puedes usar estos tokens');
+    expect($output)->toContain('Generating token for needHelp:')
+        ->toContain('Save tokens in:')
+        ->toContain('You can use these tokens to access the API.');
 
     // ✅ Aquí usamos assertFileExists directamente
     $jsonPath = storage_path('api-tokens.json');

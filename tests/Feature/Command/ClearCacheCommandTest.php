@@ -6,8 +6,8 @@ it('shows the correct messages when clearing cache', function () {
 
     // assert
     expect(Artisan::output())
-        ->toContain('Limpiando cachés...')
-        ->toContain('✅ Cachés limpiadas correctamente.');
+        ->toContain('Cleaning caches...')
+        ->toContain('Caches cleared!');
 });
 
 it('clears all caches and shows success message', function () {
@@ -16,6 +16,6 @@ it('clears all caches and shows success message', function () {
 
     // assert
     expect(Artisan::output())
-        ->toContain('Limpiando cachés...')
-        ->toContain('✅ Cachés limpiadas correctamente.');
+        ->toContain('Cleaning caches...')
+        ->toContain('Caches cleared!');
 });

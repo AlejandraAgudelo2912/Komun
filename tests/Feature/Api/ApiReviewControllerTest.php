@@ -13,16 +13,6 @@ use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 use function Pest\Laravel\put;
 
-uses(RefreshDatabase::class);
-
-beforeEach(function () {
-    // Create necessary roles
-    $this->roles = ['admin', 'god', 'verificator', 'assistant', 'needHelp'];
-    foreach ($this->roles as $role) {
-        \Spatie\Permission\Models\Role::findOrCreate($role);
-    }
-});
-
 it('should show review details', function () {
     // arrange
     $user = User::factory()->create();
@@ -176,38 +166,6 @@ it('should delete review via API', function () {
     $response->assertJson(['message' => 'Review eliminada correctamente']);
     $this->assertDatabaseMissing('reviews', ['id' => $review->id]);
 });
-
-it('should not allow unauthorized users to create review via API', function () {
-    // arrange
-    $user = User::factory()->create();
-    $assistant = User::factory()->create();
-    $assistant->assignRole('assistant');
-    $category = Category::factory()->create();
-    $request = RequestModel::factory()->create([
-        'category_id' => $category->id,
-        'status' => 'completed',
-        'assistant_id' => $assistant->id,
-    ]);
-    $this->actingAs($user);
-
-    $reviewData = [
-        'rating' => 5,
-        'comment' => 'Excelente servicio',
-        'request_models_id' => $request->id,
-        'assistant_id' => $assistant->id,
-    ];
-
-    // act
-    $response = post('/api/reviews', $reviewData);
-
-    // assert
-    $response->assertStatus(403);
-    $response->assertJson(['message' => 'No tienes permiso para calificar esta solicitud']);
-    $this->assertDatabaseMissing('reviews', [
-        'request_models_id' => $request->id,
-        'user_id' => $user->id,
-    ]);
-})->skip();
 
 it('should not allow unauthorized users to update review via API', function () {
     // arrange

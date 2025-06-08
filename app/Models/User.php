@@ -176,7 +176,6 @@ class User extends Authenticatable
     public function followedCategories()
     {
         return $this->belongsToMany(Category::class)
-            ->withPivot('notifications_enabled')
             ->withTimestamps();
     }
 }

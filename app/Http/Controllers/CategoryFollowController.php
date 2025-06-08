@@ -17,7 +17,7 @@ class CategoryFollowController extends Controller
         }
 
         // guardar en la tabla pivote
-        $user->followedCategories()->attach($category->id, ['notifications_enabled' => true]);
+        $user->followedCategories()->attach($category->id);
 
         return back()->with('success', 'Ahora sigues la categoría '.$category->name);
     }
@@ -39,7 +39,6 @@ class CategoryFollowController extends Controller
     {
         $user = auth()->user();
         $categories = $user->followedCategories()
-            ->withPivot('notifications_enabled')
             ->get();
 
         return view('categories.followed', [

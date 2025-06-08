@@ -111,7 +111,7 @@ it('shows messages during the process', function () {
 
     // assert
     expect(Artisan::output())
-        ->toContain('Exportando tablas a JSON')
-        ->toContain('Exportando tabla: logs')
-        ->toContain('Exportación completada');
+        ->toContain('Exporting tables...')
+        ->toContain('Exporting table: logs')
+        ->toContain('Tables exported to');
 });
