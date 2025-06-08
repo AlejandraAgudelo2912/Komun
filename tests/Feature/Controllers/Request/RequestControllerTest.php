@@ -6,6 +6,7 @@ use App\Models\RequestModel;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 use function Pest\Laravel\{get, post, put, delete};
 
 uses(RefreshDatabase::class);
@@ -183,3 +184,41 @@ it('should not allow other users to delete request', function () {
     $response->assertStatus(403);
     $this->assertDatabaseHas('request_models', ['id' => $request->id]);
 });
+
+it('permite acceder a la vista de crear solicitud', function () {
+    // Crear usuario y asignarle rol 'admin'
+    $admin = User::factory()->create();
+    Role::firstOrCreate(['name' => 'admin']);
+    $admin->assignRole('admin');
+
+    // Autenticar como admin
+    $this->actingAs($admin);
+
+    // Hacer la petición
+    $response = $this->get(route('admin.requests.create'));
+
+    // Verificar que se accede a la vista correctamente
+    $response->assertStatus(200);
+    $response->assertViewIs('admin.requests.create');
+});
+
+it('allows a admin to delete a request', function () {
+    // Arrange
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    $this->actingAs($admin);
+    $category = Category::factory()->create();
+    $request = RequestModel::factory()->create([
+        'category_id' => $category->id,
+        'user_id' => $admin->id
+    ]);
+
+    // Act
+    $response = delete(route('admin.requests.destroy', $request));
+
+    // Assert
+    $response->assertRedirect(route('admin.requests.index'));
+    $this->assertDatabaseMissing('request_models', ['id' => $request->id]);
+
+})->skip();
+

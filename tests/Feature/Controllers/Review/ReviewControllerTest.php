@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\RequestModel;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 use function Pest\Laravel\{get, post, put, delete};
 
 uses(RefreshDatabase::class);
@@ -384,4 +385,4 @@ it('should not allow other users to view edit form for review', function () {
     // assert
     $response->assertRedirect();
     $response->assertSessionHas('error');
-}); 
+});
