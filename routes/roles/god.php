@@ -37,6 +37,10 @@ Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(func
         ->middleware('can:delete,category')
         ->name('categories.destroy');
 
+    Route::get('/categories/{category}', App\Http\Controllers\God\Category\ShowController::class)
+        ->middleware('can:view,category')
+        ->name('categories.show');
+
     Route::get('/requests', App\Http\Controllers\God\Request\IndexController::class)
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.index');

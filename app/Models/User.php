@@ -141,4 +141,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(Assistant::class);
     }
+
+    public function followedCategories()
+    {
+        return $this->belongsToMany(Category::class)
+                    ->withPivot('notifications_enabled')
+                    ->withTimestamps();
+    }
 }

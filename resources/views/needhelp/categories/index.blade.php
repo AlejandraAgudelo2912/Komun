@@ -14,16 +14,16 @@
                             <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-300">
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="text-lg font-semibold text-gray-800">{{ $category->name }}</h3>
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-full 
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full
                                         @if($category->is_active) bg-green-100 text-green-800
                                         @else bg-red-100 text-red-800
                                         @endif">
                                         {{ $category->is_active ? 'Activa' : 'Inactiva' }}
                                     </span>
                                 </div>
-                                
+
                                 <p class="text-gray-600 mb-4">{{ Str::limit($category->description, 150) }}</p>
-                                
+
                                 <div class="flex items-center justify-between text-sm text-gray-500">
                                     <div class="flex items-center">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,9 +40,16 @@
                                 </div>
 
                                 <div class="mt-4">
-                                    <a href="{{ route('needhelp.requests.create', ['category' => $category->id]) }}" 
+                                    <a href="{{ route('needhelp.requests.create', ['category' => $category->id]) }}"
                                        class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                         Crear Solicitud
+                                    </a>
+                                </div>
+
+                                <div class="mt-2">
+                                    <a href="{{ route('needhelp.categories.show', $category) }}"
+                                       class="text-blue-600 hover:text-blue-800">
+                                        Ver Detalles
                                     </a>
                                 </div>
                             </div>
@@ -62,4 +69,4 @@
             </div>
         </div>
     </div>
-</x-app-layout> 
+</x-app-layout>

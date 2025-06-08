@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\RequestModel;
+use App\Observers\RequestModelObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \App\Models\User::observe(\App\Observers\UserObserver::class);
+        RequestModel::observe(RequestModelObserver::class);
     }
 }

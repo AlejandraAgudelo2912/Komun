@@ -29,6 +29,10 @@ Route::middleware(['auth', 'role:assistant'])->prefix('assistant')->name('assist
         ->middleware('can:viewAny,App\Models\Category')
         ->name('categories.index');
 
+    Route::get('/categories/{category}', App\Http\Controllers\Assistant\Category\ShowController::class)
+        ->middleware('can:view,category')
+        ->name('categories.show');
+
     Route::get('/requests/create', App\Http\Controllers\Assistant\Request\CreateController::class)->name('requests.create');
     Route::post('/requests', App\Http\Controllers\Assistant\Request\StoreController::class)->name('requests.store');
     Route::get('/requests/{requestModel}/edit', App\Http\Controllers\Assistant\Request\EditController::class)->name('requests.edit');

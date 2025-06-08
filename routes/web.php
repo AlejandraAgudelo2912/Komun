@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\CategoryFollowController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,6 +37,10 @@ Route::middleware([
 
     Route::get('/user/{user}/stats', [PdfController::class, 'userStats'])
         ->name('user.stats.pdf');
+
+    Route::post('/categories/{category}/follow', [CategoryFollowController::class, 'follow'])->name('categories.follow');
+    Route::delete('/categories/{category}/follow', [CategoryFollowController::class, 'unfollow'])->name('categories.unfollow');
+    Route::get('/categories/followed', [CategoryFollowController::class, 'followedCategories'])->name('categories.followed');
 });
 
 require __DIR__.'/roles/admin.php';

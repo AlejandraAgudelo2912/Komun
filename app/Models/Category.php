@@ -40,4 +40,11 @@ class Category extends Model
     {
         return $this->hasMany(RequestModel::class);
     }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class)
+                    ->withPivot('notifications_enabled')
+                    ->withTimestamps();
+    }
 }

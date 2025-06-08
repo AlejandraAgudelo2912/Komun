@@ -43,23 +43,18 @@ class FilterController extends Controller
             $query->noApplicants();
         }
 
-        // Filtrar por usuario según el rol
         if (auth()->user()->hasRole('needHelp')) {
             $query->where('user_id', auth()->id());
         } elseif (auth()->user()->hasRole('assistant')) {
-            // Para asistentes, mostrar solo solicitudes pendientes
             $query->where('status', 'pending');
         }
 
-        // Obtener las solicitudes paginadas
         $requests = $query->latest()
             ->paginate(10)
             ->withQueryString();
 
-        // Obtener todas las categorías para el filtro
         $categories = Category::all();
 
-        // Determinar la vista a usar según el rol
         $view = match(auth()->user()->getRoleNames()->first()) {
             'needHelp' => 'needhelp.requests.index',
             'assistant' => 'assistant.requests.index',

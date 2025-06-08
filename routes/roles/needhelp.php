@@ -7,6 +7,10 @@ Route::middleware(['auth', 'role:needHelp'])->prefix('needhelp')->name('needhelp
 
     Route::get('/categories', App\Http\Controllers\NeedHelp\Category\IndexController::class)->name('categories.index');
 
+    Route::get('/categories/{category}', App\Http\Controllers\NeedHelp\Category\ShowController::class)
+        ->name('categories.show')
+        ->middleware('can:view,category');
+
     Route::get('/requests', App\Http\Controllers\NeedHelp\Request\IndexController::class)
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.index');

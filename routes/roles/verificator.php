@@ -12,6 +12,9 @@ Route::middleware(['auth', 'role:verificator'])->prefix('verificator')->name('ve
     Route::post('/verifications/{id}/reject', [AssistantVerificationController::class, 'reject'])->name('verifications.reject');
 
     Route::get('/categories', App\Http\Controllers\Verificator\Category\IndexController::class)->name('categories.index');
+    Route::get('/categories/{category}', App\Http\Controllers\Verificator\Category\ShowController::class)
+        ->middleware('can:view,category')
+        ->name('categories.show');
 
     Route::get('/requests', App\Http\Controllers\Verificator\Request\IndexController::class)
         ->middleware('can:viewAny,App\Models\RequestModel')
