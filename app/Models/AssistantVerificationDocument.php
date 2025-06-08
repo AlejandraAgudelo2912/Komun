@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class AssistantVerificationDocument extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'assistant_id',
         'dni_front_path',
@@ -19,5 +21,5 @@ class AssistantVerificationDocument extends Model
     {
         return $this->belongsTo(Assistant::class);
     }
-    
+
 }

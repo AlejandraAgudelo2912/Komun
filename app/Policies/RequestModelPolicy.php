@@ -28,7 +28,6 @@ class RequestModelPolicy
     public function update(User $user, RequestModel $requestModel): bool
     {
         if ( $user->id == $requestModel->user_id) {
-            \Log::info('Usuario es propietario de la solicitud');
             return true;
         }
 
