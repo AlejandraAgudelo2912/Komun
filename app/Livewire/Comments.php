@@ -46,7 +46,7 @@ class Comments extends Component
             $this->commentBody = $comment->body;
             $this->showModal = true;
         } else {
-            session()->flash('error', 'Comentario no encontrado.');
+            session()->flash('error', 'Comment not found.');
         }
     }
 
@@ -68,7 +68,7 @@ class Comments extends Component
             'body' => $this->commentBody,
         ]);
 
-        session()->flash('success', 'Comentario creado correctamente.');
+        session()->flash('success', 'Comment created successfully.');
 
         $this->afterSave();
     }
@@ -79,9 +79,9 @@ class Comments extends Component
 
         if ($comment) {
             $comment->update(['body' => $this->commentBody]);
-            session()->flash('success', 'Comentario actualizado correctamente.');
+            session()->flash('success', 'Comment updated successfully.');
         } else {
-            session()->flash('error', 'Comentario no encontrado.');
+            session()->flash('error', 'Comment not found.');
         }
 
         $this->afterSave();
@@ -93,10 +93,10 @@ class Comments extends Component
 
         if ($comment) {
             $comment->delete();
-            session()->flash('success', 'Comentario eliminado correctamente.');
+            session()->flash('success', 'Comment deleted successfully.');
             $this->loadComments();
         } else {
-            session()->flash('error', 'Comentario no encontrado.');
+            session()->flash('error', 'Comment not found.');
         }
     }
 

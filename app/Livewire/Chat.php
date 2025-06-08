@@ -24,41 +24,27 @@ class Chat extends Component
     ];
 
     protected $messages = [
-        'message.required' => 'El mensaje no puede estar vacío',
-        'message.min' => 'El mensaje debe tener al menos 1 carácter',
-        'message.max' => 'El mensaje no puede tener más de 1000 caracteres',
-        'editingMessageText.required' => 'El mensaje no puede estar vacío',
-        'editingMessageText.min' => 'El mensaje debe tener al menos 1 carácter',
-        'editingMessageText.max' => 'El mensaje no puede tener más de 1000 caracteres',
+        'message.required' => 'The message cannot be empty',
+        'message.min' => 'The message must have at least 1 character',
+        'message.max' => 'The message cannot have more than 1000 characters',
+        'editingMessageText.required' => 'The message cannot be empty',
+        'editingMessageText.min' => 'The message must have at least 1 character',
+        'editingMessageText.max' => 'The message cannot have more than 1000 characters',
     ];
 
     public function mount($receiver, $requestModel = null)
     {
-        Log::info('Chat mount data:', [
-            'receiver' => $receiver,
-            'receiver_id' => $receiver->id ?? 'null',
-            'requestModel' => $requestModel,
-            'requestModel_id' => $requestModel->id ?? 'null',
-        ]);
-
         $this->receiver = $receiver;
         $this->requestModel = $requestModel;
     }
 
     public function render()
     {
-        $messages = Message::where(function ($query) {
-            $query->where('user_id', auth()->id())
-                ->where('receiver_id', $this->receiver->id);
-        })->orWhere(function ($query) {
-            $query->where('user_id', $this->receiver->id)
-                ->where('receiver_id', auth()->id());
-        })
-            ->when($this->requestModel, function ($query) {
-                $query->where('request_model_id', $this->requestModel->id);
-            })
-            ->orderBy('created_at')
-            ->get();
+        $userId = auth()->id();
+        $receiverId = $this->receiver->id;
+        $requestModelId = $this->requestModel ? $this->requestModel->id : null;
+
+        $messages = Message::BetweenUsersAndRequest($userId, $receiverId, $requestModelId)->get();
 
         return view('livewire.chat', [
             'messages' => $messages,
@@ -72,46 +58,29 @@ class Chat extends Component
 
     public function sendMessage()
     {
-        try {
-            Log::info('Iniciando envío de mensaje', [
-                'auth_check' => auth()->check(),
-                'auth_id' => auth()->id(),
-                'receiver_exists' => isset($this->receiver),
-                'receiver_id' => $this->receiver->id ?? 'null',
-                'request_model_exists' => isset($this->requestModel),
-                'request_model_id' => $this->requestModel?->id ?? 'null',
-                'message_content' => $this->message,
-                'message_length' => strlen($this->message ?? ''),
-            ]);
+        $this->message = trim($this->message);
 
-            // Limpiar el mensaje antes de validar
-            $this->message = trim($this->message);
+        if (empty($this->message)) {
+            session()->flash('error', 'The message cannot be empty.');
 
-            if (empty($this->message)) {
-                session()->flash('error', 'El mensaje no puede estar vacío');
-
-                return;
-            }
-
-            // Validar después de limpiar
-            $this->validate([
-                'message' => 'required|string|min:1|max:1000',
-            ]);
-
-            $message = Message::create([
-                'user_id' => auth()->id(),
-                'receiver_id' => $this->receiver->id,
-                'request_model_id' => $this->requestModel?->id,
-                'message' => $this->message,
-            ]);
-
-            $this->reset('message');
-            $this->dispatch('message-sent');
-            $this->dispatch('messageSent');
-
-        } catch (\Exception $e) {
-            session()->flash('error', 'Error al enviar el mensaje: '.$e->getMessage());
+            return;
         }
+
+        $this->validate([
+            'message' => 'required|string|min:1|max:1000',
+        ]);
+
+        $message = Message::create([
+            'user_id' => auth()->id(),
+            'receiver_id' => $this->receiver->id,
+            'request_model_id' => $this->requestModel?->id,
+            'message' => $this->message,
+        ]);
+
+        $this->reset('message');
+        $this->dispatch('message-sent');
+        $this->dispatch('messageSent');
+
     }
 
     public function editMessage($messageId)

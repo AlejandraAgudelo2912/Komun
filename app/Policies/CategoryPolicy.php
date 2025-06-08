@@ -38,14 +38,4 @@ class CategoryPolicy
 
         return $user->hasRole(['admin', 'god']);
     }
-
-    public function restore(User $user, Category $category): bool
-    {
-        return $user->hasRole(['admin', 'god']);
-    }
-
-    public function forceDelete(User $user, Category $category): bool
-    {
-        return $user->hasRole('god');
-    }
 }

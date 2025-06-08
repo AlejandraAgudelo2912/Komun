@@ -11,20 +11,20 @@
                 <div class="max-w-[70%] rounded-lg px-4 py-2 {{ $message->user_id === auth()->id() ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800' }}">
                     @if($editingMessageId === $message->id)
                         <form wire:submit.prevent="updateMessage" class="space-y-2">
-                            <textarea 
+                            <textarea
                                 wire:model="editingMessageText"
                                 class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 text-gray-900"
                                 rows="2"
                             ></textarea>
                             <div class="flex justify-end space-x-2">
-                                <button type="button" 
+                                <button type="button"
                                         wire:click="cancelEdit"
                                         class="text-sm px-2 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">
-                                    Cancelar
+                                    {{__('Cancel') }}
                                 </button>
                                 <button type="submit"
                                         class="text-sm px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">
-                                    Guardar
+                                    {{__('Update') }}
                                 </button>
                             </div>
                         </form>
@@ -38,7 +38,7 @@
                                 <div class="text-xs mt-1 opacity-75 flex items-center space-x-2">
                                     <span>{{ $message->created_at->format('H:i') }}</span>
                                     @if($message->edited_at)
-                                        <span class="italic">(editado)</span>
+                                        <span class="italic">({{__('Edited')}})</span>
                                     @endif
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                                     <button wire:click="deleteMessage({{ $message->id }})"
                                             onclick="return confirm('¿Estás seguro de que quieres eliminar este mensaje?')"
                                             class="text-xs px-2 py-1 rounded bg-red-600 text-white hover:bg-red-700">
-                                        Eliminar
+                                        {{__('Delete') }}
                                     </button>
                                 </div>
                             @endif
@@ -64,37 +64,26 @@
 
     <form wire:submit.prevent="sendMessage" class="p-4 border-t">
         <div class="flex space-x-2">
-            <input type="text" 
-                   wire:model.live="message" 
+            <input type="text"
+                   wire:model.live="message"
                    wire:keydown.enter.prevent="sendMessage"
-                   placeholder="Escribe tu mensaje..." 
+                   placeholder="Escribe tu mensaje..."
                    class="flex-1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
                    autocomplete="off">
-            <button type="submit" 
+            <button type="submit"
                     wire:loading.attr="disabled"
                     class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                <span wire:loading.remove>Enviar</span>
-                <span wire:loading>Enviando...</span>
+                <span wire:loading.remove>{{ __('Send') }}</span>
+                <span wire:loading>{{ __('Sending...') }}</span>
             </button>
         </div>
-        @error('message') 
+        @error('message')
             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
         @enderror
         <div wire:loading wire:target="sendMessage" class="text-sm text-gray-500 mt-1">
-            Enviando mensaje...
+            {{__('Sending message...')}}
         </div>
     </form>
 </div>
 
-@push('scripts')
-<script>
-    document.addEventListener('livewire:initialized', () => {
-        const chatMessages = document.getElementById('chat-messages');
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-
-        Livewire.on('message-sent', () => {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
-    });
-</script>
-@endpush
+<script src="{{ asset('js/chat.js') }}"></script>

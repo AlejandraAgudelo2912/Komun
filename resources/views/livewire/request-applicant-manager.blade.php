@@ -1,10 +1,10 @@
 <table class="w-full table-auto border">
     <thead>
     <tr>
-        <th>Nombre</th>
-        <th>Mensaje</th>
-        <th>Estado</th>
-        <th>Acciones</th>
+        <th>{{__('Name')}}</th>
+        <th>{{__('Message')}}</th>
+        <th>{{__('Status')}}</th>
+        <th>{{__('Actions')}}</th>
     </tr>
     </thead>
     <tbody>
@@ -17,20 +17,20 @@
                 @if ($user->pivot->status !== 'accepted')
                     <button wire:click="acceptApplicant({{ $user->id }})"
                             class="bg-green-500 text-white px-2 py-1 rounded">
-                        Aceptar
+                        {{__('Accept')}}
                     </button>
                 @endif
 
                 @if ($user->pivot->status !== 'rejected')
                     <button wire:click="rejectApplicant({{ $user->id }})"
                             class="bg-red-500 text-white px-2 py-1 rounded">
-                        Rechazar
+                        {{__('Reject')}}
                     </button>
                 @endif
                     <button
                         wire:click="$dispatch('openChatModal', [{{ $user->id }}, {{ $requestModel->id }}])"
                         class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-                        Enviar mensaje
+                        {{__('Chat')}}
                     </button>
             </td>
         </tr>

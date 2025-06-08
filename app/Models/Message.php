@@ -41,4 +41,20 @@ class Message extends Model
     {
         return $this->belongsTo(RequestModel::class);
     }
+
+    public function scopeBetweenUsersAndRequest($query, $userId, $receiverId, $requestModelId = null)
+    {
+        return $query->where(function ($q) use ($userId, $receiverId) {
+            $q->where('user_id', $userId)
+                ->where('receiver_id', $receiverId);
+        })
+            ->orWhere(function ($q) use ($userId, $receiverId) {
+                $q->where('user_id', $receiverId)
+                    ->where('receiver_id', $userId);
+            })
+            ->when($requestModelId, function ($q) use ($requestModelId) {
+                $q->where('request_model_id', $requestModelId);
+            })
+            ->orderBy('created_at');
+    }
 }

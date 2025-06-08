@@ -45,9 +45,3 @@
         </div>
     @endif
 </div>
-
-@push('styles')
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
-@endpush

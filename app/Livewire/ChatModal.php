@@ -19,22 +19,10 @@ class ChatModal extends Component
     #[On('openChatModal')]
     public function openChatModal($receiverId, $requestModelId = null)
     {
-        Log::info('Opening chat modal with data:', [
-            'receiverId' => $receiverId,
-            'requestModelId' => $requestModelId,
-        ]);
-
         $this->receiver = User::findOrFail($receiverId);
         if ($requestModelId) {
             $this->requestModel = RequestModel::findOrFail($requestModelId);
         }
-
-        Log::info('Chat modal data loaded:', [
-            'receiver' => $this->receiver,
-            'receiver_id' => $this->receiver->id,
-            'requestModel' => $this->requestModel,
-            'requestModel_id' => $this->requestModel?->id,
-        ]);
 
         $this->show = true;
     }
