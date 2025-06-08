@@ -16,7 +16,7 @@ class FilterController extends Controller
     public function __invoke(Request $request): View
     {
         $query = RequestModel::query()
-            ->with(['category', 'applicants']);
+            ->with(['category', 'applicants', 'user']);
 
         // Aplicar filtros usando scopes
         if ($request->filled('search')) {

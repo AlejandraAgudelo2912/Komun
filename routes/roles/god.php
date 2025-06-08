@@ -45,9 +45,13 @@ Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(func
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.index');
 
-    Route::get('/requests/filter', [App\Http\Controllers\FilterController::class, 'filter'])
+    Route::get('/requests/filter', App\Http\Controllers\FilterController::class)
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.filter');
+
+    Route::get('/requests/{requestModel}', App\Http\Controllers\God\Request\ShowController::class)
+        ->middleware('can:view,requestModel')
+        ->name('requests.show');
 
     Route::get('/requests/create', App\Http\Controllers\God\Request\CreateController::class)
         ->middleware('can:create,App\Models\RequestModel')
