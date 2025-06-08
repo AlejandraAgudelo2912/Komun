@@ -58,12 +58,29 @@
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                     placeholder="Filtrar por ubicación">
                             </div>
+
+                            <!-- Filtros adicionales -->
+                            <div class="col-span-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="urgent" id="urgent" value="1" {{ request('urgent') ? 'checked' : '' }}
+                                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <label for="urgent" class="ml-2 block text-sm text-gray-700">Solo urgentes</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="no_applicants" id="no_applicants" value="1" {{ request('no_applicants') ? 'checked' : '' }}
+                                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <label for="no_applicants" class="ml-2 block text-sm text-gray-700">Sin solicitantes</label>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mt-4 flex justify-end">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Filtrar
                             </button>
+                            <a href="{{ route('god.requests.index') }}" class="ml-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                Limpiar filtros
+                            </a>
                         </div>
                     </form>
 
@@ -124,10 +141,7 @@
                             @endforeach
                         </div>
 
-                        <!-- Paginación -->
-                        <div class="mt-6">
-                            {{ $requests->links() }}
-                        </div>
+                    
                     @endif
                 </div>
             </div>

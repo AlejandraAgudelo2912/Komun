@@ -12,49 +12,60 @@
                     <form action="{{ route('assistant.requests.store') }}" method="POST" class="space-y-6">
                         @csrf
 
-                        <div>
-                            <x-input-label for="title" :value="__('Título')" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title')" required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('title')" />
-                        </div>
+                        <x-komun.input
+                            name="title"
+                            label="Título"
+                            type="text"
+                            :value="old('title')"
+                            required
+                            autofocus
+                        />
 
                         <div>
-                            <x-input-label for="description" :value="__('Descripción')" />
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description') }}</textarea>
+                            <x-komun.label for="description" :value="__('Descripción')" required />
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
+                                rows="4" 
+                                required
+                            >{{ old('description') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
-                        <div>
-                            <x-komun.select
-                                name="category_id"
-                                label="Categoría"
-                                :options="$categories->pluck('name', 'id')"
-                                required
-                            />
-                        </div>
+                        <x-komun.select
+                            name="category_id"
+                            label="Categoría"
+                            :options="$categories->pluck('name', 'id')"
+                            required
+                        />
+
+                        <x-komun.select
+                            name="priority"
+                            label="Prioridad"
+                            :options="[
+                                'low' => 'Baja',
+                                'medium' => 'Media',
+                                'high' => 'Alta'
+                            ]"
+                            required
+                        />
+
+                        <x-komun.date-input
+                            name="deadline"
+                            label="Fecha Límite"
+                            :value="old('deadline')"
+                            required
+                        />
 
                         <div>
-                            <x-komun.select
-                                name="priority"
-                                label="Prioridad"
-                                :options="[
-                                    'low' => 'Baja',
-                                    'medium' => 'Media',
-                                    'high' => 'Alta'
-                                ]"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <x-input-label for="deadline" :value="__('Fecha Límite')" />
-                            <x-text-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline')" required />
-                            <x-input-error class="mt-2" :messages="$errors->get('deadline')" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="assistance_notes" :value="__('Notas de Asistencia')" />
-                            <textarea id="assistance_notes" name="assistance_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('assistance_notes') }}</textarea>
+                            <x-komun.label for="assistance_notes" :value="__('Notas de Asistencia')" />
+                            <textarea 
+                                id="assistance_notes" 
+                                name="assistance_notes" 
+                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
+                                rows="3"
+                            >{{ old('assistance_notes') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('assistance_notes')" />
                         </div>
 

@@ -59,6 +59,15 @@
                                 <p class="text-sm text-gray-600">Gestiona tus solicitudes</p>
                             </div>
                         </a>
+
+                        <!-- Ver Categorías -->
+                        <a href="{{ route('needhelp.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                            <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Categorías</h3>
+                                <p class="text-sm text-gray-600">Explora por categorías</p>
+                            </div>
+                        </a>
                     @endif
 
                     @if(auth()->user()->hasRole('assistant'))
@@ -71,18 +80,18 @@
                             </div>
                         </a>
 
-                        <!-- Mis Ayudas -->
-                        <a href="{{ route('assistant.requests.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-                            <i class="fas fa-hands-helping text-blue-600 text-2xl mr-3"></i>
+                        <!-- Ver Categorías -->
+                        <a href="{{ route('assistant.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                            <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Mis Ayudas</h3>
-                                <p class="text-sm text-gray-600">Gestiona tus ayudas activas</p>
+                                <h3 class="font-semibold text-gray-900">Categorías</h3>
+                                <p class="text-sm text-gray-600">Explora por categorías</p>
                             </div>
                         </a>
                     @endif
 
                     @if(auth()->user()->hasRole('verificator'))
-                        <!-- Verificar Solicitudes -->
+                        <!-- Ver Solicitudes -->
                         <a href="{{ route('verificator.requests.index') }}" class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
                             <i class="fas fa-check-circle text-yellow-600 text-2xl mr-3"></i>
                             <div>
@@ -90,48 +99,83 @@
                                 <p class="text-sm text-gray-600">Revisa y verifica solicitudes</p>
                             </div>
                         </a>
+
+                        <!-- Ver Categorías -->
+                        <a href="{{ route('verificator.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                            <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Categorías</h3>
+                                <p class="text-sm text-gray-600">Gestiona las categorías</p>
+                            </div>
+                        </a>
+
+                        <!-- Ver Verificaciones -->
+                        <a href="{{ route('verificator.verifications.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                            <i class="fas fa-user-check text-blue-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Verificaciones</h3>
+                                <p class="text-sm text-gray-600">Gestiona verificaciones de asistentes</p>
+                            </div>
+                        </a>
                     @endif
 
                     @if(auth()->user()->hasRole('admin'))
-                        <!-- Panel de Administración -->
-                        <a href="{{ route('admin.dashboard') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
-                            <i class="fas fa-cog text-purple-600 text-2xl mr-3"></i>
+                        <!-- Ver Solicitudes -->
+                        <a href="{{ route('admin.requests.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                            <i class="fas fa-list text-blue-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Panel de Admin</h3>
-                                <p class="text-sm text-gray-600">Gestiona la plataforma</p>
+                                <h3 class="font-semibold text-gray-900">Solicitudes</h3>
+                                <p class="text-sm text-gray-600">Gestiona todas las solicitudes</p>
                             </div>
                         </a>
-                    @endif
 
-                    @if(auth()->user()->hasRole('god'))
-                        <!-- Panel de Super Admin -->
-                        <a href="{{ route('god.dashboard') }}" class="flex items-center p-4 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
-                            <i class="fas fa-crown text-red-600 text-2xl mr-3"></i>
-                            <div>
-                                <h3 class="font-semibold text-gray-900">Panel de Super Admin</h3>
-                                <p class="text-sm text-gray-600">Control total del sistema</p>
-                            </div>
-                        </a>
-                    @endif
-
-                    <!-- Categorías (visible para todos los roles) -->
-                    @if(auth()->user()->hasRole('god'))
-                        <a href="{{ route('god.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
-                    @elseif(auth()->user()->hasRole('admin'))
+                        <!-- Ver Categorías -->
                         <a href="{{ route('admin.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
-                    @elseif(auth()->user()->hasRole('verificator'))
-                        <a href="{{ route('verificator.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
-                    @elseif(auth()->user()->hasRole('assistant'))
-                        <a href="{{ route('assistant.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
-                    @elseif(auth()->user()->hasRole('needHelp'))
-                        <a href="{{ route('needhelp.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                            <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Categorías</h3>
+                                <p class="text-sm text-gray-600">Gestiona las categorías</p>
+                            </div>
+                        </a>
+
+                        <!-- Ver Perfiles -->
+                        <a href="{{ route('admin.profiles.index') }}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                            <i class="fas fa-users text-green-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Perfiles</h3>
+                                <p class="text-sm text-gray-600">Gestiona los perfiles de usuario</p>
+                            </div>
+                        </a>
                     @endif
-                        <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
-                        <div>
-                            <h3 class="font-semibold text-gray-900">Categorías</h3>
-                            <p class="text-sm text-gray-600">Explora por categorías</p>
-                        </div>
-                    </a>
+
+                    @if(auth()->user()->hasRole('god'))
+                        <!-- Ver Solicitudes -->
+                        <a href="{{ route('god.requests.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                            <i class="fas fa-list text-blue-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Solicitudes</h3>
+                                <p class="text-sm text-gray-600">Gestiona todas las solicitudes</p>
+                            </div>
+                        </a>
+
+                        <!-- Ver Categorías -->
+                        <a href="{{ route('god.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                            <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Categorías</h3>
+                                <p class="text-sm text-gray-600">Gestiona las categorías</p>
+                            </div>
+                        </a>
+
+                        <!-- Ver Perfiles -->
+                        <a href="{{ route('god.profiles.index') }}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                            <i class="fas fa-users text-green-600 text-2xl mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Perfiles</h3>
+                                <p class="text-sm text-gray-600">Gestiona los perfiles de usuario</p>
+                            </div>
+                        </a>
+                    @endif
 
                     <!-- Mi Perfil (visible para todos los roles) -->
                     <a href="{{ route('profile.show') }}" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">

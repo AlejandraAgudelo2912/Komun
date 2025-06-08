@@ -13,88 +13,66 @@
                         @csrf
                         @method('PUT')
 
-                        <div>
-                            <x-input-label for="title" :value="__('Título')" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $request->title)" required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('title')" />
-                        </div>
+                        <x-komun.input
+                            name="title"
+                            label="Título"
+                            type="text"
+                            :value="old('title', $request->title)"
+                            required
+                            autofocus
+                        />
 
                         <div>
-                            <x-input-label for="description" :value="__('Descripción')" />
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $request->description) }}</textarea>
+                            <x-komun.label for="description" :value="__('Descripción')" required />
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
+                                rows="4" 
+                                required
+                            >{{ old('description', $request->description) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
-                        <div>
-                            <x-komun.select
-                                name="category_id"
-                                label="Categoría"
-                                :options="$categories->pluck('name', 'id')"
-                                :selected="$request->category_id"
-                                required
-                            />
-                        </div>
+                        <x-komun.select
+                            name="category_id"
+                            label="Categoría"
+                            :options="$categories->pluck('name', 'id')"
+                            :selected="old('category_id', $request->category_id)"
+                            required
+                        />
 
-                        <div>
-                            <x-komun.select
-                                name="priority"
-                                label="Prioridad"
-                                :options="[
-                                    'low' => 'Baja',
-                                    'medium' => 'Media',
-                                    'high' => 'Alta'
-                                ]"
-                                :selected="$request->priority"
-                                required
-                            />
-                        </div>
+                        <x-komun.select
+                            name="priority"
+                            label="Prioridad"
+                            :options="[
+                                'low' => 'Baja',
+                                'medium' => 'Media',
+                                'high' => 'Alta'
+                            ]"
+                            :selected="old('priority', $request->priority)"
+                            required
+                        />
 
-                        <div>
-                            <x-komun.select
-                                name="status"
-                                label="Estado"
-                                :options="[
-                                    'pending' => 'Pendiente',
-                                    'in_progress' => 'En Progreso',
-                                    'completed' => 'Completada',
-                                    'cancelled' => 'Cancelada'
-                                ]"
-                                :selected="$request->status"
-                                required
-                            />
-                        </div>
+                        <x-komun.select
+                            name="status"
+                            label="Estado"
+                            :options="[
+                                'pending' => 'Pendiente',
+                                'in_progress' => 'En Progreso',
+                                'completed' => 'Completada',
+                                'cancelled' => 'Cancelada'
+                            ]"
+                            :selected="old('status', $request->status)"
+                            required
+                        />
 
-                        <div>
-                            <x-komun.date-input
-                                name="deadline"
-                                label="Fecha Límite"
-                                :value="$request->deadline->format('Y-m-d')"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <x-komun.input
-                                name="verification_notes"
-                                label="Notas de Verificación"
-                                type="textarea"
-                                :value="$request->verification_notes"
-                                rows="3"
-                            />
-                        </div>
-
-                        <div>
-                            <x-komun.select
-                                name="is_verified"
-                                label="Estado de Verificación"
-                                :options="[
-                                    '1' => 'Verificada',
-                                    '0' => 'Pendiente'
-                                ]"
-                                :selected="$request->is_verified"
-                                required
-                            />
-                        </div>
+                        <x-komun.date-input
+                            name="deadline"
+                            label="Fecha Límite"
+                            :value="old('deadline', $request->deadline->format('Y-m-d'))"
+                            required
+                        />
 
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Actualizar Solicitud') }}</x-primary-button>

@@ -15,79 +15,70 @@
                     <form action="{{ route('needhelp.requests.store') }}" method="POST" class="space-y-6">
                         @csrf
 
-                        <div>
-                            <label for="title" class="block text-sm font-medium text-gray-700">Título</label>
-                            <input type="text" name="title" id="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                        </div>
+                        <x-komun.input
+                            name="title"
+                            label="Título"
+                            type="text"
+                            required
+                            autofocus
+                        />
 
                         <div>
-                            <label for="description" class="block text-sm font-medium text-gray-700">Descripción</label>
-                            <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required></textarea>
-                        </div>
-
-                        <div>
-                            <x-komun.select
-                                name="category_id"
-                                label="Categoría"
-                                :options="$categories->pluck('name', 'id')"
+                            <x-komun.label for="description" :value="__('Descripción')" required />
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
+                                rows="4" 
                                 required
-                            />
+                            >{{ old('description') }}</textarea>
+                            <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
-                        <div>
-                            <x-komun.input
-                                name="location"
-                                label="Ubicación"
-                                required
-                            />
-                        </div>
+                        <x-komun.select
+                            name="category_id"
+                            label="Categoría"
+                            :options="$categories->pluck('name', 'id')"
+                            required
+                        />
 
-                        <div>
-                            <x-komun.select
-                                name="priority"
-                                label="Prioridad"
-                                :options="[
-                                    'low' => 'Baja',
-                                    'medium' => 'Media',
-                                    'high' => 'Alta'
-                                ]"
-                                required
-                            />
-                        </div>
+                        <x-komun.input
+                            name="location"
+                            label="Ubicación"
+                            required
+                        />
 
-                        <div>
-                            <x-komun.date-input
-                                name="deadline"
-                                label="Fecha Límite"
-                                required
-                            />
-                        </div>
+                        <x-komun.select
+                            name="priority"
+                            label="Prioridad"
+                            :options="[
+                                'low' => 'Baja',
+                                'medium' => 'Media',
+                                'high' => 'Alta'
+                            ]"
+                            required
+                        />
 
-                        <div>
-                            <label for="max_applications" class="block text-sm font-medium text-gray-700">Máximo de aplicaciones</label>
-                            <input type="number" name="max_applications" id="max_applications" min="1" max="10" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            @error('max_applications')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <x-komun.date-input
+                            name="deadline"
+                            label="Fecha Límite"
+                            required
+                        />
 
-                        <div>
-                            <label for="help_notes" class="block text-sm font-medium text-gray-700">Notas adicionales</label>
-                            <textarea name="help_notes" id="help_notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
-                            @error('help_notes')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <x-komun.input
+                            name="max_applications"
+                            label="Máximo de aplicaciones"
+                            type="number"
+                            :value="old('max_applications', 1)"
+                            min="1"
+                            max="10"
+                        />
 
-                        <div class="flex items-center">
-                            <input type="checkbox" name="is_urgent" id="is_urgent" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                            <label for="is_urgent" class="ml-2 block text-sm text-gray-900">¿Es urgente?</label>
-                        </div>
-
-                        <div class="flex justify-end">
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                Crear Solicitud
-                            </button>
+                        <div class="flex items-center gap-4">
+                            <x-primary-button>{{ __('Crear Solicitud') }}</x-primary-button>
+                            <a href="{{ route('needhelp.requests.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                {{ __('Cancelar') }}
+                            </a>
                         </div>
                     </form>
                 </div>

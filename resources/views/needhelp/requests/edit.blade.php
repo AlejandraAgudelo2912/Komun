@@ -13,76 +13,72 @@
                         @csrf
                         @method('PUT')
 
-                        <div>
-                            <x-label for="title" :value="__('Título')" />
-                            <x-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $requestModel->title)" required autofocus />
-                            <x-input-error :for="'title'" class="mt-2" />
-                        </div>
+                        <x-komun.input
+                            name="title"
+                            label="Título"
+                            type="text"
+                            :value="old('title', $requestModel->title)"
+                            required
+                            autofocus
+                        />
 
                         <div>
-                            <x-label for="description" :value="__('Descripción')" />
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $requestModel->description) }}</textarea>
-                            <x-input-error :for="'description'" class="mt-2" />
-                        </div>
-
-                        <div>
-                            <x-komun.select
-                                name="category_id"
-                                label="Categoría"
-                                :options="$categories->pluck('name', 'id')"
-                                :selected="$requestModel->category_id"
+                            <x-komun.label for="description" :value="__('Descripción')" required />
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
+                                rows="4" 
                                 required
-                            />
-                            <x-input-error :for="'category_id'" class="mt-2" />
+                            >{{ old('description', $requestModel->description) }}</textarea>
+                            <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
-                        <div>
-                            <x-komun.select
-                                name="priority"
-                                label="Prioridad"
-                                :options="[
-                                    'low' => 'Baja',
-                                    'medium' => 'Media',
-                                    'high' => 'Alta'
-                                ]"
-                                :selected="$requestModel->priority"
-                                required
-                            />
-                            <x-input-error :for="'priority'" class="mt-2" />
-                        </div>
+                        <x-komun.select
+                            name="category_id"
+                            label="Categoría"
+                            :options="$categories->pluck('name', 'id')"
+                            :selected="old('category_id', $requestModel->category_id)"
+                            required
+                        />
 
-                        <div>
-                            <x-komun.select
-                                name="status"
-                                label="Estado"
-                                :options="[
-                                    'pending' => 'Pendiente',
-                                    'in_progress' => 'En progreso',
-                                    'completed' => 'Completada',
-                                    'cancelled' => 'Cancelada'
-                                ]"
-                                :selected="$requestModel->status"
-                                required
-                            />
-                            <x-input-error :for="'status'" class="mt-2" />
-                        </div>
+                        <x-komun.select
+                            name="priority"
+                            label="Prioridad"
+                            :options="[
+                                'low' => 'Baja',
+                                'medium' => 'Media',
+                                'high' => 'Alta'
+                            ]"
+                            :selected="old('priority', $requestModel->priority)"
+                            required
+                        />
 
-                        <div>
-                            <x-label for="deadline" :value="__('Fecha Límite')" />
-                            <x-input id="deadline" name="deadline" type="date" class="mt-1 block w-full" :value="old('deadline', $requestModel->deadline->format('Y-m-d'))" required />
-                            <x-input-error :for="'deadline'" class="mt-2" />
-                        </div>
+                        <x-komun.select
+                            name="status"
+                            label="Estado"
+                            :options="[
+                                'pending' => 'Pendiente',
+                                'in_progress' => 'En progreso',
+                                'completed' => 'Completada',
+                                'cancelled' => 'Cancelada'
+                            ]"
+                            :selected="old('status', $requestModel->status)"
+                            required
+                        />
 
-                        <div>
-                            <x-label for="help_notes" :value="__('Notas Adicionales')" />
-                            <textarea id="help_notes" name="help_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('help_notes', $requestModel->help_notes) }}</textarea>
-                            <x-input-error :for="'help_notes'" class="mt-2" />
-                        </div>
+                        <x-komun.date-input
+                            name="deadline"
+                            label="Fecha Límite"
+                            :value="old('deadline', $requestModel->deadline->format('Y-m-d'))"
+                            required
+                        />
 
-                        <div class="flex items-center justify-end mt-4">
-                            <x-button type="submit" class="bg-primary-600 hover:bg-primary-700">
-                                {{ __('Guardar Cambios') }}
-                            </x-button>
+                        <div class="flex items-center gap-4">
+                            <x-primary-button>{{ __('Actualizar Solicitud') }}</x-primary-button>
+                            <a href="{{ route('needhelp.requests.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                {{ __('Cancelar') }}
+                            </a>
                         </div>
                     </form>
                 </div>

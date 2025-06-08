@@ -13,65 +13,66 @@
                         @csrf
                         @method('PUT')
 
-                        <div>
-                            <x-input-label for="title" :value="__('Título')" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $requestModel->title)" required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('title')" />
-                        </div>
+                        <x-komun.input
+                            name="title"
+                            label="Título"
+                            type="text"
+                            :value="old('title', $requestModel->title)"
+                            required
+                            autofocus
+                        />
 
                         <div>
-                            <x-input-label for="description" :value="__('Descripción')" />
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $requestModel->description) }}</textarea>
+                            <x-komun.label for="description" :value="__('Descripción')" required />
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
+                                rows="4" 
+                                required
+                            >{{ old('description', $requestModel->description) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
-                        <div>
-                            <x-komun.select
-                                name="category_id"
-                                label="Categoría"
-                                :options="$categories->pluck('name', 'id')"
-                                :selected="$requestModel->category_id"
-                                required
-                            />
-                        </div>
+                        <x-komun.select
+                            name="category_id"
+                            label="Categoría"
+                            :options="$categories->pluck('name', 'id')"
+                            :selected="old('category_id', $requestModel->category_id)"
+                            required
+                        />
 
-                        <div>
-                            <x-komun.select
-                                name="priority"
-                                label="Prioridad"
-                                :options="[
-                                    'low' => 'Baja',
-                                    'medium' => 'Media',
-                                    'high' => 'Alta'
-                                ]"
-                                :selected="$requestModel->priority"
-                                required
-                            />
-                        </div>
+                        <x-komun.select
+                            name="priority"
+                            label="Prioridad"
+                            :options="[
+                                'low' => 'Baja',
+                                'medium' => 'Media',
+                                'high' => 'Alta'
+                            ]"
+                            :selected="old('priority', $requestModel->priority)"
+                            required
+                        />
 
-                        <div>
-                            <x-komun.select
-                                name="status"
-                                label="Estado"
-                                :options="[
-                                    'pending' => 'Pendiente',
-                                    'in_progress' => 'En Progreso',
-                                    'completed' => 'Completada',
-                                    'cancelled' => 'Cancelada'
-                                ]"
-                                :selected="$requestModel->status"
-                                required
-                            />
-                        </div>
+                        <x-komun.select
+                            name="status"
+                            label="Estado"
+                            :options="[
+                                'pending' => 'Pendiente',
+                                'in_progress' => 'En Progreso',
+                                'completed' => 'Completada',
+                                'cancelled' => 'Cancelada'
+                            ]"
+                            :selected="old('status', $requestModel->status)"
+                            required
+                        />
 
-                        <div>
-                            <x-komun.date-input
-                                name="deadline"
-                                label="Fecha Límite"
-                                :value="$requestModel->deadline->format('Y-m-d')"
-                                required
-                            />
-                        </div>
+                        <x-komun.date-input
+                            name="deadline"
+                            label="Fecha Límite"
+                            :value="old('deadline', $requestModel->deadline->format('Y-m-d'))"
+                            required
+                        />
 
                         <div>
                             <x-input-label for="assistance_notes" :value="__('Notas de Asistencia')" />
