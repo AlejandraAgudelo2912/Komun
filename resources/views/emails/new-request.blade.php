@@ -43,33 +43,33 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Nueva solicitud en {{ $category->name }}</h1>
-    </div>
+<div class="header">
+    <h1>Nueva solicitud en {{ $category->name }}</h1>
+</div>
 
-    <div class="content">
-        <p>¡Hola {{ $user->name }}!</p>
+<div class="content">
+    <p>¡Hola {{ $user->name }}!</p>
 
-        <p>Se ha creado una nueva solicitud en la categoría <strong>{{ $category->name }}</strong> que podría interesarte:</p>
+    <p>Se ha creado una nueva solicitud en la categoría <strong>{{ $category->name }}</strong> que podría interesarte:</p>
 
-        <h2>{{ $request->title }}</h2>
-        
-        <p>{{ $request->description }}</p>
+    <h2>{{ $request->title }}</h2>
 
-        @if($request->deadline)
-            <p><strong>Fecha límite:</strong> {{ $request->deadline->format('d/m/Y H:i') }}</p>
-        @endif
+    <p>{{ $request->description }}</p>
 
-        @if($request->budget)
-            <p><strong>Presupuesto:</strong> {{ number_format($request->budget, 2) }}€</p>
-        @endif
+    @if($request->deadline)
+        <p><strong>Fecha límite:</strong> {{ $request->deadline->format('d/m/Y H:i') }}</p>
+    @endif
 
-        <a href="{{ url('/requests/' . $request->id) }}" class="button">Ver solicitud</a>
-    </div>
+    @if($request->budget)
+        <p><strong>Presupuesto:</strong> {{ number_format($request->budget, 2) }}€</p>
+    @endif
 
-    <div class="footer">
-        <p>Este email fue enviado porque sigues la categoría {{ $category->name }} en Komun.</p>
-        <p>Si no deseas recibir más notificaciones de esta categoría, puedes desactivarlas en tu perfil.</p>
-    </div>
+    <a href="{{ url('/requests/' . $request->id) }}" class="button">Ver solicitud</a>
+</div>
+
+<div class="footer">
+    <p>Este email fue enviado porque sigues la categoría {{ $category->name }} en Komun.</p>
+    <p>Si no deseas recibir más notificaciones de esta categoría, puedes desactivarlas en tu perfil.</p>
+</div>
 </body>
-</html> 
+</html>

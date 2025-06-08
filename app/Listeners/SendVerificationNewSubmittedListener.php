@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\VerificationDocumentSubmittedEvent;
+use App\Mail\NewVerificationDocumentSubmittedMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -17,7 +18,7 @@ class SendVerificationNewSubmittedListener
         $verificators = User::role('verificator')->get();
 
         foreach ($verificators as $verificator) {
-            Mail::to($verificator->email)->send(new \App\Mail\NewVerificationDocumentSubmittedMail($assistantVerificationDocument));
+            Mail::to($verificator->email)->send(new NewVerificationDocumentSubmittedMail($assistantVerificationDocument));
         }
 
     }

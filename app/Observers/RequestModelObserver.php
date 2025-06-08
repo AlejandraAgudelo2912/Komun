@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Events\NewRequestCreated;
+use App\Events\NewRequestCreatedEvent;
 use App\Models\RequestModel;
 
 class RequestModelObserver
@@ -12,6 +12,6 @@ class RequestModelObserver
      */
     public function created(RequestModel $request): void
     {
-        event(new NewRequestCreated($request));
+        event(new NewRequestCreatedEvent($request));
     }
 }
