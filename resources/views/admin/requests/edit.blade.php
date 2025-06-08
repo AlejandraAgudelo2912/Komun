@@ -20,7 +20,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('admin.requests.update', ['request' => $requestModel->id]) }}" method="POST" class="space-y-6">
+                    <form action="{{ route('admin.requests.update', [$requestModel]) }}" method="POST" class="space-y-6">
                         @csrf
                         @method('PUT')
 
@@ -144,4 +144,4 @@
             </div>
         </div>
     </div>
-</x-app-layout> 
+</x-app-layout>

@@ -19,6 +19,8 @@ class RequestModelFactory extends Factory
             'status' => $this->faker->randomElement(['pending', 'in_progress', 'completed', 'cancelled']),
             'user_id' => User::factory(),
             'category_id' => Category::factory(),
+            'priority' => $this->faker->randomElement(['low', 'medium', 'high']),
+            'max_applications' => $this->faker->numberBetween(1, 10),
             'location' => $this->faker->address(),
             'deadline' => $this->faker->dateTimeBetween('now', '+1 month'),
             'created_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
