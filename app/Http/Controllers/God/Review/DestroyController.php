@@ -8,7 +8,6 @@ use Illuminate\Http\RedirectResponse;
 
 class DestroyController extends Controller
 {
-   
     public function __invoke(Review $review): RedirectResponse
     {
         $review->delete();
@@ -16,4 +15,4 @@ class DestroyController extends Controller
         return redirect()->back()
             ->with('success', 'Valoración eliminada correctamente.');
     }
-} 
+}

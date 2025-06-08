@@ -2,13 +2,16 @@
 
 namespace Tests\Feature\Controllers\Review;
 
-use App\Models\User;
-use App\Models\Review;
-use App\Models\RequestModel;
 use App\Models\Category;
+use App\Models\RequestModel;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Role;
-use function Pest\Laravel\{get, post, put, delete};
+
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
+use function Pest\Laravel\put;
 
 uses(RefreshDatabase::class);
 
@@ -31,13 +34,13 @@ it('should allow needHelp to create review for completed request', function () {
     $request = RequestModel::factory()->create([
         'user_id' => $user->id,
         'category_id' => $category->id,
-        'status' => 'completed'
+        'status' => 'completed',
     ]);
 
     // Crear la relación en la tabla pivote
     $request->applicants()->attach($assistant->id, [
         'status' => 'accepted',
-        'message' => 'Aceptado para ayudar'
+        'message' => 'Aceptado para ayudar',
     ]);
 
     $this->actingAs($user);
@@ -45,7 +48,7 @@ it('should allow needHelp to create review for completed request', function () {
     $reviewData = [
         'rating' => 5,
         'comment' => 'Excelente servicio',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ];
 
     // act
@@ -58,7 +61,7 @@ it('should allow needHelp to create review for completed request', function () {
         'user_id' => $user->id,
         'assistant_id' => $assistant->id,
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ]);
 });
 
@@ -73,14 +76,14 @@ it('should not allow needHelp to create review for non-completed request', funct
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'pending',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($user);
 
     $reviewData = [
         'rating' => 5,
         'comment' => 'Excelente servicio',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ];
 
     // act
@@ -91,7 +94,7 @@ it('should not allow needHelp to create review for non-completed request', funct
     $response->assertSessionHas('error');
     $this->assertDatabaseMissing('reviews', [
         'request_models_id' => $request->id,
-        'user_id' => $user->id
+        'user_id' => $user->id,
     ]);
 });
 
@@ -104,20 +107,20 @@ it('should allow verificator to create review for completed request', function (
     $category = Category::factory()->create();
     $request = RequestModel::factory()->create([
         'category_id' => $category->id,
-        'status' => 'completed'
+        'status' => 'completed',
     ]);
 
     // Crear la relación en la tabla pivote
     $request->applicants()->attach($assistant->id, [
         'status' => 'accepted',
-        'message' => 'Aceptado para ayudar'
+        'message' => 'Aceptado para ayudar',
     ]);
 
     $this->actingAs($user);
 
     $reviewData = [
         'rating' => 4,
-        'comment' => 'Buen servicio'
+        'comment' => 'Buen servicio',
     ];
 
     // act
@@ -130,7 +133,7 @@ it('should allow verificator to create review for completed request', function (
         'user_id' => $user->id,
         'assistant_id' => $assistant->id,
         'rating' => 4,
-        'comment' => 'Buen servicio'
+        'comment' => 'Buen servicio',
     ]);
 });
 
@@ -146,20 +149,20 @@ it('should allow needHelp to update their review', function () {
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $user->id,
         'assistant_id' => $assistant->id,
         'rating' => 3,
-        'comment' => 'Servicio regular'
+        'comment' => 'Servicio regular',
     ]);
     $this->actingAs($user);
 
     $updateData = [
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ];
 
     // act
@@ -170,7 +173,7 @@ it('should allow needHelp to update their review', function () {
     $this->assertDatabaseHas('reviews', [
         'id' => $review->id,
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ]);
 });
 
@@ -187,18 +190,18 @@ it('should not allow other users to update review', function () {
         'user_id' => $owner->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $owner->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($otherUser);
 
     $updateData = [
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ];
 
     // act
@@ -210,7 +213,7 @@ it('should not allow other users to update review', function () {
     $this->assertDatabaseMissing('reviews', [
         'id' => $review->id,
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ]);
 });
 
@@ -228,12 +231,12 @@ it('should allow admin to delete any review', function () {
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $user->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($admin);
 
@@ -258,12 +261,12 @@ it('should allow god to delete any review', function () {
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $user->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($god);
 
@@ -286,13 +289,13 @@ it('should allow needHelp to view create review form for completed request', fun
     $request = RequestModel::factory()->create([
         'user_id' => $user->id,
         'category_id' => $category->id,
-        'status' => 'completed'
+        'status' => 'completed',
     ]);
 
     // Crear la relación en la tabla pivote
     $request->applicants()->attach($assistant->id, [
         'status' => 'accepted',
-        'message' => 'Aceptado para ayudar'
+        'message' => 'Aceptado para ayudar',
     ]);
 
     $this->actingAs($user);
@@ -316,7 +319,7 @@ it('should not allow needHelp to view create review form for non-completed reque
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'pending',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($user);
 
@@ -340,12 +343,12 @@ it('should allow needHelp to view edit form for their review', function () {
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $user->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($user);
 
@@ -370,12 +373,12 @@ it('should not allow other users to view edit form for review', function () {
         'user_id' => $owner->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $owner->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($otherUser);
 

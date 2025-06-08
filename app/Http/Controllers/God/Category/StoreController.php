@@ -19,4 +19,4 @@ class StoreController extends Controller
         return redirect()->route('god.categories.index')
             ->with('success', 'Categoría creada correctamente.');
     }
-} 
+}

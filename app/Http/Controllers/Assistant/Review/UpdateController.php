@@ -19,4 +19,4 @@ class UpdateController extends Controller
         return redirect()->back()
             ->with('success', 'Valoración actualizada correctamente.');
     }
-} 
+}

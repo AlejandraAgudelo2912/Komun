@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\RequestModel;
 use Illuminate\Http\Request as HttpRequest;
-use App\Models\RequestModel as RequestModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -21,8 +22,8 @@ class SaveAplyRequestController extends Controller
         $requestModel->applicants()->syncWithoutDetaching([
             Auth::id() => [
                 'message' => $validated['message'],
-                'status' => 'pending'
-            ]
+                'status' => 'pending',
+            ],
         ]);
 
         return redirect()->route('assistant.requests.show', $requestModel->id)

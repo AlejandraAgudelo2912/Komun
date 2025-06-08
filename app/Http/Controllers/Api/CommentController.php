@@ -22,20 +22,26 @@ class CommentController extends Controller
      *     path="/api/requests/{request_id}/comments",
      *     summary="Listar comentarios de una solicitud",
      *     tags={"Comentarios"},
+     *
      *     @OA\Parameter(
      *         name="request_id",
      *         in="path",
      *         required=true,
      *         description="ID de la solicitud",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Lista de comentarios",
+     *
      *         @OA\JsonContent(
      *             type="array",
+     *
      *             @OA\Items(
      *                 type="object",
+     *
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="body", type="string", example="Excelente servicio"),
      *                 @OA\Property(property="request_model_id", type="integer", example=1),
@@ -69,25 +75,33 @@ class CommentController extends Controller
      *     summary="Crear un nuevo comentario",
      *     tags={"Comentarios"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="request_id",
      *         in="path",
      *         required=true,
      *         description="ID de la solicitud",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"body"},
+     *
      *             @OA\Property(property="body", type="string", example="Excelente trabajo")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="Comentario creado exitosamente",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Comentario creado exitosamente"),
      *             @OA\Property(
      *                 property="comment",
@@ -107,11 +121,14 @@ class CommentController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Error de validación",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Los datos proporcionados no son válidos"),
      *             @OA\Property(
      *                 property="errors",
@@ -119,6 +136,7 @@ class CommentController extends Controller
      *                 @OA\Property(
      *                     property="body",
      *                     type="array",
+     *
      *                     @OA\Items(type="string", example="El campo body es obligatorio")
      *                 )
      *             )
@@ -128,17 +146,17 @@ class CommentController extends Controller
      */
     public function store(Request $request, RequestModel $requestModel)
     {
-        if (!Gate::denies('create')) {
+        if (! Gate::denies('create')) {
             return response()->json(['message' => 'No tienes permiso para crear comentarios'], 403);
         }
 
         $validated = $request->validate([
-            'body' => 'required|string|max:1000'
+            'body' => 'required|string|max:1000',
         ]);
 
         $comment = $requestModel->comments()->create([
             'user_id' => Auth::id(),
-            'body' => $validated['body']
+            'body' => $validated['body'],
         ]);
 
         return response()->json($comment->load('user:id,name'), 201);
@@ -150,18 +168,23 @@ class CommentController extends Controller
      *     summary="Obtener un comentario específico",
      *     tags={"Comentarios"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID del comentario",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Detalles del comentario",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="body", type="string", example="Excelente trabajo"),
      *             @OA\Property(property="request_id", type="integer", example=1),
@@ -176,11 +199,14 @@ class CommentController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Comentario no encontrado",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Comentario no encontrado")
      *         )
      *     )
@@ -197,25 +223,33 @@ class CommentController extends Controller
      *     summary="Actualizar un comentario",
      *     tags={"Comentarios"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID del comentario",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"body"},
+     *
      *             @OA\Property(property="body", type="string", example="Excelente trabajo")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Comentario actualizado exitosamente",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Comentario actualizado exitosamente"),
      *             @OA\Property(
      *                 property="comment",
@@ -235,27 +269,36 @@ class CommentController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=403,
      *         description="No autorizado",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="No tienes permiso para actualizar este comentario")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Comentario no encontrado",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Comentario no encontrado")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Error de validación",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Los datos proporcionados no son válidos"),
      *             @OA\Property(
      *                 property="errors",
@@ -263,6 +306,7 @@ class CommentController extends Controller
      *                 @OA\Property(
      *                     property="body",
      *                     type="array",
+     *
      *                     @OA\Items(type="string", example="El campo body es obligatorio")
      *                 )
      *             )
@@ -277,7 +321,7 @@ class CommentController extends Controller
         }
 
         $validated = $request->validate([
-            'body' => 'required|string|max:1000'
+            'body' => 'required|string|max:1000',
         ]);
 
         $comment->update($validated);
@@ -291,34 +335,45 @@ class CommentController extends Controller
      *     summary="Eliminar un comentario",
      *     tags={"Comentarios"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID del comentario",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Comentario eliminado exitosamente",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Comentario eliminado exitosamente")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=403,
      *         description="No autorizado",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="No tienes permiso para eliminar este comentario")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Comentario no encontrado",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Comentario no encontrado")
      *         )
      *     )

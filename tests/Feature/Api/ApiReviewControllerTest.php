@@ -2,12 +2,16 @@
 
 namespace Tests\Feature\Controllers\Review;
 
-use App\Models\User;
-use App\Models\Review;
-use App\Models\RequestModel;
 use App\Models\Category;
+use App\Models\RequestModel;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use function Pest\Laravel\{get, post, put, delete};
+
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
+use function Pest\Laravel\put;
 
 uses(RefreshDatabase::class);
 
@@ -30,12 +34,12 @@ it('should show review details', function () {
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $user->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($user);
 
@@ -50,7 +54,7 @@ it('should show review details', function () {
         'comment' => $review->comment,
         'user' => ['id' => $user->id],
         'assistant' => ['id' => $assistant->id],
-        'request' => ['id' => $request->id]
+        'request' => ['id' => $request->id],
     ]);
 });
 
@@ -65,7 +69,7 @@ it('should create review via API', function () {
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($user);
 
@@ -73,7 +77,7 @@ it('should create review via API', function () {
         'rating' => 5,
         'comment' => 'Excelente servicio',
         'request_models_id' => $request->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ];
 
     // act
@@ -86,14 +90,14 @@ it('should create review via API', function () {
         'comment' => 'Excelente servicio',
         'user' => ['id' => $user->id],
         'assistant' => ['id' => $assistant->id],
-        'request' => ['id' => $request->id]
+        'request' => ['id' => $request->id],
     ]);
     $this->assertDatabaseHas('reviews', [
         'request_models_id' => $request->id,
         'user_id' => $user->id,
         'assistant_id' => $assistant->id,
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ]);
 });
 
@@ -108,20 +112,20 @@ it('should update review via API', function () {
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $user->id,
         'assistant_id' => $assistant->id,
         'rating' => 3,
-        'comment' => 'Servicio regular'
+        'comment' => 'Servicio regular',
     ]);
     $this->actingAs($user);
 
     $updateData = [
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ];
 
     // act
@@ -135,12 +139,12 @@ it('should update review via API', function () {
         'comment' => 'Excelente servicio',
         'user' => ['id' => $user->id],
         'assistant' => ['id' => $assistant->id],
-        'request' => ['id' => $request->id]
+        'request' => ['id' => $request->id],
     ]);
     $this->assertDatabaseHas('reviews', [
         'id' => $review->id,
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ]);
 });
 
@@ -155,12 +159,12 @@ it('should delete review via API', function () {
         'user_id' => $user->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $user->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($user);
 
@@ -182,7 +186,7 @@ it('should not allow unauthorized users to create review via API', function () {
     $request = RequestModel::factory()->create([
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($user);
 
@@ -190,7 +194,7 @@ it('should not allow unauthorized users to create review via API', function () {
         'rating' => 5,
         'comment' => 'Excelente servicio',
         'request_models_id' => $request->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ];
 
     // act
@@ -201,7 +205,7 @@ it('should not allow unauthorized users to create review via API', function () {
     $response->assertJson(['message' => 'No tienes permiso para calificar esta solicitud']);
     $this->assertDatabaseMissing('reviews', [
         'request_models_id' => $request->id,
-        'user_id' => $user->id
+        'user_id' => $user->id,
     ]);
 })->skip();
 
@@ -217,18 +221,18 @@ it('should not allow unauthorized users to update review via API', function () {
         'user_id' => $owner->id,
         'category_id' => $category->id,
         'status' => 'completed',
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $review = Review::factory()->create([
         'request_models_id' => $request->id,
         'user_id' => $owner->id,
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
     $this->actingAs($otherUser);
 
     $updateData = [
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ];
 
     // act
@@ -240,6 +244,6 @@ it('should not allow unauthorized users to update review via API', function () {
     $this->assertDatabaseMissing('reviews', [
         'id' => $review->id,
         'rating' => 5,
-        'comment' => 'Excelente servicio'
+        'comment' => 'Excelente servicio',
     ]);
-}); 
+});

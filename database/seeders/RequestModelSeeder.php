@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\RequestModel;
 use App\Models\User;
-use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class RequestModelSeeder extends Seeder
@@ -78,7 +78,7 @@ class RequestModelSeeder extends Seeder
                 'is_verified' => true,
                 'max_applications' => 2,
                 'help_notes' => 'Algunas plantas necesitan riego diario',
-            ]
+            ],
         ];
 
         foreach ($requestsModel as $requestData) {

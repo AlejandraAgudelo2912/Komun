@@ -16,5 +16,3 @@ it('dispara VerificationDocumentSubmittedEvent al crear el documento', function 
         return $event->assistantVerificationDocument->id === $document->id;
     });
 });
-
-

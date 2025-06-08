@@ -44,7 +44,7 @@ class Category extends Model
     public function followers()
     {
         return $this->belongsToMany(User::class)
-                    ->withPivot('notifications_enabled')
-                    ->withTimestamps();
+            ->withPivot('notifications_enabled')
+            ->withTimestamps();
     }
 }

@@ -9,7 +9,6 @@ use Illuminate\Http\RedirectResponse;
 
 class UpdateController extends Controller
 {
-    
     public function __invoke(UpdateReviewRequest $request, Review $review): RedirectResponse
     {
         $review->update([
@@ -20,4 +19,4 @@ class UpdateController extends Controller
         return redirect()->back()
             ->with('success', 'Valoración actualizada correctamente.');
     }
-} 
+}

@@ -52,4 +52,4 @@ class StoreRequestRequest extends FormRequest
             'status.in' => 'El estado seleccionado no es válido.',
         ];
     }
-} 
+}

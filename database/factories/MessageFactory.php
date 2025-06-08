@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Message;
-use App\Models\User;
 use App\Models\RequestModel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MessageFactory extends Factory

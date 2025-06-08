@@ -19,4 +19,4 @@ class UpdateController extends Controller
         return redirect()->route('god.categories.index')
             ->with('success', 'Categoría actualizada correctamente.');
     }
-} 
+}

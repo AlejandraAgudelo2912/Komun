@@ -7,13 +7,17 @@ use Livewire\Component;
 class Comments extends Component
 {
     public $comments = [];
+
     public $requestModel;
+
     public $showModal = false;
+
     public $commentBody;
+
     public $editingCommentId = null;
 
     protected $rules = [
-        'commentBody' => 'required'
+        'commentBody' => 'required',
     ];
 
     public function mount($requestModel)
@@ -61,7 +65,7 @@ class Comments extends Component
     {
         $this->requestModel->comments()->create([
             'user_id' => auth()->user()->id,
-            'body' => $this->commentBody
+            'body' => $this->commentBody,
         ]);
 
         session()->flash('success', 'Comentario creado correctamente.');

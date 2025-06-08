@@ -15,4 +15,4 @@ class DestroyController extends Controller
         return redirect()->back()
             ->with('success', 'Valoración eliminada correctamente.');
     }
-} 
+}

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Request;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequestRequest;
-use App\Models\RequestModel as RequestModel;
+use App\Models\RequestModel;
 use Illuminate\Http\RedirectResponse;
 
 class StoreController extends Controller

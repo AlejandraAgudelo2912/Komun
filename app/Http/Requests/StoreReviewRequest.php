@@ -29,4 +29,4 @@ class StoreReviewRequest extends FormRequest
             'comment.max' => 'El comentario no puede tener más de 1000 caracteres.',
         ];
     }
-} 
+}

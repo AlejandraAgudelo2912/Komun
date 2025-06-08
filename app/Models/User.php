@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,16 +11,16 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
-    use HasRoles;
-
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use HasProfilePhoto;
+
+    use HasRoles;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
@@ -82,7 +83,7 @@ class User extends Authenticatable
     {
         return $query->where(function ($query) use ($search) {
             $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                ->orWhere('email', 'like', "%{$search}%");
         });
     }
 
@@ -90,10 +91,10 @@ class User extends Authenticatable
     {
         return $query->whereHas('requests', function ($query) {
             $query->where('status', 'pending')
-                  ->where(function ($query) {
-                      $query->whereNull('deadline')
-                            ->orWhere('deadline', '>', now());
-                  });
+                ->where(function ($query) {
+                    $query->whereNull('deadline')
+                        ->orWhere('deadline', '>', now());
+                });
         });
     }
 
@@ -135,8 +136,8 @@ class User extends Authenticatable
     public function appliedRequests()
     {
         return $this->belongsToMany(RequestModel::class, 'request_model_application')
-                    ->withPivot('status', 'message')
-                    ->withTimestamps();
+            ->withPivot('status', 'message')
+            ->withTimestamps();
     }
 
     public function sentMessages()
@@ -163,7 +164,7 @@ class User extends Authenticatable
     {
         $this->update([
             'total_reviews' => $this->reviews()->count(),
-            'rating' => $this->reviews()->avg('rating') ?? 0
+            'rating' => $this->reviews()->avg('rating') ?? 0,
         ]);
     }
 
@@ -175,7 +176,7 @@ class User extends Authenticatable
     public function followedCategories()
     {
         return $this->belongsToMany(Category::class)
-                    ->withPivot('notifications_enabled')
-                    ->withTimestamps();
+            ->withPivot('notifications_enabled')
+            ->withTimestamps();
     }
 }

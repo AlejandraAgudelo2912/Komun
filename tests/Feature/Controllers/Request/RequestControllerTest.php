@@ -2,12 +2,16 @@
 
 namespace Tests\Feature\Controllers\Request;
 
+use App\Models\Category;
 use App\Models\RequestModel;
 use App\Models\User;
-use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
-use function Pest\Laravel\{get, post, put, delete};
+
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
+use function Pest\Laravel\put;
 
 uses(RefreshDatabase::class);
 
@@ -123,7 +127,7 @@ it('should not allow other users to update request', function () {
     $category = Category::factory()->create();
     $request = RequestModel::factory()->create([
         'user_id' => $owner->id,
-        'category_id' => $category->id
+        'category_id' => $category->id,
     ]);
     $updateData = [
         'title' => 'Updated by Other User',
@@ -153,7 +157,7 @@ it('should allow request owner to delete request', function () {
     $category = Category::factory()->create();
     $request = RequestModel::factory()->create([
         'user_id' => $user->id,
-        'category_id' => $category->id
+        'category_id' => $category->id,
     ]);
 
     // act
@@ -174,7 +178,7 @@ it('should not allow other users to delete request', function () {
     $category = Category::factory()->create();
     $request = RequestModel::factory()->create([
         'user_id' => $owner->id,
-        'category_id' => $category->id
+        'category_id' => $category->id,
     ]);
 
     // act
@@ -210,7 +214,7 @@ it('allows a admin to delete a request', function () {
     $category = Category::factory()->create();
     $request = RequestModel::factory()->create([
         'category_id' => $category->id,
-        'user_id' => $admin->id
+        'user_id' => $admin->id,
     ]);
 
     // Act
@@ -221,4 +225,3 @@ it('allows a admin to delete a request', function () {
     $this->assertDatabaseMissing('request_models', ['id' => $request->id]);
 
 })->skip();
-

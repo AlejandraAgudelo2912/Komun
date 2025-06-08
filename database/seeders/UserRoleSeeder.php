@@ -15,40 +15,40 @@ class UserRoleSeeder extends Seeder
                 'name' => 'Admin User',
                 'email' => 'admin@komun.com',
                 'password' => Hash::make('password'),
-                'role' => 'admin'
+                'role' => 'admin',
             ],
             [
                 'name' => 'God User',
                 'email' => 'god@komun.com',
                 'password' => Hash::make('password'),
-                'role' => 'god'
+                'role' => 'god',
             ],
             [
                 'name' => 'Verificator User',
                 'email' => 'verificator@komun.com',
                 'password' => Hash::make('password'),
-                'role' => 'verificator'
+                'role' => 'verificator',
             ],
             [
                 'name' => 'Assistant User',
                 'email' => 'assistant@komun.com',
                 'password' => Hash::make('password'),
-                'role' => 'assistant'
+                'role' => 'assistant',
             ],
             [
                 'name' => 'Need Help User',
                 'email' => 'needhelp@komun.com',
                 'password' => Hash::make('password'),
-                'role' => 'needHelp'
+                'role' => 'needHelp',
             ],
         ];
 
         foreach ($users as $userData) {
             $role = $userData['role'];
             unset($userData['role']);
-            
+
             $user = User::create($userData);
             $user->syncRoles($role);
         }
     }
-} 
+}

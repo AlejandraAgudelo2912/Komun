@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Assistant\Request;
 
 use App\Http\Controllers\Controller;
-use App\Models\RequestModel;
 use App\Models\Category;
+use App\Models\RequestModel;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\View\View;
 

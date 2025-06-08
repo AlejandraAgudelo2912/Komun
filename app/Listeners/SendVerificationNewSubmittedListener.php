@@ -8,15 +8,13 @@ use Illuminate\Support\Facades\Mail;
 
 class SendVerificationNewSubmittedListener
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(VerificationDocumentSubmittedEvent $event): void
     {
         $assistantVerificationDocument = $event->assistantVerificationDocument;
 
-        $verificators = User::role ('verificator')->get();
+        $verificators = User::role('verificator')->get();
 
         foreach ($verificators as $verificator) {
             Mail::to($verificator->email)->send(new \App\Mail\NewVerificationDocumentSubmittedMail($assistantVerificationDocument));

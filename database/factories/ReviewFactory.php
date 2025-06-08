@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Review;
 use App\Models\RequestModel;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -32,7 +32,7 @@ class ReviewFactory extends Factory
                     'Muy satisfecho con el resultado, lo recomiendo.',
                     'Increíble atención y resultados, volveré a contratar.',
                     'Muy buen trabajo, cumplió con todas las expectativas.',
-                    'Servicio de alta calidad, muy recomendable.'
+                    'Servicio de alta calidad, muy recomendable.',
                 ]),
             ];
         });
@@ -48,7 +48,7 @@ class ReviewFactory extends Factory
                     'Buen trabajo, aunque hay aspectos a mejorar.',
                     'Cumplió con lo básico, pero esperaba más.',
                     'Servicio regular, ni bueno ni malo.',
-                    'Aceptable, pero hay margen de mejora.'
+                    'Aceptable, pero hay margen de mejora.',
                 ]),
             ];
         });
@@ -64,9 +64,9 @@ class ReviewFactory extends Factory
                     'Servicio deficiente, no lo recomiendo.',
                     'Muy descontento con el resultado.',
                     'No volvería a contratar este servicio.',
-                    'Pésima experiencia, no cumplió las expectativas.'
+                    'Pésima experiencia, no cumplió las expectativas.',
                 ]),
             ];
         });
     }
-} 
+}

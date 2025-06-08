@@ -22,7 +22,7 @@ class CommentPolicy
 
     public function create(User $user): bool
     {
-        return true; 
+        return true;
     }
 
     public function update(User $user, Comment $comment): bool
@@ -46,5 +46,4 @@ class CommentPolicy
 
         return $user->hasRole(['admin', 'god']);
     }
-
-} 
+}

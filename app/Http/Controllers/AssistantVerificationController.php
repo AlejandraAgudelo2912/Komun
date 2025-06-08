@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssistantVerificationDocument;
 use App\Events\AssistantVerificationDocumentEvent;
+use App\Models\AssistantVerificationDocument;
 use Illuminate\Http\Request;
 
 class AssistantVerificationController extends Controller

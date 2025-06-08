@@ -27,11 +27,12 @@ class RequestModelPolicy
 
     public function update(User $user, RequestModel $requestModel): bool
     {
-        if ( $user->id == $requestModel->user_id) {
+        if ($user->id == $requestModel->user_id) {
             return true;
         }
 
         $hasAdminRole = $user->hasRole(['admin', 'god']);
+
         return $hasAdminRole;
     }
 
@@ -46,7 +47,7 @@ class RequestModelPolicy
 
     public function apply(User $user, RequestModel $requestModel): bool
     {
-        if (!$user->hasRole('assistant')) {
+        if (! $user->hasRole('assistant')) {
             return false;
         }
 

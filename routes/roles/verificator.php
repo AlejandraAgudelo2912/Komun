@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'role:verificator'])->prefix('verificator')->name('verificator.')->group(function () {
     Route::get('/dashboard', App\Http\Controllers\Verificator\DashboardController::class)->name('dashboard');
 
-
     Route::get('/verifications', [AssistantVerificationController::class, 'index'])->name('verifications.index');
     Route::post('/verifications/{id}/approve', [AssistantVerificationController::class, 'approve'])->name('verifications.approve');
     Route::post('/verifications/{id}/reject', [AssistantVerificationController::class, 'reject'])->name('verifications.reject');

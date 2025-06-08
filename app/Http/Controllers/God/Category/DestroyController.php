@@ -9,7 +9,7 @@ class DestroyController extends Controller
 {
     public function __invoke(Category $category)
     {
-        $category=Category::findOrFail($category->id);
+        $category = Category::findOrFail($category->id);
         $category->delete();
 
         return redirect()->route('god.category.index')->with('success', 'Category deleted successfully.');

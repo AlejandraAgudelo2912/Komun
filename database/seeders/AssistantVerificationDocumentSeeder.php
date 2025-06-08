@@ -20,18 +20,17 @@ class AssistantVerificationDocumentSeeder extends Seeder
             if ($assistant->is_verified) {
                 AssistantVerificationDocument::create([
                     'assistant_id' => $assistant->id,
-                    'dni_front_path' => 'verification/dni_front_' . $assistant->id . '.jpg',
-                    'dni_back_path' => 'verification/dni_back_' . $assistant->id . '.jpg',
-                    'selfie_path' => 'verification/selfie_' . $assistant->id . '.jpg',
+                    'dni_front_path' => 'verification/dni_front_'.$assistant->id.'.jpg',
+                    'dni_back_path' => 'verification/dni_back_'.$assistant->id.'.jpg',
+                    'selfie_path' => 'verification/selfie_'.$assistant->id.'.jpg',
                     'status' => 'approved',
                 ]);
-            }
-            else {
+            } else {
                 AssistantVerificationDocument::create([
                     'assistant_id' => $assistant->id,
-                    'dni_front_path' => 'verification/dni_front_' . $assistant->id . '.jpg',
-                    'dni_back_path' => 'verification/dni_back_' . $assistant->id . '.jpg',
-                    'selfie_path' => 'verification/selfie_' . $assistant->id . '.jpg',
+                    'dni_front_path' => 'verification/dni_front_'.$assistant->id.'.jpg',
+                    'dni_back_path' => 'verification/dni_back_'.$assistant->id.'.jpg',
+                    'selfie_path' => 'verification/selfie_'.$assistant->id.'.jpg',
                     'status' => 'pending',
                 ]);
             }
@@ -46,4 +45,4 @@ class AssistantVerificationDocumentSeeder extends Seeder
             'rejection_reason' => 'Documentos no legibles o incompletos',
         ]);
     }
-} 
+}

@@ -51,4 +51,4 @@ class UpdateRequestRequest extends FormRequest
             'is_verified.boolean' => 'El campo verificado debe ser verdadero o falso',
         ];
     }
-} 
+}

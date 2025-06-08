@@ -3,20 +3,24 @@
 namespace App\Livewire;
 
 use App\Models\Message;
-use Livewire\Component;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class Chat extends Component
 {
     public $receiver;
+
     public $message = '';
+
     public $requestModel;
+
     public $editingMessageId = null;
+
     public $editingMessageText = '';
 
     protected $rules = [
         'message' => 'required|string|min:1|max:1000',
-        'editingMessageText' => 'required|string|min:1|max:1000'
+        'editingMessageText' => 'required|string|min:1|max:1000',
     ];
 
     protected $messages = [
@@ -25,7 +29,7 @@ class Chat extends Component
         'message.max' => 'El mensaje no puede tener más de 1000 caracteres',
         'editingMessageText.required' => 'El mensaje no puede estar vacío',
         'editingMessageText.min' => 'El mensaje debe tener al menos 1 carácter',
-        'editingMessageText.max' => 'El mensaje no puede tener más de 1000 caracteres'
+        'editingMessageText.max' => 'El mensaje no puede tener más de 1000 caracteres',
     ];
 
     public function mount($receiver, $requestModel = null)
@@ -34,7 +38,7 @@ class Chat extends Component
             'receiver' => $receiver,
             'receiver_id' => $receiver->id ?? 'null',
             'requestModel' => $requestModel,
-            'requestModel_id' => $requestModel->id ?? 'null'
+            'requestModel_id' => $requestModel->id ?? 'null',
         ]);
 
         $this->receiver = $receiver;
@@ -50,14 +54,14 @@ class Chat extends Component
             $query->where('user_id', $this->receiver->id)
                 ->where('receiver_id', auth()->id());
         })
-        ->when($this->requestModel, function ($query) {
-            $query->where('request_model_id', $this->requestModel->id);
-        })
-        ->orderBy('created_at')
-        ->get();
+            ->when($this->requestModel, function ($query) {
+                $query->where('request_model_id', $this->requestModel->id);
+            })
+            ->orderBy('created_at')
+            ->get();
 
         return view('livewire.chat', [
-            'messages' => $messages
+            'messages' => $messages,
         ]);
     }
 
@@ -77,7 +81,7 @@ class Chat extends Component
                 'request_model_exists' => isset($this->requestModel),
                 'request_model_id' => $this->requestModel?->id ?? 'null',
                 'message_content' => $this->message,
-                'message_length' => strlen($this->message ?? '')
+                'message_length' => strlen($this->message ?? ''),
             ]);
 
             // Limpiar el mensaje antes de validar
@@ -85,12 +89,13 @@ class Chat extends Component
 
             if (empty($this->message)) {
                 session()->flash('error', 'El mensaje no puede estar vacío');
+
                 return;
             }
 
             // Validar después de limpiar
             $this->validate([
-                'message' => 'required|string|min:1|max:1000'
+                'message' => 'required|string|min:1|max:1000',
             ]);
 
             $message = Message::create([
@@ -105,14 +110,14 @@ class Chat extends Component
             $this->dispatch('messageSent');
 
         } catch (\Exception $e) {
-            session()->flash('error', 'Error al enviar el mensaje: ' . $e->getMessage());
+            session()->flash('error', 'Error al enviar el mensaje: '.$e->getMessage());
         }
     }
 
     public function editMessage($messageId)
     {
         $message = Message::find($messageId);
-        
+
         if ($message && $message->user_id === auth()->id()) {
             $this->editingMessageId = $messageId;
             $this->editingMessageText = $message->message;
@@ -122,17 +127,17 @@ class Chat extends Component
     public function updateMessage()
     {
         $this->validate([
-            'editingMessageText' => 'required|string|max:1000'
+            'editingMessageText' => 'required|string|max:1000',
         ]);
 
         $message = Message::find($this->editingMessageId);
-        
+
         if ($message && $message->user_id === auth()->id()) {
             $message->update([
                 'message' => trim($this->editingMessageText),
-                'edited_at' => now()
+                'edited_at' => now(),
             ]);
-            
+
             $this->editingMessageId = null;
             $this->editingMessageText = '';
             $this->dispatch('message-updated');
@@ -148,7 +153,7 @@ class Chat extends Component
     public function deleteMessage($messageId)
     {
         $message = Message::find($messageId);
-        
+
         if ($message && $message->user_id === auth()->id()) {
             $message->delete();
             $this->dispatch('message-deleted');

@@ -14,10 +14,12 @@ class ApplicationResponseMail extends Mailable
     use Queueable, SerializesModels;
 
     public $applicant;
+
     public $requestModel;
+
     public $status;
 
-    public function __construct( User $applicant, $requestModel, $status)
+    public function __construct(User $applicant, $requestModel, $status)
     {
         $this->applicant = $applicant;
         $this->requestModel = $requestModel;

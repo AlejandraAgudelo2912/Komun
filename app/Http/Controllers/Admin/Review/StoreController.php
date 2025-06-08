@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Admin\Review;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReviewRequest;
-use App\Models\Review;
 use App\Models\RequestModel;
+use App\Models\Review;
 use Illuminate\Http\RedirectResponse;
 
 class StoreController extends Controller
 {
-
     public function __invoke(StoreReviewRequest $request, RequestModel $requestModel): RedirectResponse
     {
         Review::create([

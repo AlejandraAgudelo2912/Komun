@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\RequestModel;
 use App\Models\Assistant;
 use App\Models\Category;
+use App\Models\RequestModel;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -57,7 +57,7 @@ class DashboardController extends Controller
                 return [
                     'month' => Carbon::create()->month($item->month)->format('M'),
                     'total' => $item->total_requests,
-                    'completed' => $item->completed_requests
+                    'completed' => $item->completed_requests,
                 ];
             });
 
@@ -77,6 +77,7 @@ class DashboardController extends Controller
                     ->count();
                 $assistant->average_rating = $assistant->user->reviews->avg('rating') ?? 0;
                 $assistant->total_reviews = $assistant->user->reviews->count();
+
                 return $assistant;
             })
             ->sortByDesc('average_rating')
@@ -100,4 +101,4 @@ class DashboardController extends Controller
             'topAssistants'
         ));
     }
-} 
+}

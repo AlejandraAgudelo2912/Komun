@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Verificator;
 use App\Http\Controllers\Controller;
 use App\Models\Assistant;
 use App\Models\RequestModel;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -24,7 +23,7 @@ class DashboardController extends Controller
         $rejectedToday = Assistant::where('status', 'rejected')
             ->whereDate('updated_at', Carbon::today())
             ->count();
-        
+
         // Verificaciones completadas
         $completedVerifications = Assistant::whereIn('status', ['verified', 'rejected'])->count();
         $verificationsThisMonth = Assistant::whereIn('status', ['verified', 'rejected'])
@@ -57,8 +56,8 @@ class DashboardController extends Controller
             ->latest('updated_at')
             ->first();
 
-        $lastVerificationTime = $lastVerification ? 
-            $lastVerification->updated_at->diffInMinutes($lastVerification->created_at) . ' min' : 
+        $lastVerificationTime = $lastVerification ?
+            $lastVerification->updated_at->diffInMinutes($lastVerification->created_at).' min' :
             'N/A';
 
         // Tasas de aprobación y rechazo
@@ -66,9 +65,9 @@ class DashboardController extends Controller
         $totalVerified = Assistant::where('status', 'verified')->count();
         $totalRejected = Assistant::where('status', 'rejected')->count();
 
-        $approvalRate = $totalProcessed > 0 ? 
+        $approvalRate = $totalProcessed > 0 ?
             round(($totalVerified / $totalProcessed) * 100, 1) : 0;
-        $rejectionRate = $totalProcessed > 0 ? 
+        $rejectionRate = $totalProcessed > 0 ?
             round(($totalRejected / $totalProcessed) * 100, 1) : 0;
 
         // Verificaciones por día (últimos 7 días)
@@ -81,7 +80,7 @@ class DashboardController extends Controller
             ->map(function ($assistants, $day) {
                 return [
                     'day' => $day,
-                    'count' => $assistants->count()
+                    'count' => $assistants->count(),
                 ];
             })
             ->values();
@@ -93,7 +92,7 @@ class DashboardController extends Controller
             $dayData = $verificationsByDay->firstWhere('day', $date);
             $last7Days->push([
                 'day' => $date,
-                'count' => $dayData ? $dayData['count'] : 0
+                'count' => $dayData ? $dayData['count'] : 0,
             ]);
         }
         $verificationsByDay = $last7Days;
@@ -109,9 +108,10 @@ class DashboardController extends Controller
                 $avgTime = $assistants->avg(function ($assistant) {
                     return $assistant->updated_at->diffInMinutes($assistant->created_at);
                 });
+
                 return [
                     'date' => $date,
-                    'time' => round($avgTime, 1)
+                    'time' => round($avgTime, 1),
                 ];
             })
             ->values();
@@ -123,7 +123,7 @@ class DashboardController extends Controller
             $dayData = $verificationTime->firstWhere('date', $date);
             $last7DaysTime->push([
                 'date' => $date,
-                'time' => $dayData ? $dayData['time'] : 0
+                'time' => $dayData ? $dayData['time'] : 0,
             ]);
         }
         $verificationTime = $last7DaysTime;
@@ -139,7 +139,7 @@ class DashboardController extends Controller
                 return [
                     'month' => $assistants->first()->updated_at->format('M'),
                     'verified' => $assistants->where('status', 'verified')->count(),
-                    'rejected' => $assistants->where('status', 'rejected')->count()
+                    'rejected' => $assistants->where('status', 'rejected')->count(),
                 ];
             })
             ->values();
@@ -184,4 +184,4 @@ class DashboardController extends Controller
             'latestPendingVerifications'
         ));
     }
-} 
+}

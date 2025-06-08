@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Artisan;
 
 beforeEach(function () {
     Storage::fake('local');
@@ -12,8 +12,8 @@ beforeEach(function () {
 it('exports all tables to JSON files', function () {
     // arrange
     $tables = [
-        (object)['Tables_in_komun_test' => 'users'],
-        (object)['Tables_in_komun_test' => 'posts'],
+        (object) ['Tables_in_komun_test' => 'users'],
+        (object) ['Tables_in_komun_test' => 'posts'],
     ];
 
     DB::shouldReceive('select')
@@ -23,20 +23,24 @@ it('exports all tables to JSON files', function () {
 
     DB::shouldReceive('table')
         ->with('users')
-        ->andReturn(new class {
-            public function get() {
+        ->andReturn(new class
+        {
+            public function get()
+            {
                 return collect([
-                    (object)['id' => 1, 'name' => 'Alice']
+                    (object) ['id' => 1, 'name' => 'Alice'],
                 ]);
             }
         });
 
     DB::shouldReceive('table')
         ->with('posts')
-        ->andReturn(new class {
-            public function get() {
+        ->andReturn(new class
+        {
+            public function get()
+            {
                 return collect([
-                    (object)['id' => 1, 'title' => 'Hello World']
+                    (object) ['id' => 1, 'title' => 'Hello World'],
                 ]);
             }
         });
@@ -50,12 +54,12 @@ it('exports all tables to JSON files', function () {
 
     $usersJson = Storage::disk('local')->get('backups/json/users.json');
     expect(json_decode($usersJson, true))->toBe([
-        ['id' => 1, 'name' => 'Alice']
+        ['id' => 1, 'name' => 'Alice'],
     ]);
 
     $postsJson = Storage::disk('local')->get('backups/json/posts.json');
     expect(json_decode($postsJson, true))->toBe([
-        ['id' => 1, 'title' => 'Hello World']
+        ['id' => 1, 'title' => 'Hello World'],
     ]);
 });
 
@@ -64,7 +68,7 @@ it('creates the backup directory if it does not exist', function () {
     Storage::disk('local')->deleteDirectory('backups/json');
 
     $tables = [
-        (object)['Tables_in_komun_test' => 'settings'],
+        (object) ['Tables_in_komun_test' => 'settings'],
     ];
 
     DB::shouldReceive('select')->andReturn($tables);
@@ -72,7 +76,7 @@ it('creates the backup directory if it does not exist', function () {
     // Simula un query builder con un método get()
     $mockBuilder = Mockery::mock();
     $mockBuilder->shouldReceive('get')->andReturn(collect([
-        (object)['key' => 'value'],
+        (object) ['key' => 'value'],
     ]));
 
     DB::shouldReceive('table')->with('settings')->andReturn($mockBuilder);
@@ -87,18 +91,17 @@ it('creates the backup directory if it does not exist', function () {
     Storage::disk('local')->deleteDirectory('backups/json');
 });
 
-
 it('shows messages during the process', function () {
     // arrange
     $tables = [
-        (object)['Tables_in_komun_test' => 'logs'],
+        (object) ['Tables_in_komun_test' => 'logs'],
     ];
 
     DB::shouldReceive('select')->andReturn($tables);
 
     $mockBuilder = Mockery::mock();
     $mockBuilder->shouldReceive('get')->andReturn(collect([
-        (object)['id' => 1, 'message' => 'test log'],
+        (object) ['id' => 1, 'message' => 'test log'],
     ]));
 
     DB::shouldReceive('table')->with('logs')->andReturn($mockBuilder);
@@ -112,4 +115,3 @@ it('shows messages during the process', function () {
         ->toContain('Exportando tabla: logs')
         ->toContain('Exportación completada');
 });
-

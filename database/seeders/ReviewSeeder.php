@@ -39,7 +39,7 @@ class ReviewSeeder extends Seeder
             [
                 'rating' => 5,
                 'comment' => 'Increíble atención y resultados, volveré a contratar.',
-            ]
+            ],
         ];
 
         foreach ($requests as $request) {

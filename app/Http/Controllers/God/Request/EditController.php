@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\God\Request;
 
 use App\Http\Controllers\Controller;
-use App\Models\RequestModel;
 use App\Models\Category;
+use App\Models\RequestModel;
 use Illuminate\View\View;
 
 class EditController extends Controller

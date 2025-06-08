@@ -70,4 +70,4 @@ class AssistantFactory extends Factory
             ];
         });
     }
-} 
+}

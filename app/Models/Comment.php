@@ -14,10 +14,12 @@ class Comment extends Model
         'request_model_id',
         'body',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function requestModel()
     {
         return $this->belongsTo(RequestModel::class);

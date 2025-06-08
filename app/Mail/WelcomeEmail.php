@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -20,7 +19,7 @@ class WelcomeEmail extends Mailable
      */
     public function __construct(public User $user)
     {
-        Log::info('Preparando correo de bienvenida para: ' . $user->email);
+        Log::info('Preparando correo de bienvenida para: '.$user->email);
     }
 
     /**
@@ -28,7 +27,8 @@ class WelcomeEmail extends Mailable
      */
     public function envelope(): Envelope
     {
-        Log::info('Configurando sobre del correo para: ' . $this->user->email);
+        Log::info('Configurando sobre del correo para: '.$this->user->email);
+
         return new Envelope(
             subject: '¡Bienvenido a Komun!',
         );
@@ -39,7 +39,8 @@ class WelcomeEmail extends Mailable
      */
     public function content(): Content
     {
-        Log::info('Preparando contenido del correo para: ' . $this->user->email);
+        Log::info('Preparando contenido del correo para: '.$this->user->email);
+
         return new Content(
             view: 'emails.welcome',
         );

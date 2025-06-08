@@ -1,10 +1,9 @@
 <?php
 
 use App\Models\User;
-use App\Models\Assistant;
 
 beforeEach(function () {
-    //user admin
+    // user admin
     $this->actingAs(User::factory()->create()->assignRole('admin'));
 });
 

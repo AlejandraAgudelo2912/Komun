@@ -2,7 +2,6 @@
 
 use App\Models\RequestModel;
 use App\Models\User;
-use App\Models\Category;
 
 it('allows any user to view the requests list', function () {
     // Arrange
@@ -34,7 +33,7 @@ it('allows creator to update their pending request', function () {
     $user = User::factory()->create();
     $request = RequestModel::factory()->create([
         'user_id' => $user->id,
-        'status' => 'pending'
+        'status' => 'pending',
     ]);
 
     // Act & Assert
@@ -66,7 +65,7 @@ it('allows creator to delete their pending request', function () {
     $user = User::factory()->create();
     $request = RequestModel::factory()->create([
         'user_id' => $user->id,
-        'status' => 'pending'
+        'status' => 'pending',
     ]);
 
     // Act & Assert
@@ -98,7 +97,7 @@ it('prevents assistants from applying to their own requests', function () {
     $assistant->assignRole('assistant');
     $request = RequestModel::factory()->create([
         'user_id' => $assistant->id,
-        'status' => 'pending'
+        'status' => 'pending',
     ]);
 
     // Act & Assert

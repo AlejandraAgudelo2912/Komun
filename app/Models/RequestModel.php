@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Builder;
 
 class RequestModel extends Model
 {
@@ -40,7 +39,7 @@ class RequestModel extends Model
     {
         return $query->where(function ($query) {
             $query->whereNull('deadline')
-                  ->orWhere('deadline', '>', now());
+                ->orWhere('deadline', '>', now());
         })->where('status', 'pending');
     }
 
@@ -73,15 +72,15 @@ class RequestModel extends Model
     {
         return $query->where(function ($query) use ($search) {
             $query->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                ->orWhere('description', 'like', "%{$search}%");
         });
     }
 
     public function scopeUrgent(Builder $query): Builder
     {
         return $query->where('deadline', '<=', now()->addDay())
-                    ->where('deadline', '>', now())
-                    ->where('status', 'pending');
+            ->where('deadline', '>', now())
+            ->where('status', 'pending');
     }
 
     public function user(): BelongsTo
@@ -102,8 +101,8 @@ class RequestModel extends Model
     public function applicants()
     {
         return $this->belongsToMany(User::class, 'request_model_application')
-                    ->withPivot('message', 'status')
-                    ->withTimestamps();
+            ->withPivot('message', 'status')
+            ->withTimestamps();
     }
 
     public function comments(): HasMany

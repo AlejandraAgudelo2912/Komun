@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             AssistantSeeder::class,
             ReviewSeeder::class,
             AssistantVerificationDocumentSeeder::class,
-            CommentSeeder::class
+            CommentSeeder::class,
         ]);
 
         User::factory()->create([

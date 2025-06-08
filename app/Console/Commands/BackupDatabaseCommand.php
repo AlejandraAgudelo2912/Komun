@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class BackupDatabaseCommand extends Command
 {
     protected $signature = 'komun:backup-db';
+
     protected $description = 'Exporta todas las tablas de la base de datos a archivos JSON';
 
     public function handle()
@@ -17,9 +18,9 @@ class BackupDatabaseCommand extends Command
 
         $tables = DB::select('SHOW TABLES');
         $dbName = config('database.connections.mysql.database');
-        $keyName = 'Tables_in_' . $dbName;
+        $keyName = 'Tables_in_'.$dbName;
 
-        if (!Storage::exists('backups/json')) {
+        if (! Storage::exists('backups/json')) {
             Storage::makeDirectory('backups/json');
         }
 

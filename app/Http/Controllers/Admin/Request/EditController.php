@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Request;
 
 use App\Http\Controllers\Controller;
-use App\Models\RequestModel;
 use App\Models\Category;
+use App\Models\RequestModel;
 use Illuminate\View\View;
 
 class EditController extends Controller
@@ -15,7 +15,7 @@ class EditController extends Controller
 
         return view('admin.requests.edit', [
             'requestModel' => $requestModel,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 }

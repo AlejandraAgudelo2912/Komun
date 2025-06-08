@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Assistant;
 use App\Http\Controllers\Controller;
 use App\Models\RequestModel;
 use App\Models\Review;
-use App\Models\Category;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -92,7 +90,7 @@ class DashboardController extends Controller
                     'requests' => $requests->count(),
                     'hours' => $requests->sum(function ($request) {
                         return $request->updated_at->diffInMinutes($request->created_at) / 60;
-                    })
+                    }),
                 ];
             })
             ->values();
@@ -122,9 +120,9 @@ class DashboardController extends Controller
             ->get()
             ->groupBy('category.name')
             ->map(function ($requests) {
-                return (object)[
+                return (object) [
                     'name' => $requests->first()->category->name,
-                    'count' => $requests->count()
+                    'count' => $requests->count(),
                 ];
             })
             ->values();
@@ -148,4 +146,4 @@ class DashboardController extends Controller
             'maxCategoryCount'
         ));
     }
-} 
+}

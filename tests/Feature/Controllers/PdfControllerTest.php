@@ -2,13 +2,14 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Models\Category;
 use App\Models\Message;
+use App\Models\RequestModel;
 use App\Models\Review;
 use App\Models\User;
-use App\Models\RequestModel;
-use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use function Pest\Laravel\{get};
+
+use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
@@ -28,7 +29,7 @@ it('should generate user statistics pdf with correct data', function () {
     $category = Category::factory()->create();
     $requests = RequestModel::factory()->count(3)->create([
         'category_id' => $category->id,
-        'status' => 'open'
+        'status' => 'open',
     ]);
 
     // act
@@ -52,7 +53,7 @@ it('should not allow unauthorized users to generate pdf', function () {
     $response->assertStatus(403);
 });
 
-it("should handle user with no activity data", function () {
+it('should handle user with no activity data', function () {
     // arrange
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
@@ -63,27 +64,27 @@ it("should handle user with no activity data", function () {
     // assert
     $response->assertStatus(200);
     $response->assertHeader('content-type', 'application/pdf');
-    $response->assertHeader('content-disposition', 'attachment; filename="statistics-' . $this->user->name . '.pdf"');
+    $response->assertHeader('content-disposition', 'attachment; filename="statistics-'.$this->user->name.'.pdf"');
 });
 
-it("should calculate correct request statistics", function () {
+it('should calculate correct request statistics', function () {
     // arrange
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
 
     RequestModel::factory()->create([
         'user_id' => $this->user->id,
-        'status' => 'pending'
+        'status' => 'pending',
     ]);
 
     RequestModel::factory()->create([
         'user_id' => $this->user->id,
-        'status' => 'in_progress'
+        'status' => 'in_progress',
     ]);
 
     RequestModel::factory()->create([
         'user_id' => $this->user->id,
-        'status' => 'completed'
+        'status' => 'completed',
     ]);
 
     // act
@@ -94,17 +95,17 @@ it("should calculate correct request statistics", function () {
     $response->assertHeader('content-type', 'application/pdf');
 });
 
-it("should calculate correct message statistics", function () {
+it('should calculate correct message statistics', function () {
     // arrange
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
 
     Message::factory()->count(3)->create([
-        'user_id' => $this->user->id
+        'user_id' => $this->user->id,
     ]);
 
     Message::factory()->count(2)->create([
-        'receiver_id' => $this->user->id
+        'receiver_id' => $this->user->id,
     ]);
 
     // act
@@ -115,19 +116,19 @@ it("should calculate correct message statistics", function () {
     $response->assertHeader('content-type', 'application/pdf');
 });
 
-it("should calculate correct review statistics", function () {
+it('should calculate correct review statistics', function () {
     // arrange
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
 
     Review::factory()->create([
         'user_id' => $this->user->id,
-        'rating' => 4
+        'rating' => 4,
     ]);
 
     Review::factory()->create([
         'user_id' => $this->user->id,
-        'rating' => 5
+        'rating' => 5,
     ]);
 
     // act
@@ -138,7 +139,7 @@ it("should calculate correct review statistics", function () {
     $response->assertHeader('content-type', 'application/pdf');
 });
 
-it("should not allow unauthorized access to user statistics", function () {
+it('should not allow unauthorized access to user statistics', function () {
     // arrange
     $this->user = User::factory()->create();
     $otherUser = User::factory()->create();

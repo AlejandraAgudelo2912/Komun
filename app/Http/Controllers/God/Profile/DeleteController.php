@@ -32,7 +32,7 @@ class DeleteController extends Controller
                 if ($user->assistant->verification) {
                     $user->assistant->verification->delete();
                 }
-                
+
                 // Eliminar el registro de asistente
                 $user->assistant->delete();
             }
@@ -50,9 +50,9 @@ class DeleteController extends Controller
                 ->with('success', 'Usuario eliminado correctamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return redirect()->route('god.profiles.index')
-                ->with('error', 'Error al eliminar el usuario: ' . $e->getMessage());
+                ->with('error', 'Error al eliminar el usuario: '.$e->getMessage());
         }
     }
-} 
+}

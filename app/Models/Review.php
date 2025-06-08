@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Review extends Model
 {
@@ -46,10 +45,10 @@ class Review extends Model
         static::creating(function ($review) {
             // Verificar si ya existe una reseña para este usuario y asistente en esta solicitud
             $exists = static::where('request_models_id', $review->request_models_id)
-                          ->where('user_id', $review->user_id)
-                          ->where('assistant_id', $review->assistant_id)
-                          ->exists();
-            
+                ->where('user_id', $review->user_id)
+                ->where('assistant_id', $review->assistant_id)
+                ->exists();
+
             if ($exists) {
                 throw new \Exception('Ya has calificado a este asistente para esta solicitud.');
             }

@@ -27,7 +27,7 @@ class AssistantStoreController extends Controller
         // Convertir availability a un array asociativo de horarios
         $availability = [];
         foreach ($validated['availability'] as $day => $hours) {
-            if (!empty($hours)) {
+            if (! empty($hours)) {
                 $availability[$day] = $hours;
             }
         }
@@ -55,4 +55,3 @@ class AssistantStoreController extends Controller
         return redirect()->route('welcome')->with('success', 'Tu perfil de asistente se ha enviado para revisión. Un verificador lo evaluará pronto.');
     }
 }
-

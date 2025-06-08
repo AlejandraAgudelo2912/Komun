@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Assistant;
-use App\Models\User;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class AssistantSeeder extends Seeder
@@ -67,7 +67,7 @@ class AssistantSeeder extends Seeder
                 'bio' => 'Jardinero profesional con experiencia en diseño y mantenimiento de jardines.',
                 'availability' => 'Lunes a Sábado, 7:00 - 19:00',
                 'experience_years' => 4,
-            ]
+            ],
         ];
 
         $experienceLevels = ['beginner', 'intermediate', 'advanced', 'expert'];
@@ -81,14 +81,14 @@ class AssistantSeeder extends Seeder
             ]);
 
             $selectedCategories = $categories->random(rand(1, 3));
-            
+
             foreach ($selectedCategories as $category) {
                 $assistant->categories()->attach($category->id, [
                     'experience_level' => $experienceLevels[array_rand($experienceLevels)],
                     'years_of_experience' => rand(1, 10),
-                    'notes' => 'Experiencia en ' . $category->name . ' con ' . rand(1, 10) . ' años de práctica.'
+                    'notes' => 'Experiencia en '.$category->name.' con '.rand(1, 10).' años de práctica.',
                 ]);
             }
         }
     }
-} 
+}

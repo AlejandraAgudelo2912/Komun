@@ -4,7 +4,9 @@ namespace Tests\Feature\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use function Pest\Laravel\{get, post};
+
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
 
 uses(RefreshDatabase::class);
 
@@ -76,7 +78,7 @@ it('should redirect users to correct dashboard based on their role', function ()
         'god' => 'dashboard',
         'verificator' => 'dashboard',
         'assistant' => 'dashboard',
-        'needHelp' => 'dashboard'
+        'needHelp' => 'dashboard',
     ];
 
     foreach ($roles as $role => $route) {
@@ -97,4 +99,4 @@ it('should redirect users to correct dashboard based on their role', function ()
         $this->assertAuthenticated();
         $response->assertRedirect(route($route));
     }
-}); 
+});

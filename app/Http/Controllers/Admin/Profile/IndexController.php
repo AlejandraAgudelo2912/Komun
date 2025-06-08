@@ -41,8 +41,8 @@ class IndexController extends Controller
             'filters' => [
                 'search' => $request->search,
                 'role' => $request->role,
-                'status' => $request->status
-            ]
+                'status' => $request->status,
+            ],
         ]);
     }
-} 
+}

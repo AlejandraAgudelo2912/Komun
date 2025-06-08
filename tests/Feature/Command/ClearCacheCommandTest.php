@@ -1,6 +1,5 @@
 <?php
 
-
 it('shows the correct messages when clearing cache', function () {
     // act
     Artisan::call('komun:clear-cache');
@@ -20,6 +19,3 @@ it('clears all caches and shows success message', function () {
         ->toContain('Limpiando cachés...')
         ->toContain('✅ Cachés limpiadas correctamente.');
 });
-
-
-

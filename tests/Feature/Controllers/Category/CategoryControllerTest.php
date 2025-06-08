@@ -2,10 +2,14 @@
 
 namespace Tests\Feature\Controllers\Category;
 
-use App\Models\User;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use function Pest\Laravel\{get, post, put, delete};
+
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
+use function Pest\Laravel\put;
 
 uses(RefreshDatabase::class);
 
@@ -79,7 +83,7 @@ it('should allow admin to create category', function () {
     $this->actingAs($user);
     $categoryData = [
         'name' => 'Test Category',
-        'description' => 'Test Description'
+        'description' => 'Test Description',
     ];
 
     // act
@@ -97,7 +101,7 @@ it('should not allow needHelp to create category', function () {
     $this->actingAs($user);
     $categoryData = [
         'name' => 'Test Category',
-        'description' => 'Test Description'
+        'description' => 'Test Description',
     ];
 
     // act
@@ -116,7 +120,7 @@ it('should allow admin to update category', function () {
     $category = Category::factory()->create();
     $updateData = [
         'name' => 'Updated Category',
-        'description' => 'Updated Description'
+        'description' => 'Updated Description',
     ];
 
     // act
@@ -135,7 +139,7 @@ it('should not allow needHelp to update category', function () {
     $category = Category::factory()->create();
     $updateData = [
         'name' => 'Updated Category',
-        'description' => 'Updated Description'
+        'description' => 'Updated Description',
     ];
 
     // act
@@ -221,15 +225,14 @@ it('la ruta admin.categories.edit responde con éxito y carga la vista con categ
 
     $response->assertStatus(200);
     $response->assertViewIs('admin.categories.edit');
-    $response->assertViewHas('category', fn($cat) => $cat->id === $category->id);
+    $response->assertViewHas('category', fn ($cat) => $cat->id === $category->id);
 });
-
 
 it('muestra la vista de mostrar categoría con el modelo correcto', function () {
     $category = Category::factory()->create();
 
     $response = app()->call(\App\Http\Controllers\Admin\Category\ShowController::class, [
-        'category' => $category
+        'category' => $category,
     ]);
 
     expect($response)->toBeInstanceOf(\Illuminate\View\View::class);
@@ -255,4 +258,3 @@ it('la ruta admin.categories.show responde con éxito y muestra la categoría', 
         return $cat->is($category);
     });
 });
-

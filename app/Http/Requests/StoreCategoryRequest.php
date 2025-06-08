@@ -28,4 +28,4 @@ class StoreCategoryRequest extends FormRequest
             'description.required' => 'La descripción es obligatoria.',
         ];
     }
-} 
+}

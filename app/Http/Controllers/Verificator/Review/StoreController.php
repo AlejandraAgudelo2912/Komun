@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Verificator\Review;
 
 use App\Http\Controllers\Controller;
-use App\Models\Review;
 use App\Models\RequestModel;
-use Illuminate\Http\Request;
+use App\Models\Review;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
@@ -32,7 +32,7 @@ class StoreController extends Controller
             ->wherePivot('status', 'accepted')
             ->first();
 
-        if (!$assistant) {
+        if (! $assistant) {
             return redirect()->back()->with('error', 'No hay un asistente aceptado para esta solicitud.');
         }
 

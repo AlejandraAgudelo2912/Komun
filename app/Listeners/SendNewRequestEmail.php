@@ -36,10 +36,10 @@ class SendNewRequestEmail implements ShouldQueue
             Mail::send('emails.new-request', [
                 'user' => $follower,
                 'request' => $request,
-                'category' => $category
-            ], function ($message) use ($follower, $request, $category) {
+                'category' => $category,
+            ], function ($message) use ($follower, $category) {
                 $message->to($follower->email)
-                    ->subject('Nueva solicitud en ' . $category->name)
+                    ->subject('Nueva solicitud en '.$category->name)
                     ->from(config('mail.from.address'), config('mail.from.name'));
             });
         }

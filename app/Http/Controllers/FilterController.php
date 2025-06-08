@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\RequestModel;
 use App\Models\Category;
+use App\Models\RequestModel;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -55,7 +54,7 @@ class FilterController extends Controller
 
         $categories = Category::all();
 
-        $view = match(auth()->user()->getRoleNames()->first()) {
+        $view = match (auth()->user()->getRoleNames()->first()) {
             'needHelp' => 'needhelp.requests.index',
             'assistant' => 'assistant.requests.index',
             'admin' => 'admin.requests.index',

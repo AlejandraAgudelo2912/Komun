@@ -11,7 +11,7 @@ class CreateController extends Controller
     public function __invoke(): View
     {
         $categories = Category::all();
-        
+
         return view('admin.requests.create', compact('categories'));
     }
-} 
+}

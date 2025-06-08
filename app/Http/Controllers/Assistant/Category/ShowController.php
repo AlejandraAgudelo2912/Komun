@@ -10,7 +10,7 @@ class ShowController extends Controller
     public function __invoke(Category $category)
     {
         return view('assistant.categories.show', [
-            'category' => $category
+            'category' => $category,
         ]);
     }
 }

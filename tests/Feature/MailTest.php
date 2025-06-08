@@ -31,8 +31,7 @@ it('sends welcome email to new user', function () {
     SendWelcomeEmail::dispatch($user);
 
     // Assert
-    Mail::assertSent(WelcomeEmail::class, fn ($mail) =>
-        $mail->hasTo($user->email) &&
+    Mail::assertSent(WelcomeEmail::class, fn ($mail) => $mail->hasTo($user->email) &&
         $mail->envelope()->subject === '¡Bienvenido a Komun!'
     );
 });
@@ -47,8 +46,7 @@ it('sends application response email to applicant', function () {
     SendApplicationResponseEmailJob::dispatch($applicant, $requestModel, $status);
 
     // Assert
-    Mail::assertSent(ApplicationResponseMail::class, fn ($mail) =>
-        $mail->hasTo($applicant->email) &&
+    Mail::assertSent(ApplicationResponseMail::class, fn ($mail) => $mail->hasTo($applicant->email) &&
         $mail->envelope()->subject === 'Application Response' &&
         $mail->requestModel->id === $requestModel->id &&
         $mail->status === $status
@@ -65,15 +63,14 @@ it('sends new verification document email to verificators', function () {
 
     $assistant = Assistant::factory()->create();
     $document = AssistantVerificationDocument::factory()->create([
-        'assistant_id' => $assistant->id
+        'assistant_id' => $assistant->id,
     ]);
 
     // Act
     event(new VerificationDocumentSubmittedEvent($document));
 
     // Assert
-    Mail::assertSent(NewVerificationDocumentSubmittedMail::class, fn ($mail) =>
-        ($mail->hasTo($verificator1->email) || $mail->hasTo($verificator2->email)) &&
+    Mail::assertSent(NewVerificationDocumentSubmittedMail::class, fn ($mail) => ($mail->hasTo($verificator1->email) || $mail->hasTo($verificator2->email)) &&
         $mail->envelope()->subject === 'New Verification Document Submitted'
     );
 })->skip();
@@ -84,15 +81,14 @@ it('sends verification approved email to assistant', function () {
     $assistant = Assistant::factory()->create();
     $document = AssistantVerificationDocument::factory()->create([
         'assistant_id' => $assistant->id,
-        'status' => 'approved'
+        'status' => 'approved',
     ]);
 
     // Act
     event(new AssistantVerificationDocumentEvent($document));
 
     // Assert
-    Mail::assertSent(VerificationApprovedMail::class, fn ($mail) =>
-        $mail->hasTo($assistant->user->email) &&
+    Mail::assertSent(VerificationApprovedMail::class, fn ($mail) => $mail->hasTo($assistant->user->email) &&
         $mail->envelope()->subject === 'Verification Approved' &&
         $mail->assistant->id === $assistant->id
     );
@@ -106,15 +102,14 @@ it('sends verification reject email to assistant', function () {
     $document = AssistantVerificationDocument::factory()->create([
         'assistant_id' => $assistant->id,
         'status' => 'rejected',
-        'rejection_reason' => $rejectionReason
+        'rejection_reason' => $rejectionReason,
     ]);
 
     // Act
     event(new AssistantVerificationDocumentEvent($document));
 
     // Assert
-    Mail::assertSent(VerificationRejectMail::class, fn ($mail) =>
-        $mail->hasTo($assistant->user->email) &&
+    Mail::assertSent(VerificationRejectMail::class, fn ($mail) => $mail->hasTo($assistant->user->email) &&
         $mail->envelope()->subject === 'Verification Reject' &&
         $mail->assistant->id === $assistant->id &&
         $mail->rejectionReason === $rejectionReason

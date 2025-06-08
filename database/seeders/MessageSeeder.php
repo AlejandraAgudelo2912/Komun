@@ -22,7 +22,7 @@ class MessageSeeder extends Seeder
             $user = User::find($request->user_id);
             $assistant = User::find($request->assistant_id);
 
-            if (!$user || !$assistant) {
+            if (! $user || ! $assistant) {
                 continue;
             }
 
@@ -50,4 +50,4 @@ class MessageSeeder extends Seeder
             ->old()
             ->create();
     }
-} 
+}

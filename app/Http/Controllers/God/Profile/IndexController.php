@@ -38,4 +38,4 @@ class IndexController extends Controller
             'roles' => \Spatie\Permission\Models\Role::all(),
         ]);
     }
-} 
+}

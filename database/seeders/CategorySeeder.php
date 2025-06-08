@@ -52,4 +52,4 @@ class CategorySeeder extends Seeder
             Category::factory()->create($category);
         }
     }
-} 
+}

@@ -48,4 +48,4 @@ class CategoryPolicy
     {
         return $user->hasRole('god');
     }
-} 
+}

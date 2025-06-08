@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Controllers\Application;
 
-use App\Models\User;
-use App\Models\RequestModel;
 use App\Models\Category;
+use App\Models\RequestModel;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use function Pest\Laravel\{post};
+
+use function Pest\Laravel\post;
 
 uses(RefreshDatabase::class);
 
@@ -25,12 +26,12 @@ it('should allow assistant to apply to request', function () {
     $category = Category::factory()->create();
     $request = RequestModel::factory()->create([
         'category_id' => $category->id,
-        'status' => 'pending'
+        'status' => 'pending',
     ]);
     $this->actingAs($assistant);
 
     $applicationData = [
-        'message' => 'Me gustaría ayudarte con esta solicitud'
+        'message' => 'Me gustaría ayudarte con esta solicitud',
     ];
 
     // act
@@ -42,7 +43,7 @@ it('should allow assistant to apply to request', function () {
     $this->assertDatabaseHas('request_model_application', [
         'request_model_id' => $request->id,
         'user_id' => $assistant->id,
-        'message' => 'Me gustaría ayudarte con esta solicitud'
+        'message' => 'Me gustaría ayudarte con esta solicitud',
     ]);
 });
 
@@ -53,12 +54,12 @@ it('should not allow non-assistant users to apply to request', function () {
     $category = Category::factory()->create();
     $request = RequestModel::factory()->create([
         'category_id' => $category->id,
-        'status' => 'pending'
+        'status' => 'pending',
     ]);
     $this->actingAs($user);
 
     $applicationData = [
-        'message' => 'Me gustaría ayudarte con esta solicitud'
+        'message' => 'Me gustaría ayudarte con esta solicitud',
     ];
 
     // act
@@ -68,7 +69,7 @@ it('should not allow non-assistant users to apply to request', function () {
     $response->assertStatus(403);
     $this->assertDatabaseMissing('request_model_application', [
         'request_model_id' => $request->id,
-        'user_id' => $user->id
+        'user_id' => $user->id,
     ]);
 });
 
@@ -80,12 +81,12 @@ it('should not allow assistant to apply to their own request', function () {
     $request = RequestModel::factory()->create([
         'user_id' => $assistant->id,
         'category_id' => $category->id,
-        'status' => 'pending'
+        'status' => 'pending',
     ]);
     $this->actingAs($assistant);
 
     $applicationData = [
-        'message' => 'Me gustaría ayudarte con esta solicitud'
+        'message' => 'Me gustaría ayudarte con esta solicitud',
     ];
 
     // act
@@ -95,7 +96,7 @@ it('should not allow assistant to apply to their own request', function () {
     $response->assertStatus(403);
     $this->assertDatabaseMissing('request_model_application', [
         'request_model_id' => $request->id,
-        'user_id' => $assistant->id
+        'user_id' => $assistant->id,
     ]);
 });
 
@@ -106,12 +107,12 @@ it('should not allow assistant to apply to completed request', function () {
     $category = Category::factory()->create();
     $request = RequestModel::factory()->create([
         'category_id' => $category->id,
-        'status' => 'completed'
+        'status' => 'completed',
     ]);
     $this->actingAs($assistant);
 
     $applicationData = [
-        'message' => 'Me gustaría ayudarte con esta solicitud'
+        'message' => 'Me gustaría ayudarte con esta solicitud',
     ];
 
     // act
@@ -121,7 +122,7 @@ it('should not allow assistant to apply to completed request', function () {
     $response->assertStatus(403);
     $this->assertDatabaseMissing('request_model_application', [
         'request_model_id' => $request->id,
-        'user_id' => $assistant->id
+        'user_id' => $assistant->id,
     ]);
 })->skip();
 
@@ -132,12 +133,12 @@ it('should validate application message', function () {
     $category = Category::factory()->create();
     $request = RequestModel::factory()->create([
         'category_id' => $category->id,
-        'status' => 'pending'
+        'status' => 'pending',
     ]);
     $this->actingAs($assistant);
 
     $applicationData = [
-        'message' => '' // Empty message
+        'message' => '', // Empty message
     ];
 
     // act
@@ -147,6 +148,6 @@ it('should validate application message', function () {
     $response->assertSessionHasErrors('message');
     $this->assertDatabaseMissing('request_model_application', [
         'request_model_id' => $request->id,
-        'user_id' => $assistant->id
+        'user_id' => $assistant->id,
     ]);
-}); 
+});

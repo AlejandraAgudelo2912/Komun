@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\NeedHelp;
 
 use App\Http\Controllers\Controller;
+use App\Models\Assistant;
 use App\Models\RequestModel;
 use App\Models\Review;
-use App\Models\Assistant;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -76,10 +75,11 @@ class DashboardController extends Controller
                 $hours = $requests->where('status', 'completed')->sum(function ($request) {
                     return $request->created_at->diffInMinutes($request->updated_at) / 60;
                 });
+
                 return [
                     'month' => $month,
                     'requests' => $requests->count(),
-                    'hours' => $hours
+                    'hours' => $hours,
                 ];
             })
             ->values();
@@ -106,9 +106,9 @@ class DashboardController extends Controller
             ->get()
             ->groupBy('category.name')
             ->map(function ($requests) {
-                return (object)[
+                return (object) [
                     'name' => $requests->first()->category->name,
-                    'count' => $requests->count()
+                    'count' => $requests->count(),
                 ];
             })
             ->values();
@@ -122,20 +122,21 @@ class DashboardController extends Controller
                 $q->where('user_id', $user->id);
             });
         }])->get()
-        ->map(function ($assistant) {
-            $completedRequests = $assistant->user->requests()
-                ->where('status', 'completed')
-                ->get();
-            
-            $assistant->total_requests = $completedRequests->count();
-            $assistant->total_hours = $completedRequests->sum(function ($request) {
-                return $request->created_at->diffInMinutes($request->updated_at) / 60;
-            });
-            $assistant->average_rating = $assistant->reviews->avg('rating') ?? 0;
-            return $assistant;
-        })
-        ->sortByDesc('average_rating')
-        ->take(3);
+            ->map(function ($assistant) {
+                $completedRequests = $assistant->user->requests()
+                    ->where('status', 'completed')
+                    ->get();
+
+                $assistant->total_requests = $completedRequests->count();
+                $assistant->total_hours = $completedRequests->sum(function ($request) {
+                    return $request->created_at->diffInMinutes($request->updated_at) / 60;
+                });
+                $assistant->average_rating = $assistant->reviews->avg('rating') ?? 0;
+
+                return $assistant;
+            })
+            ->sortByDesc('average_rating')
+            ->take(3);
 
         return view('needhelp.dashboard', compact(
             'activeRequests',
@@ -153,4 +154,4 @@ class DashboardController extends Controller
             'topAssistants'
         ));
     }
-} 
+}

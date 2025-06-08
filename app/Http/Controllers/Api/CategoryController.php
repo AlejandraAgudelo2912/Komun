@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use PHPUnit\Framework\MockObject\GeneratedAsTestStub;
 
 /**
  * @OA\Tag(
@@ -21,13 +20,17 @@ class CategoryController extends Controller
      *     path="/api/categories",
      *     summary="Listar todas las categorías",
      *     tags={"Categorías"},
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Lista de categorías",
+     *
      *         @OA\JsonContent(
      *             type="array",
+     *
      *             @OA\Items(
      *                 type="object",
+     *
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Limpieza"),
      *                 @OA\Property(property="description", type="string", example="Servicios de limpieza"),
@@ -43,6 +46,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+
         return response()->json($categories);
     }
 
@@ -52,20 +56,26 @@ class CategoryController extends Controller
      *     summary="Crear una nueva categoría",
      *     tags={"Categorías"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"name","description"},
+     *
      *             @OA\Property(property="name", type="string", example="Limpieza"),
      *             @OA\Property(property="description", type="string", example="Servicios de limpieza"),
      *             @OA\Property(property="icon", type="string", example="broom"),
      *             @OA\Property(property="color", type="string", example="#FF0000")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="Categoría creada exitosamente",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Categoría creada exitosamente"),
      *             @OA\Property(property="category", type="object")
      *         )
@@ -76,7 +86,7 @@ class CategoryController extends Controller
     {
         if (Gate::denies('create', Category::class)) {
             return response()->json([
-                'message' => 'No tienes permiso para crear categorías'
+                'message' => 'No tienes permiso para crear categorías',
             ], 403);
         }
 
@@ -84,14 +94,14 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'icon' => 'nullable|string',
-            'color' => 'nullable|string'
+            'color' => 'nullable|string',
         ]);
 
         $category = Category::create($validated);
 
         return response()->json([
             'message' => 'Categoría creada exitosamente',
-            'category' => $category
+            'category' => $category,
         ], 201);
     }
 
@@ -101,18 +111,23 @@ class CategoryController extends Controller
      *     summary="Obtener una categoría específica",
      *     tags={"Categorías"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID de la categoría",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Detalles de la categoría",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="name", type="string", example="Limpieza"),
      *             @OA\Property(property="description", type="string", example="Servicios de limpieza"),
@@ -135,27 +150,35 @@ class CategoryController extends Controller
      *     summary="Actualizar una categoría",
      *     tags={"Categorías"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID de la categoría",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"name","description"},
+     *
      *             @OA\Property(property="name", type="string", example="Limpieza"),
      *             @OA\Property(property="description", type="string", example="Servicios de limpieza"),
      *             @OA\Property(property="icon", type="string", example="broom"),
      *             @OA\Property(property="color", type="string", example="#FF0000")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Categoría actualizada exitosamente",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Categoría actualizada exitosamente"),
      *             @OA\Property(property="category", type="object")
      *         )
@@ -167,7 +190,7 @@ class CategoryController extends Controller
 
         if (Gate::denies('update', $category)) {
             return response()->json([
-                'message' => 'No tienes permiso para actualizar esta categoría'
+                'message' => 'No tienes permiso para actualizar esta categoría',
             ], 403);
         }
 
@@ -175,14 +198,14 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'icon' => 'nullable|string',
-            'color' => 'nullable|string'
+            'color' => 'nullable|string',
         ]);
 
         $category->update($validated);
 
         return response()->json([
             'message' => 'Categoría actualizada exitosamente',
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
@@ -192,34 +215,45 @@ class CategoryController extends Controller
      *     summary="Eliminar una categoría",
      *     tags={"Categorías"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID de la categoría",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Categoría eliminada exitosamente",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Categoría eliminada exitosamente")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=403,
      *         description="No autorizado",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="No tienes permiso para eliminar esta categoría")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Categoría no encontrada",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="message", type="string", example="Categoría no encontrada")
      *         )
      *     )
@@ -229,13 +263,13 @@ class CategoryController extends Controller
     {
         if (Gate::denies('delete', $category)) {
             return response()->json([
-                'message' => 'No tienes permiso para eliminar esta categoría'
+                'message' => 'No tienes permiso para eliminar esta categoría',
             ], 403);
         }
         $category->delete();
 
         return response()->json([
-            'message' => 'Categoría eliminada exitosamente'
+            'message' => 'Categoría eliminada exitosamente',
         ]);
     }
 }

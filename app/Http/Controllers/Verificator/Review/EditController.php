@@ -14,4 +14,4 @@ class EditController extends Controller
             'review' => $review,
         ]);
     }
-} 
+}

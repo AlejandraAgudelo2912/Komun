@@ -14,6 +14,7 @@ class VerificationRejectMail extends Mailable
     use Queueable, SerializesModels;
 
     public $assistant;
+
     public $rejectionReason;
 
     public function __construct(Assistant $assistant, string $rejectionReason)

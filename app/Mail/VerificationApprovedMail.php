@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use App\Models\Assistant;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -16,7 +15,7 @@ class VerificationApprovedMail extends Mailable
 
     public $assistant;
 
-    public function __construct( Assistant $assistant )
+    public function __construct(Assistant $assistant)
     {
         $this->assistant = $assistant;
     }

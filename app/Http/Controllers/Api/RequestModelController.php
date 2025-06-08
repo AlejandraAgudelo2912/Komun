@@ -21,31 +21,41 @@ class RequestModelController extends Controller
      *     path="/api/requests",
      *     summary="Listar todas las solicitudes",
      *     tags={"Solicitudes"},
+     *
      *     @OA\Parameter(
      *         name="status",
      *         in="query",
      *         description="Filtrar por estado",
+     *
      *         @OA\Schema(type="string", enum={"pending", "in_progress", "completed", "cancelled"})
      *     ),
+     *
      *     @OA\Parameter(
      *         name="category_id",
      *         in="query",
      *         description="Filtrar por categoría",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="search",
      *         in="query",
      *         description="Buscar por título o descripción",
+     *
      *         @OA\Schema(type="string")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Lista de solicitudes",
+     *
      *         @OA\JsonContent(
      *             type="array",
+     *
      *             @OA\Items(
      *                 type="object",
+     *
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="title", type="string", example="Necesito ayuda con limpieza"),
      *                 @OA\Property(property="description", type="string", example="Busco ayuda para limpiar mi casa"),
@@ -84,7 +94,7 @@ class RequestModelController extends Controller
             ->when($request->search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('title', 'like', "%{$search}%")
-                      ->orWhere('description', 'like', "%{$search}%");
+                        ->orWhere('description', 'like', "%{$search}%");
                 });
             });
 
@@ -92,12 +102,13 @@ class RequestModelController extends Controller
             $query->when(Auth::user()->role === 'needHelp', function ($query) {
                 return $query->where('user_id', Auth::id());
             })
-            ->when(Auth::user()->role === 'assistant', function ($query) {
-                return $query->where('status', 'open');
-            });
+                ->when(Auth::user()->role === 'assistant', function ($query) {
+                    return $query->where('status', 'open');
+                });
         }
 
         $requests = $query->latest()->paginate(10);
+
         return response()->json($requests);
     }
 
@@ -107,10 +118,13 @@ class RequestModelController extends Controller
      *     summary="Crear una nueva solicitud",
      *     tags={"Solicitudes"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"title","description","category_id"},
+     *
      *             @OA\Property(property="title", type="string", example="Necesito ayuda con limpieza"),
      *             @OA\Property(property="description", type="string", example="Busco ayuda para limpiar mi casa"),
      *             @OA\Property(property="category_id", type="integer", example=1),
@@ -118,14 +132,18 @@ class RequestModelController extends Controller
      *             @OA\Property(property="deadline", type="string", format="date", example="2026-12-31")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="Solicitud creada exitosamente",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Solicitud creada exitosamente"),
      *             @OA\Property(property="request", type="object")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado"
@@ -142,7 +160,7 @@ class RequestModelController extends Controller
      */
     public function store(Request $request)
     {
-        if (Gate::denies( 'create', RequestModel::class)) {
+        if (Gate::denies('create', RequestModel::class)) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
         $validated = $request->validate([
@@ -151,7 +169,7 @@ class RequestModelController extends Controller
             'category_id' => 'required|exists:categories,id',
             'location' => 'required|string|max:255',
             'deadline' => 'required|date|after:today',
-            'status' => 'sometimes|in:open,closed,in_progress,completed'
+            'status' => 'sometimes|in:open,closed,in_progress,completed',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -161,7 +179,7 @@ class RequestModelController extends Controller
 
         return response()->json([
             'message' => 'Solicitud creada exitosamente',
-            'request' => $requestModel->load(['category', 'user'])
+            'request' => $requestModel->load(['category', 'user']),
         ], 201);
     }
 
@@ -171,18 +189,23 @@ class RequestModelController extends Controller
      *     summary="Obtener una solicitud específica",
      *     tags={"Solicitudes"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID de la solicitud",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Detalles de la solicitud",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="title", type="string", example="Necesito ayuda con limpieza"),
      *             @OA\Property(property="description", type="string", example="Busco ayuda para limpiar mi casa"),
@@ -214,10 +237,12 @@ class RequestModelController extends Controller
      *             @OA\Property(
      *                 property="comments",
      *                 type="array",
+     *
      *                 @OA\Items(type="object")
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado"
@@ -243,17 +268,22 @@ class RequestModelController extends Controller
      *     summary="Actualizar una solicitud",
      *     tags={"Solicitudes"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID de la solicitud",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"title","description","category_id","location","deadline"},
+     *
      *             @OA\Property(property="title", type="string", example="Necesito ayuda con limpieza"),
      *             @OA\Property(property="description", type="string", example="Busco ayuda para limpiar mi casa"),
      *             @OA\Property(property="category_id", type="integer", example=1),
@@ -262,10 +292,13 @@ class RequestModelController extends Controller
      *             @OA\Property(property="status", type="string", enum={"open", "closed", "in_progress", "completed"}, example="open")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Solicitud actualizada exitosamente",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Solicitud actualizada exitosamente"),
      *             @OA\Property(
      *                 property="request",
@@ -293,6 +326,7 @@ class RequestModelController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado"
@@ -321,14 +355,15 @@ class RequestModelController extends Controller
             'user_roles' => auth()->user()->getRoleNames(),
             'user_permissions' => auth()->user()->getAllPermissions()->pluck('name'),
             'is_owner' => auth()->id() === $requestModel->user_id,
-            'has_admin_role' => auth()->user()->hasRole(['admin', 'god'])
+            'has_admin_role' => auth()->user()->hasRole(['admin', 'god']),
         ]);
 
         if (Gate::denies('update', $requestModel)) {
             \Log::warning('Acceso denegado al actualizar solicitud', [
                 'user_id' => auth()->id(),
-                'request_id' => $requestModel->id
+                'request_id' => $requestModel->id,
             ]);
+
             return response()->json(['message' => 'No tienes permiso para actualizar esta solicitud'], 403);
         }
 
@@ -338,19 +373,19 @@ class RequestModelController extends Controller
             'category_id' => 'required|exists:categories,id',
             'location' => 'required|string|max:255',
             'deadline' => 'required|date|after:today',
-            'status' => 'sometimes|in:open,closed,in_progress,completed'
+            'status' => 'sometimes|in:open,closed,in_progress,completed',
         ]);
 
         $requestModel->update($validated);
 
         \Log::info('Solicitud actualizada exitosamente', [
             'user_id' => auth()->id(),
-            'request_id' => $requestModel->id
+            'request_id' => $requestModel->id,
         ]);
 
         return response()->json([
             'message' => 'Solicitud actualizada exitosamente',
-            'request' => $requestModel->load(['category', 'user'])
+            'request' => $requestModel->load(['category', 'user']),
         ]);
     }
 
@@ -360,20 +395,26 @@ class RequestModelController extends Controller
      *     summary="Eliminar una solicitud",
      *     tags={"Solicitudes"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID de la solicitud",
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Solicitud eliminada exitosamente",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Solicitud eliminada exitosamente")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado"
@@ -398,14 +439,15 @@ class RequestModelController extends Controller
             'user_roles' => auth()->user()->getRoleNames(),
             'user_permissions' => auth()->user()->getAllPermissions()->pluck('name'),
             'is_owner' => auth()->id() === $requestModel->user_id,
-            'has_admin_role' => auth()->user()->hasRole(['admin', 'god'])
+            'has_admin_role' => auth()->user()->hasRole(['admin', 'god']),
         ]);
 
         if (Gate::denies('delete', $requestModel)) {
             \Log::warning('Acceso denegado al eliminar solicitud', [
                 'user_id' => auth()->id(),
-                'request_id' => $requestModel->id
+                'request_id' => $requestModel->id,
             ]);
+
             return response()->json(['message' => 'No tienes permiso para eliminar esta solicitud'], 403);
         }
 
@@ -413,7 +455,7 @@ class RequestModelController extends Controller
 
         \Log::info('Solicitud eliminada exitosamente', [
             'user_id' => auth()->id(),
-            'request_id' => $id
+            'request_id' => $id,
         ]);
 
         return response()->json(['message' => 'Solicitud eliminada exitosamente']);

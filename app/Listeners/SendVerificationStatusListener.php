@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 class SendVerificationStatusListener
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(AssistantVerificationDocumentEvent $event): void
     {
@@ -21,7 +19,7 @@ class SendVerificationStatusListener
         if ($assistantVerificationDocument->status === 'approved') {
             Mail::to($assistant->user->email)->send(new VerificationApprovedMail($assistant));
 
-        } else if ($assistantVerificationDocument->status === 'rejected') {
+        } elseif ($assistantVerificationDocument->status === 'rejected') {
             Mail::to($assistant->user->email)->send(new VerificationRejectMail($assistant, $assistantVerificationDocument->rejection_reason));
         }
     }

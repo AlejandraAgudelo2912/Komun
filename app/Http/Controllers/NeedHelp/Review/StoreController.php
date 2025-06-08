@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\NeedHelp\Review;
 
 use App\Http\Controllers\Controller;
-use App\Models\Review;
 use App\Models\RequestModel;
-use Illuminate\Http\Request;
+use App\Models\Review;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
@@ -27,7 +27,7 @@ class StoreController extends Controller
             ->wherePivot('status', 'accepted')
             ->first();
 
-        if (!$assistant) {
+        if (! $assistant) {
             return redirect()->back()->with('error', 'El asistente seleccionado no es válido.');
         }
 
@@ -64,7 +64,7 @@ class StoreController extends Controller
             ->wherePivot('status', 'accepted')
             ->whereDoesntHave('reviews', function ($query) use ($requestModel) {
                 $query->where('request_models_id', $requestModel->id)
-                      ->where('user_id', auth()->id());
+                    ->where('user_id', auth()->id());
             })
             ->exists();
 

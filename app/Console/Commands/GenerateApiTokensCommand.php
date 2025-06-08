@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Role;
 class GenerateApiTokensCommand extends Command
 {
     protected $signature = 'generate:api-tokens';
+
     protected $description = 'Genera tokens de API para usuarios de cada rol';
 
     public function handle(): void
@@ -21,12 +22,12 @@ class GenerateApiTokensCommand extends Command
             // Buscar un usuario existente con ese rol o crear uno nuevo
             $user = User::role($roleName)->first();
 
-            if (!$user) {
+            if (! $user) {
                 $user = User::create([
                     'name' => ucfirst($roleName),
                     'email' => "{$roleName}@komun.com",
                     'password' => Hash::make('password'),
-                    'email_verified_at' => now()
+                    'email_verified_at' => now(),
                 ]);
 
                 $role = Role::findByName($roleName);
@@ -43,12 +44,12 @@ class GenerateApiTokensCommand extends Command
             $tokens[$roleName] = [
                 'email' => $user->email,
                 'password' => 'password',
-                'token' => $token
+                'token' => $token,
             ];
 
             $this->info("Token generado para {$roleName}:");
             $this->line("Email: {$user->email}");
-            $this->line("Password: password");
+            $this->line('Password: password');
             $this->line("Token: {$token}");
             $this->newLine();
         }
@@ -57,7 +58,7 @@ class GenerateApiTokensCommand extends Command
         $json = json_encode($tokens, JSON_PRETTY_PRINT);
         file_put_contents(storage_path('api-tokens.json'), $json);
 
-        $this->info('Tokens guardados en: ' . storage_path('api-tokens.json'));
+        $this->info('Tokens guardados en: '.storage_path('api-tokens.json'));
         $this->info('Puedes usar estos tokens en la documentación de la API.');
     }
 }

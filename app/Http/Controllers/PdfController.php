@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PdfController extends Controller
 {
@@ -49,12 +48,12 @@ class PdfController extends Controller
 
             'activity_stats' => [
                 'join_date' => $user->created_at->format('d/m/Y'),
-            ]
+            ],
         ];
 
         $pdf = PDF::loadView('pdf.user-stats', [
             'user' => $user,
-            'stats' => $stats
+            'stats' => $stats,
         ]);
 
         $pdf->setPaper('a4');
@@ -90,8 +89,8 @@ class PdfController extends Controller
             'filters' => [
                 'search' => $request->search,
                 'role' => $request->role,
-                'status' => $request->status
-            ]
+                'status' => $request->status,
+            ],
         ]);
 
         $pdf->setPaper('a4');
@@ -114,6 +113,6 @@ class PdfController extends Controller
             'logOutputFile' => storage_path('logs/pdf.log'),
         ]);
 
-        return $pdf->download('usuarios-' . now()->format('Y-m-d') . '.pdf');
+        return $pdf->download('usuarios-'.now()->format('Y-m-d').'.pdf');
     }
 }

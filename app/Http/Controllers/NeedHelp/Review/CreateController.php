@@ -4,8 +4,8 @@ namespace App\Http\Controllers\NeedHelp\Review;
 
 use App\Http\Controllers\Controller;
 use App\Models\RequestModel;
-use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CreateController extends Controller
 {
@@ -25,7 +25,7 @@ class CreateController extends Controller
             ->wherePivot('status', 'accepted')
             ->whereDoesntHave('reviews', function ($query) use ($requestModel) {
                 $query->where('request_models_id', $requestModel->id)
-                      ->where('user_id', auth()->id());
+                    ->where('user_id', auth()->id());
             })
             ->get();
 
@@ -38,4 +38,4 @@ class CreateController extends Controller
             'acceptedApplicants' => $acceptedApplicants,
         ]);
     }
-} 
+}

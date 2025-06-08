@@ -14,9 +14,9 @@ class AssistantVerificationDocumentFactory extends Factory
     {
         return [
             'assistant_id' => Assistant::factory(),
-            'dni_front_path' => 'verifications/dni_front/' . $this->faker->uuid() . '.jpg',
-            'dni_back_path' => 'verifications/dni_back/' . $this->faker->uuid() . '.jpg',
-            'selfie_path' => 'verifications/selfies/' . $this->faker->uuid() . '.jpg',
+            'dni_front_path' => 'verifications/dni_front/'.$this->faker->uuid().'.jpg',
+            'dni_back_path' => 'verifications/dni_back/'.$this->faker->uuid().'.jpg',
+            'selfie_path' => 'verifications/selfies/'.$this->faker->uuid().'.jpg',
             'status' => $this->faker->randomElement(['pending', 'approved', 'rejected']),
             'rejection_reason' => $this->faker->optional()->sentence(),
         ];
@@ -51,4 +51,4 @@ class AssistantVerificationDocumentFactory extends Factory
             ];
         });
     }
-} 
+}

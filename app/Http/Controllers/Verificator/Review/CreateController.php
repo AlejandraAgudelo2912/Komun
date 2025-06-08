@@ -24,4 +24,4 @@ class CreateController extends Controller
             'requestModel' => $requestModel,
         ]);
     }
-} 
+}

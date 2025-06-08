@@ -16,4 +16,4 @@ class DestroyController extends Controller
             ->route('admin.categories.index')
             ->with('success', 'Categoría eliminada exitosamente.');
     }
-} 
+}

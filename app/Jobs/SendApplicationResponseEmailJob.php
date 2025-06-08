@@ -16,7 +16,9 @@ class SendApplicationResponseEmailJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $applicant;
+
     public $requestModel;
+
     public $status;
 
     public function __construct(User $applicant, $requestModel, $status)

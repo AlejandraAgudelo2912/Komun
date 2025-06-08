@@ -16,7 +16,7 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 $user = Auth::guard($guard)->user();
-                
+
                 if ($user->hasRole('admin')) {
                     return redirect()->route('admin.dashboard');
                 } elseif ($user->hasRole('god')) {
@@ -28,11 +28,11 @@ class RedirectIfAuthenticated
                 } elseif ($user->hasRole('needHelp')) {
                     return redirect()->route('needhelp.dashboard');
                 }
-                
+
                 return redirect(RouteServiceProvider::HOME);
             }
         }
 
         return $next($request);
     }
-} 
+}

@@ -56,4 +56,4 @@ class UpdateController extends Controller
         return redirect()->route('god.profiles.index')
             ->with('success', 'Usuario actualizado correctamente.');
     }
-} 
+}

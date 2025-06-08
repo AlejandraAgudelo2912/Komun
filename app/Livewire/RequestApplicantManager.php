@@ -17,7 +17,8 @@ class RequestApplicantManager extends Component
 
         $applicant = $this->requestModel->applicants->find($userId);
 
-        SendApplicationResponseEmailJob::dispatch($applicant, $this->requestModel, 'accepted');    }
+        SendApplicationResponseEmailJob::dispatch($applicant, $this->requestModel, 'accepted');
+    }
 
     public function rejectApplicant($userId)
     {
@@ -32,6 +33,7 @@ class RequestApplicantManager extends Component
     public function render()
     {
         $applicants = $this->requestModel->applicants;
+
         return view('livewire.request-applicant-manager', compact('applicants'));
     }
 }

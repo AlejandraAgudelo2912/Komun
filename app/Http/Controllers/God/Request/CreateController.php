@@ -11,7 +11,7 @@ class CreateController extends Controller
     public function __invoke(): View
     {
         $categories = Category::all();
-        
+
         return view('god.requests.create', compact('categories'));
     }
-} 
+}

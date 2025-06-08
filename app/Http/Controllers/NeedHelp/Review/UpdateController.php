@@ -4,8 +4,8 @@ namespace App\Http\Controllers\NeedHelp\Review;
 
 use App\Http\Controllers\Controller;
 use App\Models\Review;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class UpdateController extends Controller
 {
@@ -42,4 +42,4 @@ class UpdateController extends Controller
             ->route('needhelp.requests.show', $review->requestModel)
             ->with('success', 'Reseña actualizada correctamente.');
     }
-} 
+}

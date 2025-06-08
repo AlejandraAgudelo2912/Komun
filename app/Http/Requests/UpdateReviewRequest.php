@@ -11,7 +11,6 @@ class UpdateReviewRequest extends FormRequest
         return true;
     }
 
-  
     public function rules(): array
     {
         return [
@@ -30,4 +29,4 @@ class UpdateReviewRequest extends FormRequest
             'comment.max' => 'El comentario no puede tener más de 1000 caracteres.',
         ];
     }
-} 
+}

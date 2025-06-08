@@ -14,11 +14,11 @@ class RoleSeeder extends Seeder
             'god',
             'verificator',
             'assistant',
-            'needHelp'
+            'needHelp',
         ];
 
         foreach ($roles as $role) {
             Role::create(['name' => $role]);
         }
     }
-} 
+}
