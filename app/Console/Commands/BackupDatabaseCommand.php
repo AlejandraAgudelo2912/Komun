@@ -10,11 +10,11 @@ class BackupDatabaseCommand extends Command
 {
     protected $signature = 'komun:backup-db';
 
-    protected $description = 'Exporta todas las tablas de la base de datos a archivos JSON';
+    protected $description = 'Export database tables to JSON files';
 
     public function handle()
     {
-        $this->info('Exportando tablas a JSON...');
+        $this->info('Exporting tables...');
 
         $tables = DB::select('SHOW TABLES');
         $dbName = config('database.connections.mysql.database');
@@ -26,7 +26,7 @@ class BackupDatabaseCommand extends Command
 
         foreach ($tables as $table) {
             $tableName = $table->$keyName;
-            $this->info("Exportando tabla: $tableName");
+            $this->info("Exporting table: $tableName");
 
             $data = DB::table($tableName)->get();
             $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -34,6 +34,6 @@ class BackupDatabaseCommand extends Command
             Storage::put("backups/json/{$tableName}.json", $json);
         }
 
-        $this->info('Exportación completada. Archivos guardados en: storage/app/backups/json');
+        $this->info('Tables exported to: storage/app/backups/json');
     }
 }

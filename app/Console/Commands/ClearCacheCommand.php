@@ -8,11 +8,11 @@ class ClearCacheCommand extends Command
 {
     protected $signature = 'komun:clear-cache';
 
-    protected $description = 'Limpia todas las cachés de Laravel de forma segura';
+    protected $description = 'Clean application caches';
 
     public function handle()
     {
-        $this->info('Limpiando cachés...');
+        $this->info('Cleaning caches...');
 
         $this->callSilent('cache:clear');
         $this->callSilent('config:clear');
@@ -20,7 +20,7 @@ class ClearCacheCommand extends Command
         $this->callSilent('view:clear');
         $this->callSilent('event:clear');
 
-        $this->info('✅ Cachés limpiadas correctamente.');
+        $this->info('Caches cleared!');
 
         return 0;
     }

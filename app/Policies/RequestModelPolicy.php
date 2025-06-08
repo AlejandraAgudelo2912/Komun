@@ -31,9 +31,7 @@ class RequestModelPolicy
             return true;
         }
 
-        $hasAdminRole = $user->hasRole(['admin', 'god']);
-
-        return $hasAdminRole;
+        return $user->hasRole(['admin', 'god']);
     }
 
     public function delete(User $user, RequestModel $requestModel): bool

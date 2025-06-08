@@ -11,7 +11,7 @@ class GenerateApiTokensCommand extends Command
 {
     protected $signature = 'generate:api-tokens';
 
-    protected $description = 'Genera tokens de API para usuarios de cada rol';
+    protected $description = 'Generate API tokens';
 
     public function handle(): void
     {
@@ -19,7 +19,6 @@ class GenerateApiTokensCommand extends Command
         $tokens = [];
 
         foreach ($roles as $roleName) {
-            // Buscar un usuario existente con ese rol o crear uno nuevo
             $user = User::role($roleName)->first();
 
             if (! $user) {
@@ -36,10 +35,8 @@ class GenerateApiTokensCommand extends Command
                 $this->info("Usuario {$roleName} creado.");
             }
 
-            // Revocar tokens existentes
             $user->tokens()->delete();
 
-            // Generar nuevo token
             $token = $user->createToken("{$roleName}-token")->plainTextToken;
             $tokens[$roleName] = [
                 'email' => $user->email,
@@ -47,18 +44,17 @@ class GenerateApiTokensCommand extends Command
                 'token' => $token,
             ];
 
-            $this->info("Token generado para {$roleName}:");
+            $this->info("Generating token for {$roleName}:");
             $this->line("Email: {$user->email}");
             $this->line('Password: password');
             $this->line("Token: {$token}");
             $this->newLine();
         }
 
-        // Guardar los tokens en un archivo para referencia
         $json = json_encode($tokens, JSON_PRETTY_PRINT);
         file_put_contents(storage_path('api-tokens.json'), $json);
 
-        $this->info('Tokens guardados en: '.storage_path('api-tokens.json'));
-        $this->info('Puedes usar estos tokens en la documentación de la API.');
+        $this->info('Save tokens in: '.storage_path('api-tokens.json'));
+        $this->info('You can use these tokens to access the API.');
     }
 }

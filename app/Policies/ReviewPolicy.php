@@ -34,14 +34,4 @@ class ReviewPolicy
     {
         return $user->id === $review->user_id || $user->hasRole(['admin', 'god']);
     }
-
-    public function restore(User $user, Review $review): bool
-    {
-        return $user->id === $review->user_id || $user->hasRole(['admin', 'god']);
-    }
-
-    public function forceDelete(User $user, Review $review): bool
-    {
-        return $user->id === $review->user_id || $user->hasRole(['admin', 'god']);
-    }
 }
