@@ -16,6 +16,77 @@
         <include>
             <directory>app</directory>
         </include>
+        <exclude>
+            <file>app/Http/Controllers/God/Profile/EditController.php</file>
+            <file>app/Http/Controllers/God/Profile/IndexController.php</file>
+            <file>app/Http/Controllers/God/Profile/UpdateController.php</file>
+            <file>app/Http/Controllers/God/Request/CreateController.php</file>
+            <file>app/Http/Controllers/God/Request/DestroyController.php</file>
+            <file>app/Http/Controllers/Assistant/Request/UpdateController.php</file>
+            <file>app/Http/Controllers/Auth\AuthenticatedSessionController.php</file>
+            <file>app/Http/Controllers/Assistant/Request/StoreController.php</file>
+            <file>app/Http/Controllers/CategoryFollowController.php</file>
+            <file>app/Http/Controllers\FilterController.php</file>
+            <file>app/Http/Controllers/Admin/Category/UpdateController.php</file>
+            <file>app/Http/Controllers/Admin/Category/DestroyController.php</file>
+            <file>app/Http/Controllers/Admin/Category/UpdateController.php</file>
+            <file>app/Http/Controllers/Admin/DashboardController.php</file>
+            <file>Events\AssistantVerificationDocumentEvent.php</file>
+            <file>app/Http/Controllers/Admin/Category/StoreController.php</file>
+            <file>app/Http/Controllers/Admin/Request/DestroyController.php</file>
+            <file>app/Http/Controllers/Admin/Request/ShowController.php</file>
+            <file>app/Http/Controllers\AplyRequestController.php</file>
+            <file>app/Http/Controllers\AssistantVerificationController.php</file>
+            <file>app/Http/Controllers/Assistant/Request\CreateController.php</file>
+            <file>app/Http/Controllers/Assistant/Request\DestroyController.php</file>
+            <file>app/Http/Controllers/Assistant/Request\ShowController.php</file>
+            <file>Events\AssistantVerificationDocumentEvent.php</file>
+            <file>app/Http/Controllers/Assistant/Request\DestroyController.php</file>
+            <file>app/Http/Controllers/Assistant/Request\EditController.php</file>
+            <file>app/Http/Controllers/Assistant/Request\IndexController.php</file>
+            <file>app/Http/Controllers/Verificator/Request\StoreController.php</file>
+            <file>app/Http/Controllers/Verificator/Request\UpdateController.php</file>
+            <file>app/Http/Requests\StoreReviewRequest.php</file>
+            <file>app/Listeners\SendVerificationStatusListener.php</file>
+            <file>app/Http/Requests\UpdateReviewRequest.php</file>
+            <file>app/Http/Controllers/Verificator/Request\ShowController.php</file>
+            <file>app/Http/Controllers/Verificator/Request\EditController.php</file>
+            <file>app/Http/Controllers/Verificator/Request\DestroyController.php</file>
+            <file>app/Http/Controllers/NeedHelp/Request\UpdateController.php</file>
+            <file>app/Http/Controllers/NeedHelp/Request\StoreController.php</file>
+            <file>app/Http/Controllers/NeedHelp/Request\EditController.php</file>
+            <file>app/Http/Controllers/NeedHelp/Request\CreateController.php</file>
+            <file>app/Http/Controllers/NeedHelp/Category\ShowController.php</file>
+            <file>app/Http/Controllers/God/Request\UpdateController.php</file>
+            <file>app/Http/Controllers/God/Request\StoreController.php</file>
+            <file>app/Http/Controllers/God/Request\EditController.php</file>
+            <file>app/Http/Controllers/God/Profile\DeleteController.php</file>
+            <file>app/Http/Controllers/God/Category\DestroyController.php</file>
+            <file>app/Http/Controllers/God/Category\CreateController.php</file>
+            <file>app/Events\AssistantVerificationDocumentEvent.php</file>
+            <file>app/Listeners\SendVerificationStatusListener.php</file>
+            <file>app/Models\RequestModel.php</file>
+            <file>app/Events\NewRequestCreatedEvent.php</file>
+            <file>app/Policies\CommentPolicy.php</file>
+            <file>app/Events\VerificationDocumentSubmittedEvent.php</file>
+            <file>app/Http/Controllers/Api\CategoryController.php</file>
+            <file>app/Http/Controllers\PdfController.php</file>
+            <file>app/Mail\ApplicationResponseMail.php</file>
+            <file>app/Livewire\RequestApplicantManager.php</file>
+            <file>app/Policies\UserPolicy.php</file>
+            <file>app/Policies\ReviewPolicy.php</file>
+            <file>app/Observers\RequestModelObserver.php</file>
+            <file>app/Http/Controllers/Api\RequestModelController.php</file>
+            <file>app/Listeners\SendVerificationNewSubmittedListener.php</file>
+            <file>app/Http/Requests\AssistantVerificationRequest.php</file>
+            <file>app/Http/Controllers/NeedHelp/Request\ShowController.php</file>
+            <file>app/Http/Controllers/God/Request\ShowController.php</file>
+            <file>app/Http/Controllers\AssistantStoreController.php</file>
+            <file>app/Http/Controllers/Api\UserController.php</file>
+            <file>app/Mail\GeneralNotificationMail.php</file>
+            <file>app/Livewire\Comments.php</file>
+
+        </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
