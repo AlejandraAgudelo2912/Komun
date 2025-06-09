@@ -147,16 +147,15 @@
                                 <!-- Estadísticas del Asistente -->
                                 <div class="grid grid-cols-2 gap-2 pt-2 border-t">
                                     <div class="text-center">
-                                        <p class="text-xs text-gray-500">Valoración</p>
+                                        <p class="text-xs text-gray-500">Estado</p>
                                         <p class="text-lg font-semibold text-gray-800">
-                                            {{ number_format($user->assistant->rating, 1) }}
-                                            <span class="text-yellow-500">★</span>
+                                            {{ $user->assistant->status }}
                                         </p>
                                     </div>
                                     <div class="text-center">
-                                        <p class="text-xs text-gray-500">Reseñas</p>
+                                        <p class="text-xs text-gray-500">Verificado</p>
                                         <p class="text-lg font-semibold text-gray-800">
-                                            {{ $user->assistant->total_reviews }}
+                                            {{ $user->assistant->is_verified ? 'Sí' : 'No' }}
                                         </p>
                                     </div>
                                 </div>

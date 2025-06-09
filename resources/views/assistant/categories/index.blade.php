@@ -54,18 +54,6 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
                                             {{ $category->requests_count ?? 0 }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <div class="flex space-x-2">
-                                                <a href="{{ route('assistant.categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
-                                                <form action="{{ route('assistant.categories.destroy', $category) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro de que quieres eliminar esta categoría?')">
-                                                        Eliminar
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

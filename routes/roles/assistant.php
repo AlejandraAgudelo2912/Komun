@@ -9,7 +9,7 @@ Route::middleware(['auth', 'role:assistant'])->prefix('assistant')->name('assist
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.index');
 
-    Route::get('/requests/filter', [App\Http\Controllers\FilterController::class, 'filter'])
+    Route::get('/requests/filter', [App\Http\Controllers\FilterController::class])
         ->middleware('can:viewAny,App\Models\RequestModel')
         ->name('requests.filter');
 

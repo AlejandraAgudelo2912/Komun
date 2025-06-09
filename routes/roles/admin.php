@@ -69,7 +69,4 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->middleware('can:view,requestModel')
         ->name('requests.show');
 
-    Route::delete('/reviews/{review}', \App\Http\Controllers\Admin\Review\DestroyController::class)
-        ->name('reviews.destroy');
-
 });

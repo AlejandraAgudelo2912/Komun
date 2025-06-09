@@ -24,11 +24,11 @@
 
                         <div>
                             <x-komun.label for="description" :value="__('Descripción')" required />
-                            <textarea 
-                                id="description" 
-                                name="description" 
-                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
-                                rows="4" 
+                            <textarea
+                                id="description"
+                                name="description"
+                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                rows="4"
                                 required
                             >{{ old('description', $requestModel->description) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
@@ -75,13 +75,13 @@
                         />
 
                         <div>
-                            <x-input-label for="assistance_notes" :value="__('Notas de Asistencia')" />
+                            <x-komun.label for="assistance_notes" :value="__('Notas de Asistencia')" />
                             <textarea id="assistance_notes" name="assistance_notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('assistance_notes', $requestModel->assistance_notes) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('assistance_notes')" />
                         </div>
 
                         <div class="flex items-center gap-4">
-                            <x-primary-button>{{ __('Actualizar Solicitud') }}</x-primary-button>
+                            <button>{{ __('Actualizar Solicitud') }}</button>
                             <a href="{{ route('assistant.requests.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 {{ __('Cancelar') }}
                             </a>
@@ -91,4 +91,4 @@
             </div>
         </div>
     </div>
-</x-app-layout> 
+</x-app-layout>

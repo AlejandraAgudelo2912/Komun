@@ -28,15 +28,4 @@ Route::middleware(['auth', 'role:verificator'])->prefix('verificator')->name('ve
     Route::get('/requests/{request}/edit', App\Http\Controllers\Verificator\Request\EditController::class)->name('requests.edit');
     Route::put('/requests/{request}', App\Http\Controllers\Verificator\Request\UpdateController::class)->name('requests.update');
     Route::delete('/requests/{request}', App\Http\Controllers\Verificator\Request\DestroyController::class)->name('requests.destroy');
-
-    Route::get('/requests/{requestModel}/review', \App\Http\Controllers\Verificator\Review\CreateController::class)
-        ->name('reviews.create');
-    Route::post('/requests/{requestModel}/review', \App\Http\Controllers\Verificator\Review\StoreController::class)
-        ->name('reviews.store');
-    Route::get('/requests/{requestModel}/review/edit', \App\Http\Controllers\Verificator\Review\EditController::class)
-        ->name('reviews.edit');
-    Route::put('/requests/{requestModel}/review', \App\Http\Controllers\Verificator\Review\UpdateController::class)
-        ->name('reviews.update');
-    Route::delete('/requests/{requestModel}/review', \App\Http\Controllers\Verificator\Review\DestroyController::class)
-        ->name('reviews.destroy');
 });

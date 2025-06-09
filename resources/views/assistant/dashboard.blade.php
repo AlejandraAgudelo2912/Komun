@@ -41,19 +41,6 @@
                 <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-6 rounded-lg shadow-lg text-white">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm opacity-75">Valoración Promedio</p>
-                            <p class="text-3xl font-bold">{{ number_format($averageRating, 1) }} ★</p>
-                        </div>
-                        <i class="fas fa-star text-3xl opacity-75"></i>
-                    </div>
-                    <div class="mt-4">
-                        <p class="text-sm opacity-75">Total reseñas: {{ $totalReviews }}</p>
-                    </div>
-                </div>
-
-                <div class="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-lg shadow-lg text-white">
-                    <div class="flex items-center justify-between">
-                        <div>
                             <p class="text-sm opacity-75">Horas de Ayuda</p>
                             <p class="text-3xl font-bold">{{ $totalHours }}</p>
                         </div>
@@ -72,69 +59,6 @@
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Actividad Mensual</h3>
                     <div class="h-64">
                         <canvas id="monthlyActivity"></canvas>
-                    </div>
-                </div>
-
-                <!-- Gráfico de Valoraciones -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Distribución de Valoraciones</h3>
-                    <div class="h-64">
-                        <canvas id="ratingDistribution"></canvas>
-                    </div>
-                </div>
-
-                <!-- Últimas Solicitudes -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Últimas Solicitudes</h3>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead>
-                                <tr>
-                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Título</th>
-                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
-                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @foreach($latestRequests as $request)
-                                <tr>
-                                    <td class="px-4 py-2 text-sm text-gray-900">{{ $request->title }}</td>
-                                    <td class="px-4 py-2">
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full 
-                                            {{ $request->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                                               ($request->status === 'in_progress' ? 'bg-blue-100 text-blue-800' : 
-                                               'bg-green-100 text-green-800') }}">
-                                            {{ ucfirst($request->status) }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-2 text-sm text-gray-500">{{ $request->created_at->diffForHumans() }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Últimas Reseñas -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Últimas Reseñas</h3>
-                    <div class="space-y-4">
-                        @foreach($latestReviews as $review)
-                        <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
-                            <img src="{{ $review->user->profile_photo_url }}" alt="{{ $review->user->name }}" class="w-10 h-10 rounded-full">
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between">
-                                    <p class="font-medium text-gray-900">{{ $review->user->name }}</p>
-                                    <div class="flex items-center">
-                                        <span class="text-yellow-500">{{ str_repeat('★', $review->rating) }}</span>
-                                        <span class="text-gray-400">{{ str_repeat('★', 5 - $review->rating) }}</span>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-gray-600 mt-1">{{ $review->comment }}</p>
-                                <p class="text-xs text-gray-500 mt-2">{{ $review->created_at->diffForHumans() }}</p>
-                            </div>
-                        </div>
-                        @endforeach
                     </div>
                 </div>
             </div>
@@ -197,39 +121,6 @@
                 scales: {
                     y: {
                         beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Gráfico de Distribución de Valoraciones
-        const ratingCtx = document.getElementById('ratingDistribution').getContext('2d');
-        new Chart(ratingCtx, {
-            type: 'bar',
-            data: {
-                labels: ['1 ★', '2 ★', '3 ★', '4 ★', '5 ★'],
-                datasets: [{
-                    data: {!! json_encode($ratingDistribution) !!},
-                    backgroundColor: [
-                        '#EF4444', '#F97316', '#F59E0B', '#10B981', '#3B82F6'
-                    ],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
                     }
                 }
             }

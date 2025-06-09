@@ -71,7 +71,4 @@ Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(func
         ->middleware('can:delete,requestModel')
         ->name('requests.destroy');
 
-    Route::delete('/reviews/{review}', \App\Http\Controllers\God\Review\DestroyController::class)
-        ->name('reviews.destroy');
-
 });

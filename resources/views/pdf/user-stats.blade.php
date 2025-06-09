@@ -271,28 +271,6 @@
                 </div>
             </div>
 
-            <!-- Estadísticas de Reseñas -->
-            <div class="section">
-                <h3 class="section-title">Estadísticas de Reseñas</h3>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-title">Total de Reseñas</div>
-                        <div class="stat-value">{{ $stats['review_stats']['total_reviews'] }}</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-title">Valoración Promedio</div>
-                        <div class="stat-value">
-                            <span class="rating-value">{{ $stats['review_stats']['average_rating'] }}</span>
-                            <span class="rating-label">/5</span>
-                        </div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-title">Reseñas Recientes (30 días)</div>
-                        <div class="stat-value">{{ $stats['review_stats']['recent_reviews'] }}</div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Estadísticas de Actividad -->
             <div class="section">
                 <h3 class="section-title">Actividad en la Plataforma</h3>

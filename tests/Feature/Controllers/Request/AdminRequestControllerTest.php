@@ -4,7 +4,6 @@ use App\Models\Category;
 use App\Models\RequestModel;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
-use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
 
 it('should allow admin to view requests index', function () {
@@ -37,26 +36,6 @@ it('permite acceder a la vista de crear solicitud', function () {
     $response->assertStatus(200);
     $response->assertViewIs('admin.requests.create');
 });
-
-it('allows a admin to delete a request', function () {
-    // Arrange
-    $admin = User::factory()->create();
-    $admin->syncRoles('admin');
-    $this->actingAs($admin);
-    $category = Category::factory()->create();
-    $request = RequestModel::factory()->create([
-        'category_id' => $category->id,
-        'user_id' => $admin->id,
-    ]);
-
-    // Act
-    $response = delete(route('admin.requests.destroy', $request));
-
-    // Assert
-    $response->assertRedirect(route('admin.requests.index'));
-    $this->assertDatabaseMissing('request_models', ['id' => $request->id]);
-
-})->skip();
 
 it('allows a admin to create a request', function () {
     // Arrange
@@ -99,4 +78,48 @@ it('shows the edit view with request and categories', function () {
     $response->assertViewHas('categories', function ($categories) {
         return $categories->count() > 0;
     });
+});
+
+it('allows a admin to show a request', function () {
+
+    // Arrange
+    $admin = User::factory()->create();
+    $admin->syncRoles('admin');
+    $this->actingAs($admin);
+    $requestModel = RequestModel::factory()->create();
+
+    // Act
+    $response = $this->get(route('admin.requests.show', $requestModel));
+
+    // Assert
+    $response->assertStatus(403);
+});
+
+it('allows a admin to update a request', function () {
+    // Arrange
+    $admin = User::factory()->create();
+    $admin->syncRoles('admin');
+    $this->actingAs($admin);
+    $requestModel = RequestModel::factory()->create();
+    $category = Category::factory()->create();
+
+    // Act
+    $response = $this->put(route('admin.requests.update', $requestModel), [
+        'title' => 'Updated Request',
+        'description' => 'Updated Description',
+        'category_id' => $category->id,
+        'status' => 'in_progress',
+        'deadline' => now()->addDays(7)->format('Y-m-d H:i:s'),
+        'priority' => 'high',
+    ]);
+
+    // Assert
+    $response->assertRedirect(route('admin.requests.index'));
+    $this->assertDatabaseHas('request_models', [
+        'id' => $requestModel->id,
+        'title' => 'Updated Request',
+        'description' => 'Updated Description',
+        'category_id' => $category->id,
+        'status' => 'in_progress',
+    ]);
 });

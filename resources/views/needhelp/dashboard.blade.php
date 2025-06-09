@@ -50,19 +50,6 @@
                         <p class="text-sm opacity-75">Este mes: {{ $hoursThisMonth }}</p>
                     </div>
                 </div>
-
-                <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-6 rounded-lg shadow-lg text-white">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm opacity-75">Valoraciones</p>
-                            <p class="text-3xl font-bold">{{ $totalReviews }}</p>
-                        </div>
-                        <i class="fas fa-star text-3xl opacity-75"></i>
-                    </div>
-                    <div class="mt-4">
-                        <p class="text-sm opacity-75">Promedio: {{ number_format($averageRating, 1) }} ★</p>
-                    </div>
-                </div>
             </div>
 
             <!-- Gráficos y Estadísticas Detalladas -->
@@ -115,53 +102,30 @@
                     </div>
                 </div>
 
-                <!-- Últimas Reseñas -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Últimas Reseñas</h3>
-                    <div class="space-y-4">
-                        @foreach($latestReviews as $review)
-                        <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
-                            <img src="{{ $review->assistant->user->profile_photo_url }}" alt="{{ $review->assistant->user->name }}" class="w-10 h-10 rounded-full">
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between">
-                                    <p class="font-medium text-gray-900">{{ $review->assistant->user->name }}</p>
-                                    <div class="flex items-center">
-                                        <span class="text-yellow-500">{{ str_repeat('★', $review->rating) }}</span>
-                                        <span class="text-gray-400">{{ str_repeat('★', 5 - $review->rating) }}</span>
+                <!-- Estadísticas de Asistentes -->
+                <div class="mt-8">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Top Asistentes</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            @foreach($topAssistants as $assistant)
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <img src="{{ $assistant->user->profile_photo_url }}" alt="{{ $assistant->user->name }}" class="w-12 h-12 rounded-full">
+                                    <div>
+                                        <h4 class="font-medium text-gray-900">{{ $assistant->user->name }}</h4>
+                                        <div class="flex items-center mt-1">
+                                            <span class="text-yellow-500">{{ str_repeat('★', round($assistant->average_rating)) }}</span>
+                                            <span class="text-sm text-gray-500 ml-1">({{ number_format($assistant->average_rating, 1) }})</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <p class="text-sm text-gray-600 mt-1">{{ $review->comment }}</p>
-                                <p class="text-xs text-gray-500 mt-2">{{ $review->created_at->diffForHumans() }}</p>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-            <!-- Estadísticas de Asistentes -->
-            <div class="mt-8">
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Top Asistentes</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        @foreach($topAssistants as $assistant)
-                        <div class="p-4 bg-gray-50 rounded-lg">
-                            <div class="flex items-center space-x-3">
-                                <img src="{{ $assistant->user->profile_photo_url }}" alt="{{ $assistant->user->name }}" class="w-12 h-12 rounded-full">
-                                <div>
-                                    <h4 class="font-medium text-gray-900">{{ $assistant->user->name }}</h4>
-                                    <div class="flex items-center mt-1">
-                                        <span class="text-yellow-500">{{ str_repeat('★', round($assistant->average_rating)) }}</span>
-                                        <span class="text-sm text-gray-500 ml-1">({{ number_format($assistant->average_rating, 1) }})</span>
-                                    </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-600">{{ $assistant->total_requests }} solicitudes atendidas</p>
+                                    <p class="text-sm text-gray-600">{{ $assistant->total_hours }} horas de ayuda</p>
                                 </div>
                             </div>
-                            <div class="mt-3">
-                                <p class="text-sm text-gray-600">{{ $assistant->total_requests }} solicitudes atendidas</p>
-                                <p class="text-sm text-gray-600">{{ $assistant->total_hours }} horas de ayuda</p>
-                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
                 </div>
             </div>

@@ -129,8 +129,8 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <p class="text-lg font-semibold text-yellow-500">{{ number_format($assistant->rating, 1) }} ★</p>
-                                <p class="text-sm text-gray-500">{{ $assistant->total_reviews }} reseñas</p>
+                                <p class="text-sm text-gray-500">Estado: {{ $assistant->status }}</p>
+                                <p class="text-sm text-gray-500">Verificado: {{ $assistant->is_verified ? 'Sí' : 'No' }}</p>
                             </div>
                         </div>
                         @endforeach

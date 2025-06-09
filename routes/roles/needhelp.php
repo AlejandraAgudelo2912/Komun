@@ -42,13 +42,4 @@ Route::middleware(['auth', 'role:needHelp'])->prefix('needhelp')->name('needhelp
     Route::delete('/requests/{requestModel}', App\Http\Controllers\NeedHelp\Request\DestroyController::class)
         ->middleware('can:delete,requestModel')
         ->name('requests.destroy');
-
-    Route::get('/requests/{requestModel}/review', \App\Http\Controllers\NeedHelp\Review\CreateController::class)
-        ->name('reviews.create');
-    Route::post('/requests/{requestModel}/review', \App\Http\Controllers\NeedHelp\Review\StoreController::class)
-        ->name('reviews.store');
-    Route::get('/reviews/{review}/edit', \App\Http\Controllers\NeedHelp\Review\EditController::class)
-        ->name('reviews.edit');
-    Route::put('/reviews/{review}', \App\Http\Controllers\NeedHelp\Review\UpdateController::class)
-        ->name('reviews.update');
 });
