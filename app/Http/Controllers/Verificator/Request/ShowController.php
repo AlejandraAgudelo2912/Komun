@@ -9,9 +9,6 @@ class ShowController extends Controller
 {
     public function __invoke(RequestModel $requestModel)
     {
-        return view('verificator.requests.show', [
-            'requestModel' => $requestModel,
-        ]);
-
+        return view('verificator.requests.show', compact('requestModel'));
     }
 }

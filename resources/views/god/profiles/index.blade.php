@@ -163,7 +163,7 @@
 
                             <!--Descargar pdf -->
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{{ route('user.stats.pdf', $user) }}"
+                                <a href="{{ route('user.stats.pdf.god', $user) }}"
                                    class="text-indigo-600 hover:text-indigo-900 mr-3">
                                     <i class="fas fa-download"></i> Descargar PDF
                                 </a>

@@ -39,9 +39,14 @@ Route::middleware([
     Route::delete('/categories/{category}/follow', [CategoryFollowController::class, 'unfollow'])->name('categories.unfollow');
     Route::get('/categories/followed', [CategoryFollowController::class, 'followedCategories'])->name('categories.followed');
 
-    Route::middleware(['auth', 'role:admin,god'])->group(function () {
+    Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/user/{user}/stats', [PdfController::class, 'userStats'])
             ->name('user.stats.pdf');
+    });
+
+    Route::middleware(['auth', 'role:god'])->group(function () {
+        Route::get('/user/{user}/stats', [PdfController::class, 'userStats'])
+            ->name('user.stats.pdf.god');
     });
 
 });

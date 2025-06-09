@@ -21,7 +21,7 @@
                             <!-- Búsqueda -->
                             <div>
                                 <label for="search" class="block text-sm font-medium text-gray-700">Buscar</label>
-                                <input type="text" name="search" id="search" value="{{ request('search') }}" 
+                                <input type="text" name="search" id="search" value="{{ request('search') }}"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                     placeholder="Buscar en título o descripción">
                             </div>
@@ -54,7 +54,7 @@
                             <!-- Ubicación -->
                             <div>
                                 <label for="location" class="block text-sm font-medium text-gray-700">Ubicación</label>
-                                <input type="text" name="location" id="location" value="{{ request('location') }}" 
+                                <input type="text" name="location" id="location" value="{{ request('location') }}"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                     placeholder="Filtrar por ubicación">
                             </div>
@@ -79,9 +79,9 @@
                                             {{ ucfirst($request->status) }}
                                         </span>
                                     </div>
-                                    
+
                                     <p class="text-gray-600 mb-4 line-clamp-2">{{ $request->description }}</p>
-                                    
+
                                     <div class="grid grid-cols-2 gap-2 text-sm mb-4">
                                         <div>
                                             <p class="text-gray-500">Categoría</p>
@@ -123,14 +123,9 @@
                                 </div>
                             @endforeach
                         </div>
-
-                        <!-- Paginación -->
-                        <div class="mt-6">
-                            {{ $requests->links() }}
-                        </div>
                     @endif
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout> 
+</x-app-layout>

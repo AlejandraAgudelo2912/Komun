@@ -62,7 +62,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->name('requests.update');
 
     Route::delete('/requests/{requestModel}', App\Http\Controllers\Admin\Request\DestroyController::class)
-        ->middleware('can:delete,requestModel')
+
         ->name('requests.destroy');
 
     Route::get('/requests/{requestModel}', App\Http\Controllers\Admin\Request\ShowController::class)

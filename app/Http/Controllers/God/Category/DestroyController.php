@@ -12,7 +12,6 @@ class DestroyController extends Controller
         $category = Category::findOrFail($category->id);
         $category->delete();
 
-        return redirect()->route('god.category.index')->with('success', 'Category deleted successfully.');
-
+        return redirect()->route('god.categories.index')->with('success', 'Category deleted successfully.');
     }
 }

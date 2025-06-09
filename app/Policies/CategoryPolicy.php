@@ -32,10 +32,6 @@ class CategoryPolicy
 
     public function delete(User $user, Category $category): bool
     {
-        if ($category->requests()->exists()) {
-            return false;
-        }
-
         return $user->hasRole(['admin', 'god']);
     }
 }

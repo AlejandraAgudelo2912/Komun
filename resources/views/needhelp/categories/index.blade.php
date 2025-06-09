@@ -14,12 +14,6 @@
                             <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-300">
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="text-lg font-semibold text-gray-800">{{ $category->name }}</h3>
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-full
-                                        @if($category->is_active) bg-green-100 text-green-800
-                                        @else bg-red-100 text-red-800
-                                        @endif">
-                                        {{ $category->is_active ? 'Activa' : 'Inactiva' }}
-                                    </span>
                                 </div>
 
                                 <p class="text-gray-600 mb-4">{{ Str::limit($category->description, 150) }}</p>

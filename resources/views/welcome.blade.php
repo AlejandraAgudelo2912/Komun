@@ -177,6 +177,43 @@
                         </a>
                     @endif
 
+                    @if(auth()->user()->hasRole(['admin', 'god']))
+                        <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ __('User Management') }}</h3>
+                            <div class=" md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <!-- Gestión de Asistentes -->
+                                <a href="{{ route('admin.profiles.index', ['role' => 'assistant']) }}" 
+                                   class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                                    <i class="fas fa-user-check text-blue-600 text-2xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">{{ __('Manage Assistants') }}</h4>
+                                        <p class="text-sm text-gray-600">{{ __('View and manage assistant profiles') }}</p>
+                                    </div>
+                                </a>
+
+                                <!-- Gestión de Verificadores -->
+                                <a href="{{ route('admin.profiles.index', ['role' => 'verificator']) }}" 
+                                   class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                                    <i class="fas fa-user-shield text-purple-600 text-2xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">{{ __('Manage Verificators') }}</h4>
+                                        <p class="text-sm text-gray-600">{{ __('View and manage verificator profiles') }}</p>
+                                    </div>
+                                </a>
+
+                                <!-- Gestión de Usuarios Necesitados -->
+                                <a href="{{ route('admin.profiles.index', ['role' => 'needHelp']) }}" 
+                                   class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                                    <i class="fas fa-hands-helping text-green-600 text-2xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">{{ __('Manage Users') }}</h4>
+                                        <p class="text-sm text-gray-600">{{ __('View and manage user profiles') }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Mi Perfil (visible para todos los roles) -->
                     <a href="{{ route('profile.show') }}" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                         <i class="fas fa-user text-gray-600 text-2xl mr-3"></i>

@@ -17,6 +17,8 @@ class StoreController extends Controller
             'category_id' => 'required|exists:categories,id',
             'location' => 'required|string|max:255',
             'deadline' => 'required|date|after:today',
+            'priority' => 'required|in:low,medium,high',
+            'verification_notes' => 'nullable|string',
         ]);
 
         $request = RequestModel::create([
@@ -25,6 +27,8 @@ class StoreController extends Controller
             'category_id' => $validated['category_id'],
             'location' => $validated['location'],
             'deadline' => $validated['deadline'],
+            'priority' => $validated['priority'],
+            'verification_notes' => $validated['verification_notes'],
             'user_id' => $request->user()->id,
             'status' => 'pending',
         ]);
