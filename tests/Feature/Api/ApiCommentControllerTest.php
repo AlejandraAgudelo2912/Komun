@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\User;
 use App\Models\Comment;
 use App\Models\RequestModel;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 
 uses(RefreshDatabase::class);
 
-//loguear usuario
+// loguear usuario
 beforeEach(function () {
     $this->actingAs(User::factory()->create());
 });
@@ -23,8 +23,8 @@ it('puede listar los comentarios de una solicitud', function () {
     $response->assertOk()
         ->assertJsonStructure([
             'data' => [
-                '*' => ['id', 'body', 'user_id', /* lo que incluya tu CommentResource */]
-            ]
+                '*' => ['id', 'body', 'user_id'/* lo que incluya tu CommentResource */],
+            ],
         ]);
 
 });
@@ -35,7 +35,7 @@ it('puede crear un comentario si el usuario tiene permiso', function () {
     $request = RequestModel::factory()->create();
 
     $response = $this->actingAs($user)->postJson("/api/requests/{$request->id}/comments", [
-        'body' => 'Un comentario de prueba'
+        'body' => 'Un comentario de prueba',
     ]);
 
     $response->assertCreated()
@@ -60,7 +60,7 @@ it('puede actualizar un comentario si tiene permiso', function () {
     Gate::define('update', fn ($userArg, $commentArg) => $userArg->id === $commentArg->user_id);
 
     $response = $this->actingAs($user)->putJson("/api/comments/{$comment->id}", [
-        'body' => 'Comentario actualizado'
+        'body' => 'Comentario actualizado',
     ]);
 
     $response->assertOk()
@@ -75,10 +75,9 @@ it('no puede actualizar un comentario si no tiene permiso', function () {
     Gate::define('update', fn () => false);
 
     $response = $this->actingAs($user)->putJson("/api/comments/{$comment->id}", [
-        'body' => 'Intento fallido'
+        'body' => 'Intento fallido',
     ]);
 
     $response->assertForbidden()
         ->assertJson(['message' => 'No tienes permiso para actualizar este comentario']);
 });
-

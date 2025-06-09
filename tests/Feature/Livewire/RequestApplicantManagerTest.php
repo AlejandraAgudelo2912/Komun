@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Jobs\SendApplicationResponseEmailJob;
 use App\Livewire\RequestApplicantManager;
 use App\Models\RequestModel;

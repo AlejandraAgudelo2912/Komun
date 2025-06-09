@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Mail\NewVerificationDocumentSubmittedMail;
 use App\Models\AssistantVerificationDocument;
 

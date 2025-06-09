@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Models\RequestModel;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 

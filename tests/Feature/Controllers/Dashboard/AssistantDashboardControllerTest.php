@@ -45,4 +45,4 @@ it('should not allow non-assistant users to access assistant dashboard', functio
         // assert
         $response->assertStatus(403);
     }
-}); 
+});

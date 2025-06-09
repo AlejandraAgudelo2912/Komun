@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
@@ -81,4 +82,3 @@ it('filtra usuarios por búsqueda', function () {
     $response->assertOk()
         ->assertJsonCount(1);
 })->skip();
-

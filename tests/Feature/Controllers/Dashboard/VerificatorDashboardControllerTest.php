@@ -45,4 +45,4 @@ it('should not allow non-verificator users to access verificator dashboard', fun
         // assert
         $response->assertStatus(403);
     }
-}); 
+});

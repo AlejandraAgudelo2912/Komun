@@ -13,7 +13,9 @@ class NewRequestMail extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+
     public $request;
+
     public $category;
 
     public function __construct($request, $user, $category)
@@ -26,7 +28,7 @@ class NewRequestMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Request for ' . $this->category->name,
+            subject: 'New Request for '.$this->category->name,
         );
     }
 

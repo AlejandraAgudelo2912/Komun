@@ -2,10 +2,9 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Comment;
-use App\Policies\CommentPolicy;
 use Illuminate\Support\Facades\Gate;
+use Livewire\Component;
 
 class Comments extends Component
 {

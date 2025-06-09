@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Models\Assistant;
 use App\Models\AssistantVerificationDocument;
 

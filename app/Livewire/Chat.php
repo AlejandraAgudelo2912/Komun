@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Message;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Chat extends Component

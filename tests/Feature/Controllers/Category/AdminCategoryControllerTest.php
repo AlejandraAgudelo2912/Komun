@@ -8,9 +8,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
 
 use function Pest\Laravel\get;
-use function Pest\Laravel\post;
-use function Pest\Laravel\put;
-use function Pest\Laravel\delete;
 
 uses(RefreshDatabase::class);
 

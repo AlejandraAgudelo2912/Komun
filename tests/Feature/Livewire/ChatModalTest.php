@@ -1,13 +1,9 @@
 <?php
 
-
 use App\Livewire\ChatModal;
 use App\Models\RequestModel;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use Tests\TestCase;
-
 
 it('renders the chat modal component', function () {
     // arrange & act & assert
@@ -55,4 +51,3 @@ it('closes the modal and resets data', function () {
         ->assertSet('receiver', null)
         ->assertSet('requestModel', null);
 });
-

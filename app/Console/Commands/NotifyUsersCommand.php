@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\User;
 use App\Mail\GeneralNotificationMail;
-use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class NotifyUsersCommand extends Command
 {
@@ -24,10 +24,11 @@ class NotifyUsersCommand extends Command
 
         if ($admins->isEmpty()) {
             $this->info('There are no admins to notify.');
+
             return 0;
         }
 
-        $this->info('Found Admins:' . $admins->count());
+        $this->info('Found Admins:'.$admins->count());
 
         foreach ($admins as $admin) {
             try {
@@ -39,11 +40,12 @@ class NotifyUsersCommand extends Command
                 sleep(5);
 
             } catch (\Exception $e) {
-                $this->error("Error enviando email a {$admin->email}: " . $e->getMessage());
+                $this->error("Error enviando email a {$admin->email}: ".$e->getMessage());
             }
         }
 
         $this->info('Sent emails to all admins.');
+
         return 0;
     }
 }

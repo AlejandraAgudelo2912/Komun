@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Mail\VerificationRejectMail;
 use App\Models\Assistant;
 

@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Livewire\Chat;
 use App\Models\Message;
 use App\Models\User;

@@ -6,7 +6,6 @@ use App\Models\RequestModel;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class RequestModelApplicationSeeder extends Seeder
 {
@@ -20,7 +19,6 @@ class RequestModelApplicationSeeder extends Seeder
         })->whereHas('assistant', function ($query) {
             $query->where('status', 'active');
         })->get();
-
 
         if ($requests->isEmpty()) {
             return;
@@ -68,25 +66,25 @@ class RequestModelApplicationSeeder extends Seeder
         $totalApplications = 0;
 
         foreach ($requests as $request) {
-            
+
             $selectedApplications = collect($applications)->random(rand(1, min(3, count($applications))));
-            
+
             foreach ($selectedApplications as $application) {
-              
-                    $assistant = $assistants->random();
-                    
-                    DB::table('request_model_application')->insert([
-                        'request_model_id' => $request->id,
-                        'user_id' => $assistant->id,
-                        'message' => $application['message'],
-                        'status' => $application['status'],
-                        'created_at' => now()->subDays(rand(1, 30)),
-                        'updated_at' => now()->subDays(rand(0, 29)),
-                    ]);
-                    $totalApplications++;
-                
+
+                $assistant = $assistants->random();
+
+                DB::table('request_model_application')->insert([
+                    'request_model_id' => $request->id,
+                    'user_id' => $assistant->id,
+                    'message' => $application['message'],
+                    'status' => $application['status'],
+                    'created_at' => now()->subDays(rand(1, 30)),
+                    'updated_at' => now()->subDays(rand(0, 29)),
+                ]);
+                $totalApplications++;
+
             }
         }
 
     }
-} 
+}

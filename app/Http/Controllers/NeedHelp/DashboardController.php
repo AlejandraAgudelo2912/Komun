@@ -8,15 +8,14 @@ use App\Models\RequestModel;
 use App\Models\Review;
 use Carbon\Carbon;
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function __invoke(): View
     {
         $user = auth()->user();
-        
-        if (!$user->hasRole('needHelp')) {
+
+        if (! $user->hasRole('needHelp')) {
             return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página.');
         }
 

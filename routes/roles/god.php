@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(function () {

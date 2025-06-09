@@ -2,13 +2,9 @@
 
 use App\Http\Controllers\Verificator\Request\CreateController;
 use App\Models\Category;
-use App\Models\RequestModel;
 use App\Models\User;
 
 use function Pest\Laravel\get;
-use function Pest\Laravel\getView;
-use function Pest\Laravel\delete;
-
 
 beforeEach(function () {
     Category::factory()->count(3)->create();
@@ -16,7 +12,7 @@ beforeEach(function () {
 
 it('muestra la vista de creación de solicitud para verificadores', function () {
     // Simula la petición directamente al controlador
-    $controller = new CreateController();
+    $controller = new CreateController;
     $response = $controller();
 
     expect($response)->toBeInstanceOf(\Illuminate\View\View::class);

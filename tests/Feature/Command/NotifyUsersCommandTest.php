@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Mail\GeneralNotificationMail;
 use App\Models\User;
 
@@ -40,7 +39,7 @@ it('envía emails a todos los admins y registra logs', function () {
         ->assertExitCode(0);
 
     // assert
-    Mail::assertQueued(GeneralNotificationMail::class, function ($mail) use ($admin, $subject) {
+    Mail::assertQueued(GeneralNotificationMail::class, function ($mail) use ($admin) {
         return $mail->hasTo($admin->email);
         // si GeneralNotificationMail no tiene una propiedad pública subject, no compares
     });

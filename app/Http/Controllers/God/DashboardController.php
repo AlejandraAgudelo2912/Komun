@@ -8,5 +8,4 @@ class DashboardController
     {
         return view('god.dashboard');
     }
-
 }

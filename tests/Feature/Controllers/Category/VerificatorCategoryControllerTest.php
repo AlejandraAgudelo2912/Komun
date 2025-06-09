@@ -96,4 +96,4 @@ it('should not allow verificator to edit categories', function () {
 
     // assert
     $response->assertStatus(403);
-}); 
+});

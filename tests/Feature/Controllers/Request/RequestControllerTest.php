@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\RequestModel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Role;
 
 use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
@@ -174,4 +173,3 @@ it('should not allow other users to delete request', function () {
     $response->assertStatus(403);
     $this->assertDatabaseHas('request_models', ['id' => $request->id]);
 });
-

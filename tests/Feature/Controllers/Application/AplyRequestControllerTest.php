@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Models\RequestModel;
 use App\Models\User;
 
@@ -29,7 +28,7 @@ it('saves the application', function () {
     $user = User::factory()->create();
     $requestModel = RequestModel::factory()->create();
 
-    //rol assitant
+    // rol assitant
     $user->assignRole('assistant');
 
     $this->actingAs($user);

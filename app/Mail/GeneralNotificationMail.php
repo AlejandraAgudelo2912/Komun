@@ -14,6 +14,7 @@ class GeneralNotificationMail extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+
     public $subjectLine;
 
     public function __construct(User $user, $subjectLine = null)

@@ -45,4 +45,4 @@ it('should not allow non-god users to access god dashboard', function () {
         // assert
         $response->assertStatus(403);
     }
-}); 
+});

@@ -1,20 +1,12 @@
 <?php
 
-use App\Events\AssistantVerificationDocumentEvent;
-use App\Events\VerificationDocumentSubmittedEvent;
 use App\Jobs\SendApplicationResponseEmailJob;
 use App\Jobs\SendWelcomeEmail;
 use App\Mail\ApplicationResponseMail;
-use App\Mail\NewVerificationDocumentSubmittedMail;
-use App\Mail\VerificationApprovedMail;
-use App\Mail\VerificationRejectMail;
 use App\Mail\WelcomeEmail;
-use App\Models\Assistant;
-use App\Models\AssistantVerificationDocument;
 use App\Models\RequestModel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 
 uses(RefreshDatabase::class);

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Request;
 
 use App\Http\Controllers\Controller;
 use App\Models\RequestModel;
-use App\Models\User;
 
 class ShowController extends Controller
 {

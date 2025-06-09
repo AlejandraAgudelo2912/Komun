@@ -4,6 +4,7 @@ use App\Models\Category;
 use App\Models\RequestModel;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+
 use function Pest\Laravel\get;
 
 it('should allow admin to view requests index', function () {
@@ -45,7 +46,7 @@ it('allows a admin to create a request', function () {
     $category = Category::factory()->create();
     $request = RequestModel::factory()->make([
         'category_id' => $category->id,
-        'user_id' => $admin->id
+        'user_id' => $admin->id,
     ]);
 
     // Act

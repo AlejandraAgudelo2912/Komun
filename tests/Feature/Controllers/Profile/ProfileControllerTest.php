@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\User;
 use App\Models\Assistant;
+use App\Models\User;
 use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     // Crear roles necesarios
     Role::firstOrCreate(['name' => 'admin']);
     Role::firstOrCreate(['name' => 'assistant']);
-    
+
     // Usuario admin autenticado
     $this->adminUser = User::factory()->create();
     $this->adminUser->assignRole('admin');
@@ -24,7 +24,7 @@ it('muestra la vista con los usuarios sin filtros', function () {
     $response->assertViewIs('admin.profiles.index');
     $response->assertViewHas('users');
     $response->assertViewHas('filters');
-    
+
     $viewData = $response->original->getData();
     $this->assertCount(4, $viewData['users']); // 3 creados + 1 admin
 });
@@ -38,7 +38,7 @@ it('filtra por nombre o email con search', function () {
     $response->assertOk();
     $response->assertSee('Alejandra');
     $response->assertDontSee('Pedro');
-    
+
     // Búsqueda por email
     $response = $this->get(route('admin.profiles.index', ['search' => 'pedro@example.com']));
     $response->assertOk();
@@ -49,7 +49,7 @@ it('filtra por nombre o email con search', function () {
 it('filtra por rol', function () {
     $adminUser = User::factory()->create();
     $adminUser->assignRole('admin');
-    
+
     $assistantUser = User::factory()->create();
     $assistantUser->assignRole('assistant');
 
@@ -59,7 +59,7 @@ it('filtra por rol', function () {
     $viewData = $response->original->getData();
     $this->assertTrue($viewData['users']->contains('id', $adminUser->id));
     $this->assertFalse($viewData['users']->contains('id', $assistantUser->id));
-    
+
     // Filtrar por rol assistant
     $response = $this->get(route('admin.profiles.index', ['role' => 'assistant']));
     $response->assertOk();
@@ -73,13 +73,13 @@ it('filtra por estado de verificación', function () {
     $verifiedUser = User::factory()->create();
     $assistantVerified = Assistant::factory()->create([
         'user_id' => $verifiedUser->id,
-        'is_verified' => true
+        'is_verified' => true,
     ]);
-    
+
     $unverifiedUser = User::factory()->create();
     $assistantUnverified = Assistant::factory()->create([
         'user_id' => $unverifiedUser->id,
-        'is_verified' => false
+        'is_verified' => false,
     ]);
 
     // Filtrar por usuarios verificados
@@ -88,7 +88,7 @@ it('filtra por estado de verificación', function () {
     $viewData = $response->original->getData();
     $this->assertTrue($viewData['users']->contains('id', $verifiedUser->id));
     $this->assertFalse($viewData['users']->contains('id', $unverifiedUser->id));
-    
+
     // Filtrar por usuarios no verificados
     $response = $this->get(route('admin.profiles.index', ['status' => 'unverified']));
     $response->assertOk();
@@ -103,30 +103,30 @@ it('combina múltiples filtros', function () {
     $adminVerified->assignRole('admin');
     $assistant1 = Assistant::factory()->create([
         'user_id' => $adminVerified->id,
-        'is_verified' => true
+        'is_verified' => true,
     ]);
-    
+
     $adminUnverified = User::factory()->create(['name' => 'Admin No Verificado']);
     $adminUnverified->assignRole('admin');
     $assistant2 = Assistant::factory()->create([
         'user_id' => $adminUnverified->id,
-        'is_verified' => false
+        'is_verified' => false,
     ]);
-    
+
     $assistantUser = User::factory()->create(['name' => 'Asistente']);
     $assistantUser->assignRole('assistant');
     $assistant3 = Assistant::factory()->create([
         'user_id' => $assistantUser->id,
-        'is_verified' => true
+        'is_verified' => true,
     ]);
 
     // Combinar búsqueda por rol y estado
     $response = $this->get(route('admin.profiles.index', [
         'role' => 'admin',
         'status' => 'verified',
-        'search' => 'Verificado'
+        'search' => 'Verificado',
     ]));
-    
+
     $response->assertOk();
     $viewData = $response->original->getData();
     $this->assertTrue($viewData['users']->contains('id', $adminVerified->id));
@@ -137,13 +137,13 @@ it('combina múltiples filtros', function () {
 it('usa paginación', function () {
     // Crear más usuarios de los que caben en una página (asumiendo paginación de 12)
     $users = User::factory()->count(15)->create();
-    
+
     $response = $this->get(route('admin.profiles.index'));
     $response->assertOk();
-    
+
     $viewData = $response->original->getData();
     $this->assertEquals(12, $viewData['users']->count()); // Primera página
-    
+
     // Verificar que hay una segunda página
     $response = $this->get(route('admin.profiles.index', ['page' => 2]));
     $response->assertOk();

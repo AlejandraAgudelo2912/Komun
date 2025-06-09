@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\User;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
 
+use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
-use function Pest\Laravel\deleteJson;
 
 uses(RefreshDatabase::class);
 
@@ -40,8 +40,8 @@ it('allows god to list all categories', function () {
                 'name',
                 'description',
                 'created_at',
-                'updated_at'
-            ]
+                'updated_at',
+            ],
         ]);
 });
 
@@ -62,8 +62,8 @@ it('allows admin to list all categories', function () {
                 'name',
                 'description',
                 'created_at',
-                'updated_at'
-            ]
+                'updated_at',
+            ],
         ]);
 });
 
@@ -84,8 +84,8 @@ it('allows verificator to list all categories', function () {
                 'name',
                 'description',
                 'created_at',
-                'updated_at'
-            ]
+                'updated_at',
+            ],
         ]);
 });
 
@@ -126,8 +126,8 @@ it('allows needHelp users to list all categories', function () {
                 'name',
                 'description',
                 'created_at',
-                'updated_at'
-            ]
+                'updated_at',
+            ],
         ]);
 });
 
@@ -148,7 +148,7 @@ it('allows god to view any category', function () {
             'name',
             'description',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 });
 
@@ -168,7 +168,7 @@ it('allows admin to view any category', function () {
             'name',
             'description',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 });
 
@@ -188,7 +188,7 @@ it('allows verificator to view any category', function () {
             'name',
             'description',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 });
 
@@ -229,7 +229,7 @@ it('allows needHelp users to view any category', function () {
             'name',
             'description',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 });
 
@@ -241,10 +241,10 @@ it('allows god to create categories', function () {
 
     $categoryData = [
         'name' => 'Test Category',
-        'description' => 'Test Description'
+        'description' => 'Test Description',
     ];
 
-    $response = postJson('/api/categories',$categoryData);
+    $response = postJson('/api/categories', $categoryData);
 
     $response->assertStatus(201)
         ->assertJsonCount(2) // hay 5 campos en la categoría
@@ -253,7 +253,7 @@ it('allows god to create categories', function () {
             'name',
             'description',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 
     $this->assertDatabaseHas('categories', $categoryData);
@@ -266,7 +266,7 @@ it('allows admin to create categories', function () {
 
     $categoryData = [
         'name' => 'Test Category',
-        'description' => 'Test Description'
+        'description' => 'Test Description',
     ];
 
     $response = postJson('/api/categories', $categoryData);
@@ -278,7 +278,7 @@ it('allows admin to create categories', function () {
             'name',
             'description',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 
     $this->assertDatabaseHas('categories', $categoryData);
@@ -294,7 +294,7 @@ it('prevents other roles from creating categories', function () {
 
         $categoryData = [
             'name' => 'Test Category',
-            'description' => 'Test Description'
+            'description' => 'Test Description',
         ];
 
         $response = postJson('/api/categories', $categoryData);
@@ -313,10 +313,10 @@ it('allows god to update any category', function () {
 
     $updateData = [
         'name' => 'Updated Category',
-        'description' => 'Updated Description'
+        'description' => 'Updated Description',
     ];
 
-    $response = putJson('/api/categories/' . $category->id, $updateData);
+    $response = putJson('/api/categories/'.$category->id, $updateData);
 
     $response->assertStatus(200)
         ->assertJsonCount(2) // hay 5 campos en la categoría
@@ -325,13 +325,13 @@ it('allows god to update any category', function () {
             'name',
             'description',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 
     $this->assertDatabaseHas('categories', [
         'id' => $category->id,
         'name' => 'Updated Category',
-        'description' => 'Updated Description'
+        'description' => 'Updated Description',
     ]);
 })->skip();
 
@@ -344,23 +344,22 @@ it('allows admin to update any category', function () {
 
     $updateData = [
         'name' => 'Updated Category',
-        'description' => 'Updated Description'
+        'description' => 'Updated Description',
     ];
 
-    $response = putJson('/api/categories/' . $category->id, $updateData);
+    $response = putJson('/api/categories/'.$category->id, $updateData);
 
     $response->assertStatus(200)
         ->assertJson([
-            'message' => 'Category updated'
+            'message' => 'Category updated',
         ]);
 
     $this->assertDatabaseHas('categories', [
         'id' => $category->id,
         'name' => 'Updated Category',
-        'description' => 'Updated Description'
+        'description' => 'Updated Description',
     ]);
 })->skip();
-
 
 it('prevents other roles from updating categories', function () {
     $roles = ['verificator', 'assistant', 'needHelp'];
@@ -374,10 +373,10 @@ it('prevents other roles from updating categories', function () {
 
         $updateData = [
             'name' => 'Updated Category',
-            'description' => 'Updated Description'
+            'description' => 'Updated Description',
         ];
 
-        $response = putJson('/api/categories/' . $category->id, $updateData);
+        $response = putJson('/api/categories/'.$category->id, $updateData);
 
         $response->assertStatus(403);
     }
@@ -391,11 +390,11 @@ it('allows god to delete any category', function () {
 
     $category = Category::factory()->create();
 
-    $response = deleteJson('/api/categories/' .$category->id);
+    $response = deleteJson('/api/categories/'.$category->id);
 
     $response->assertStatus(200);
     $this->assertDatabaseMissing('categories', [
-        'id' => $category->id
+        'id' => $category->id,
     ]);
 });
 
@@ -406,11 +405,11 @@ it('allows admin to delete any category', function () {
 
     $category = Category::factory()->create();
 
-    $response = deleteJson('/api/categories/' . $category->id);
+    $response = deleteJson('/api/categories/'.$category->id);
 
     $response->assertStatus(200);
     $this->assertDatabaseMissing('categories', [
-        'id' => $category->id
+        'id' => $category->id,
     ]);
 });
 
@@ -424,7 +423,7 @@ it('prevents other roles from deleting categories', function () {
 
         $category = Category::factory()->create();
 
-        $response = deleteJson('/api/categories/' . $category->id);
+        $response = deleteJson('/api/categories/'.$category->id);
 
         $response->assertStatus(403);
     }
@@ -445,8 +444,8 @@ it('allows guest to list categories', function () {
                 'icon',
                 'color',
                 'created_at',
-                'updated_at'
-            ]
+                'updated_at',
+            ],
         ]);
 })->skip();
 
@@ -464,7 +463,7 @@ it('allows guest to view category details', function () {
             'icon',
             'color',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 })->skip('La estructura JSON no coincide con la esperada');
 
@@ -537,4 +536,3 @@ it('allows assistant to delete category they are assigned to', function () {
 
     expect(true)->toBeTrue();
 });
-

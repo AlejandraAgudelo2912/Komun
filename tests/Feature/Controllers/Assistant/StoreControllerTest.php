@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Models\Assistant;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
@@ -42,9 +41,9 @@ it('stores a new assisatnt', function () {
     $this->assertNotNull($assistant);
 
     // Verificar que los archivos se guardaron
-    Storage::disk('public')->assertExists('verifications/dni_front/' . $data['dni_front']->hashName());
-    Storage::disk('public')->assertExists('verifications/dni_back/' . $data['dni_back']->hashName());
-    Storage::disk('public')->assertExists('verifications/selfies/' . $data['selfie']->hashName());
+    Storage::disk('public')->assertExists('verifications/dni_front/'.$data['dni_front']->hashName());
+    Storage::disk('public')->assertExists('verifications/dni_back/'.$data['dni_back']->hashName());
+    Storage::disk('public')->assertExists('verifications/selfies/'.$data['selfie']->hashName());
 
     // Verificar que la tabla assistant_verification_documents tenga el registro relacionado
     $this->assertDatabaseHas('assistant_verification_documents', [

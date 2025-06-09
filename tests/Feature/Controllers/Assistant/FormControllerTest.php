@@ -1,8 +1,7 @@
 <?php
 
-
 it('displays the assistant form', function () {
-    //loguearse
+    // loguearse
     $this->actingAs(\App\Models\User::factory()->create());
 
     // act

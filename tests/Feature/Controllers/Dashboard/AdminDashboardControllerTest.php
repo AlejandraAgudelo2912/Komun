@@ -46,4 +46,4 @@ it('should not allow non-admin users to access admin dashboard', function () {
         // assert
         $response->assertStatus(403);
     }
-}); 
+});
