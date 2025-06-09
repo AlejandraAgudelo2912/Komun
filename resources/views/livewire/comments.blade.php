@@ -44,8 +44,12 @@
                 <p class="mt-2">{{ $comment->body }}</p>
 
                 <div class="mt-2 flex gap-2 text-sm text-blue-600">
-                    <button wire:click="editComment({{ $comment->id }})">Editar</button>
-                    <button wire:click="deleteComment({{ $comment->id }})">Eliminar</button>
+                    @can('update', $comment)
+                        <button wire:click="editComment({{ $comment->id }})">Editar</button>
+                    @endcan
+                    @can('delete', $comment)
+                        <button wire:click="deleteComment({{ $comment->id }})">Eliminar</button>
+                    @endcan
                 </div>
             </div>
         @empty

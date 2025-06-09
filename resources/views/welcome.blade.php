@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Komun - Plataforma de Ayuda Comunitaria</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -18,7 +18,7 @@
         <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center">
-                    <h1 class="text-3xl font-bold text-gray-900">Komun</h1>
+                    <h1 class="text-3xl font-bold text-gray-900">{{ config('app.name', 'Laravel') }}</h1>
                     <div class="space-x-4">
                         @if (Route::has('login'))
                             @auth
@@ -39,7 +39,7 @@
         @auth
         <div class="bg-white py-8">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Acceso Rápido</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ __('Quick Navigation') }}</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     @if(auth()->user()->hasRole('needHelp'))
                         <!-- Crear Solicitud -->

@@ -25,7 +25,7 @@ class UpdateController extends Controller
             'deadline' => $request->deadline,
             'priority' => $request->priority,
             'status' => $request->status,
-            'max_applications' => $request->max_applications,
+            'max_applications' => $request->max_applications ?? $requestModel->max_applications,
             'help_notes' => $request->help_notes,
             'is_urgent' => $request->has('is_urgent'),
             'is_verified' => $request->has('is_verified'),

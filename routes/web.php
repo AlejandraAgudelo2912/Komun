@@ -14,8 +14,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/quiero-ayudar', App\Http\Controllers\AssistantFormController::class)->name('assistant.form');
-    Route::post('/quiero-ayudar', App\Http\Controllers\AssistantStoreController::class)->name('assistant.store');
+    Route::get('/want-to-help', App\Http\Controllers\AssistantFormController::class)->name('assistant.form');
+    Route::post('/want-to-help', App\Http\Controllers\AssistantStoreController::class)->name('assistant.store');
 
     Route::get('/dashboard', function () {
         $user = auth()->user();

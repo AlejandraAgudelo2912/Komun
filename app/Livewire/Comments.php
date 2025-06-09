@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\Comment;
+use App\Policies\CommentPolicy;
+use Illuminate\Support\Facades\Gate;
 
 class Comments extends Component
 {
@@ -42,11 +45,15 @@ class Comments extends Component
         $comment = $this->requestModel->comments()->find($commentId);
 
         if ($comment) {
-            $this->editingCommentId = $comment->id;
-            $this->commentBody = $comment->body;
-            $this->showModal = true;
+            if (Gate::allows('update', $comment)) {
+                $this->editingCommentId = $comment->id;
+                $this->commentBody = $comment->body;
+                $this->showModal = true;
+            } else {
+                session()->flash('error', 'No tienes permiso para editar este comentario.');
+            }
         } else {
-            session()->flash('error', 'Comment not found.');
+            session()->flash('error', 'Comentario no encontrado.');
         }
     }
 
@@ -63,14 +70,17 @@ class Comments extends Component
 
     public function storeComment()
     {
-        $this->requestModel->comments()->create([
-            'user_id' => auth()->user()->id,
-            'body' => $this->commentBody,
-        ]);
+        if (Gate::allows('create', Comment::class)) {
+            $this->requestModel->comments()->create([
+                'user_id' => auth()->user()->id,
+                'body' => $this->commentBody,
+            ]);
 
-        session()->flash('success', 'Comment created successfully.');
-
-        $this->afterSave();
+            session()->flash('success', 'Comentario creado exitosamente.');
+            $this->afterSave();
+        } else {
+            session()->flash('error', 'No tienes permiso para crear comentarios.');
+        }
     }
 
     public function updateComment()
@@ -78,13 +88,16 @@ class Comments extends Component
         $comment = $this->requestModel->comments()->find($this->editingCommentId);
 
         if ($comment) {
-            $comment->update(['body' => $this->commentBody]);
-            session()->flash('success', 'Comment updated successfully.');
+            if (Gate::allows('update', $comment)) {
+                $comment->update(['body' => $this->commentBody]);
+                session()->flash('success', 'Comentario actualizado exitosamente.');
+                $this->afterSave();
+            } else {
+                session()->flash('error', 'No tienes permiso para actualizar este comentario.');
+            }
         } else {
-            session()->flash('error', 'Comment not found.');
+            session()->flash('error', 'Comentario no encontrado.');
         }
-
-        $this->afterSave();
     }
 
     public function deleteComment($commentId)
@@ -92,11 +105,15 @@ class Comments extends Component
         $comment = $this->requestModel->comments()->find($commentId);
 
         if ($comment) {
-            $comment->delete();
-            session()->flash('success', 'Comment deleted successfully.');
-            $this->loadComments();
+            if (Gate::allows('delete', $comment)) {
+                $comment->delete();
+                session()->flash('success', 'Comentario eliminado exitosamente.');
+                $this->loadComments();
+            } else {
+                session()->flash('error', 'No tienes permiso para eliminar este comentario.');
+            }
         } else {
-            session()->flash('error', 'Comment not found.');
+            session()->flash('error', 'Comentario no encontrado.');
         }
     }
 
