@@ -2,56 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AssistantVerificationRequest;
 use App\Models\Assistant;
 use App\Models\AssistantVerificationDocument;
-use Illuminate\Http\Request;
 
 class AssistantStoreController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(AssistantVerificationRequest $request)
     {
-        $validated = $request->validate([
-            'bio' => ['nullable', 'string'],
-            'availability' => ['nullable', 'array'],
-            'skills' => ['nullable', 'string'],
-            'experience_years' => ['nullable', 'integer', 'min:0'],
-            'status' => ['required', 'in:active,inactive,suspended'],
-            'dni_front' => ['required', 'image'],
-            'dni_back' => ['required', 'image'],
-            'selfie' => ['required', 'image'],
-        ]);
+            $validated = $request->validated();
 
-        $validated['user_id'] = auth()->id();
-        $validated['status'] = 'active'; // Forzar estado activo para nuevas solicitudes
 
-        // Convertir availability a un array asociativo de horarios
-        $availability = [];
-        foreach ($validated['availability'] as $day => $hours) {
-            if (! empty($hours)) {
-                $availability[$day] = $hours;
+            $validated['user_id'] = auth()->id();
+            $validated['status'] = 'active';
+
+            $availability = [];
+            foreach ($validated['availability'] as $day => $hours) {
+                if (!empty($hours)) {
+                    $availability[$day] = array_map('trim', explode(',', $hours));
+                }
             }
-        }
-        $validated['availability'] = json_encode($availability);
+            $validated['availability'] = json_encode($availability);
 
-        // Convertir skills a un array
-        $validated['skills'] = json_encode(array_map('trim', explode(',', $validated['skills'])));
+            $validated['skills'] = json_encode(array_map('trim', explode(',', $validated['skills'])));
 
-        $assistant = Assistant::create($validated);
 
-        $dniFrontPath = $request->file('dni_front')->store('verifications/dni_front', 'public');
-        $dniBackPath = $request->file('dni_back')->store('verifications/dni_back', 'public');
-        $selfiePath = $request->file('selfie')->store('verifications/selfies', 'public');
+             $assistant = Assistant::create($validated);
 
-        $verification = AssistantVerificationDocument::create([
-            'assistant_id' => $assistant->id,
-            'dni_front_path' => $dniFrontPath,
-            'dni_back_path' => $dniBackPath,
-            'selfie_path' => $selfiePath,
-            'status' => 'pending',
-        ]);
 
-        event(new \App\Events\VerificationDocumentSubmittedEvent($verification));
+            $dniFrontPath = $request->file('dni_front')->store('verifications/dni_front', 'public');
+            $dniBackPath = $request->file('dni_back')->store('verifications/dni_back', 'public');
+            $selfiePath = $request->file('selfie')->store('verifications/selfies', 'public');
 
-        return redirect()->route('welcome')->with('success', 'Tu perfil de asistente se ha enviado para revisión. Un verificador lo evaluará pronto.');
+            $verification = AssistantVerificationDocument::create([
+                    'assistant_id' => $assistant->id,
+                    'dni_front_path' => $dniFrontPath,
+                    'dni_back_path' => $dniBackPath,
+                    'selfie_path' => $selfiePath,
+                    'status' => 'pending',
+            ]);
+
+
+            event(new \App\Events\VerificationDocumentSubmittedEvent($verification));
+
+
+            return redirect()->route('welcome')->with('success', 'Tu perfil de asistente se ha creado correctamente. Un verificador lo evaluará pronto.');
+
+
     }
 }
