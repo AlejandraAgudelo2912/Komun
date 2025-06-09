@@ -4,6 +4,7 @@ use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:god'])->prefix('god')->name('god.')->group(function () {
+    Route::get('/dashboard', App\Http\Controllers\God\DashboardController::class)->name('dashboard');
 
     Route::get('/profiles', App\Http\Controllers\God\Profile\IndexController::class)->name('profiles.index');
     Route::get('/profiles/{user}/edit', App\Http\Controllers\God\Profile\EditController::class)->name('profiles.edit');

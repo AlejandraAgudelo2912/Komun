@@ -7,33 +7,43 @@ use App\Models\RequestModel;
 use App\Models\Review;
 use Carbon\Carbon;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function __invoke(): View
     {
-        $assistant = auth()->user()->assistant;
+        $user = auth()->user();
+        $assignedRequests = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->where('status', 'accepted');
+        })->get();
+
+        $totalAssignedRequests = $assignedRequests->count();
+        $completedAssignedRequests = $assignedRequests->where('status', 'completed')->count();
+        $inProgressAssignedRequests = $assignedRequests->where('status', 'in_progress')->count();
+        $pendingAssignedRequests = $assignedRequests->where('status', 'pending')->count();
 
         // Estadísticas principales
-        $activeRequests = RequestModel::whereHas('applicants', function ($query) use ($assistant) {
-            $query->where('users.id', $assistant->user_id)
+        $activeRequests = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
         })->where('status', 'in_progress')->count();
 
-        $completedRequests = RequestModel::whereHas('applicants', function ($query) use ($assistant) {
-            $query->where('users.id', $assistant->user_id)
+        $completedRequests = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
         })->where('status', 'completed')->count();
 
-        $assistedUsers = RequestModel::whereHas('applicants', function ($query) use ($assistant) {
-            $query->where('users.id', $assistant->user_id)
+        $assistedUsers = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
         })->where('status', 'completed')
             ->distinct('user_id')
             ->count('user_id');
 
-        $assistedUsersThisMonth = RequestModel::whereHas('applicants', function ($query) use ($assistant) {
-            $query->where('users.id', $assistant->user_id)
+        $assistedUsersThisMonth = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
         })->where('status', 'completed')
             ->whereMonth('updated_at', Carbon::now()->month)
@@ -41,7 +51,7 @@ class DashboardController extends Controller
             ->count('user_id');
 
         // Estadísticas de valoraciones
-        $reviews = Review::where('assistant_id', $assistant->user_id)->get();
+        $reviews = Review::where('assistant_id', $user->id)->get();
         $averageRating = $reviews->avg('rating') ?? 0;
         $totalReviews = $reviews->count();
 
@@ -55,8 +65,8 @@ class DashboardController extends Controller
         ];
 
         // Estadísticas de horas
-        $totalHours = RequestModel::whereHas('applicants', function ($query) use ($assistant) {
-            $query->where('users.id', $assistant->user_id)
+        $totalHours = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
         })->where('status', 'completed')
             ->get()
@@ -64,8 +74,8 @@ class DashboardController extends Controller
                 return $request->updated_at->diffInMinutes($request->created_at) / 60;
             });
 
-        $hoursThisMonth = RequestModel::whereHas('applicants', function ($query) use ($assistant) {
-            $query->where('users.id', $assistant->user_id)
+        $hoursThisMonth = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
         })->where('status', 'completed')
             ->whereMonth('updated_at', Carbon::now()->month)
@@ -75,8 +85,8 @@ class DashboardController extends Controller
             });
 
         // Actividad mensual
-        $monthlyActivity = RequestModel::whereHas('applicants', function ($query) use ($assistant) {
-            $query->where('users.id', $assistant->user_id)
+        $monthlyActivity = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
         })->where('status', 'completed')
             ->whereYear('updated_at', Carbon::now()->year)
@@ -96,8 +106,8 @@ class DashboardController extends Controller
             ->values();
 
         // Últimas solicitudes
-        $latestRequests = RequestModel::whereHas('applicants', function ($query) use ($assistant) {
-            $query->where('users.id', $assistant->user_id)
+        $latestRequests = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
         })->with(['user', 'category'])
             ->latest()
@@ -105,15 +115,15 @@ class DashboardController extends Controller
             ->get();
 
         // Últimas reseñas
-        $latestReviews = Review::where('assistant_id', $assistant->user_id)
+        $latestReviews = Review::where('assistant_id', $user->id)
             ->with('user')
             ->latest()
             ->take(5)
             ->get();
 
         // Estadísticas por categoría
-        $categoryStats = RequestModel::whereHas('applicants', function ($query) use ($assistant) {
-            $query->where('users.id', $assistant->user_id)
+        $categoryStats = RequestModel::whereHas('applicants', function ($query) use ($user) {
+            $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
         })->where('status', 'completed')
             ->with('category')
@@ -130,6 +140,11 @@ class DashboardController extends Controller
         $maxCategoryCount = $categoryStats->max('count') ?? 1;
 
         return view('assistant.dashboard', compact(
+            'assignedRequests',
+            'totalAssignedRequests',
+            'completedAssignedRequests',
+            'inProgressAssignedRequests',
+            'pendingAssignedRequests',
             'activeRequests',
             'completedRequests',
             'assistedUsers',

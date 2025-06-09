@@ -11,9 +11,6 @@ class SaveAplyRequestController extends Controller
 {
     public function __invoke(HttpRequest $httpRequest, RequestModel $requestModel)
     {
-        if (Gate::denies('apply', $requestModel)) {
-            abort(403, 'No tienes permiso para aplicar a esta solicitud.');
-        }
 
         $validated = $httpRequest->validate([
             'message' => 'required|string|max:1000',

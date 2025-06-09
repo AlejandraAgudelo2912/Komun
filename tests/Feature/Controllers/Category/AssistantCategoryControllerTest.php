@@ -19,7 +19,23 @@ beforeEach(function () {
     }
 });
 
-it('should allow assistant to view category details', function () {
+it('should show categories index to assistant user', function () {
+    // arrange
+    $assistant = User::factory()->create();
+    $assistant->assignRole('assistant');
+    $this->actingAs($assistant);
+    $categories = Category::factory()->count(3)->create();
+
+    // act
+    $response = get(route('assistant.categories.index'));
+
+    // assert
+    $response->assertStatus(200);
+    $response->assertViewIs('assistant.categories.index');
+    $response->assertViewHas('categories');
+});
+
+it('should show category details to assistant user', function () {
     // arrange
     $assistant = User::factory()->create();
     $assistant->assignRole('assistant');
@@ -35,35 +51,22 @@ it('should allow assistant to view category details', function () {
     $response->assertViewHas('category', $category);
 });
 
-it('should allow assistant to view their specific categories dashboard', function () {
+it('should not allow non-assistant users to access category management', function () {
     // arrange
-    $assistant = User::factory()->create();
-    $assistant->assignRole('assistant');
-    $this->actingAs($assistant);
-    $categories = Category::factory()->count(3)->create();
-
-    // act
-    $response = get(route('assistant.categories.index'));
-
-    // assert
-    $response->assertStatus(200);
-    $response->assertViewIs('assistant.categories.index');
-    $response->assertViewHas('categories');
-    $response->assertViewHas('categories', function ($viewCategories) use ($categories) {
-        return $viewCategories->count() === $categories->count();
-    });
-});
-
-it('should not allow assistant to edit categories', function () {
-    // arrange
-    $assistant = User::factory()->create();
-    $assistant->assignRole('assistant');
-    $this->actingAs($assistant);
+    $roles = ['admin', 'god', 'verificator', 'needHelp'];
     $category = Category::factory()->create();
 
-    // act
-    $response = get(route('admin.categories.edit', $category));
+    foreach ($roles as $role) {
+        $user = User::factory()->create();
+        $user->assignRole($role);
+        $this->actingAs($user);
 
-    // assert
-    $response->assertStatus(403);
+        // act & assert for index
+        $response = get(route('assistant.categories.index'));
+        $response->assertStatus(403);
+
+        // act & assert for show
+        $response = get(route('assistant.categories.show', $category));
+        $response->assertStatus(403);
+    }
 });

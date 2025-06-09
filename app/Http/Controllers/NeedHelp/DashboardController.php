@@ -8,20 +8,28 @@ use App\Models\RequestModel;
 use App\Models\Review;
 use Carbon\Carbon;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function __invoke(): View
     {
         $user = auth()->user();
+        
+        if (!$user->hasRole('needHelp')) {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página.');
+        }
+
+        $userRequests = RequestModel::where('user_id', $user->id)->get();
+
+        $totalRequests = $userRequests->count();
+        $completedRequests = $userRequests->where('status', 'completed')->count();
+        $inProgressRequests = $userRequests->where('status', 'in_progress')->count();
+        $pendingRequests = $userRequests->where('status', 'pending')->count();
 
         // Estadísticas principales
         $activeRequests = RequestModel::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'in_progress'])
-            ->count();
-
-        $completedRequests = RequestModel::where('user_id', $user->id)
-            ->where('status', 'completed')
             ->count();
 
         $activeAssistants = RequestModel::where('user_id', $user->id)
@@ -139,8 +147,12 @@ class DashboardController extends Controller
             ->take(3);
 
         return view('needhelp.dashboard', compact(
-            'activeRequests',
+            'userRequests',
+            'totalRequests',
             'completedRequests',
+            'inProgressRequests',
+            'pendingRequests',
+            'activeRequests',
             'activeAssistants',
             'totalAssistants',
             'totalHours',

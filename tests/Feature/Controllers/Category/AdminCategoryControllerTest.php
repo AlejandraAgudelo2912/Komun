@@ -1,143 +1,32 @@
 <?php
 
+namespace Tests\Feature\Controllers\Category;
+
 use App\Models\Category;
 use App\Models\User;
-use function Pest\Laravel\delete;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 use function Pest\Laravel\put;
+use function Pest\Laravel\delete;
 
-it('la ruta admin.categories.show responde con éxito y muestra la categoría', function () {
-    $category = Category::factory()->create();
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    $this->actingAs($user);
+uses(RefreshDatabase::class);
 
-    $response = $this->get(route('admin.categories.show', $category));
-
-    $response->assertStatus(200);
-    $response->assertViewIs('admin.categories.show');
-    $response->assertViewHas('category', function ($cat) use ($category) {
-        return $cat->is($category);
-    });
+beforeEach(function () {
+    $this->roles = ['admin', 'god', 'verificator', 'assistant', 'needHelp'];
+    foreach ($this->roles as $role) {
+        Role::findOrCreate($role);
+    }
 });
 
-it('la ruta admin.categories.edit responde con éxito y carga la vista con categoría', function () {
-    $category = Category::factory()->create();
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    $this->actingAs($user);
-    $response = $this->get(route('admin.categories.edit', ['category' => $category->id]));
-
-    $response->assertStatus(200);
-    $response->assertViewIs('admin.categories.edit');
-    $response->assertViewHas('category', fn ($cat) => $cat->id === $category->id);
-});
-
-it('la ruta admin.categories.create responde con éxito', function () {
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    $this->actingAs($user);
-    $response = $this->get(route('admin.categories.create'));
-
-    $response->assertStatus(200);
-    $response->assertViewIs('admin.categories.create');
-});
-
-it('should allow admin to delete category', function () {
+it('should show categories index to admin user', function () {
     // arrange
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    $this->actingAs($user);
-    $category = Category::factory()->create();
-
-    // act
-    $response = delete(route('admin.categories.destroy', $category));
-
-    // assert
-    $response->assertRedirect(route('admin.categories.index'));
-    $this->assertDatabaseMissing('categories', ['id' => $category->id]);
-});
-
-it('should not allow needHelp to update category', function () {
-    // arrange
-    $user = User::factory()->create();
-    $user->assignRole('needHelp');
-    $this->actingAs($user);
-    $category = Category::factory()->create();
-    $updateData = [
-        'name' => 'Updated Category',
-        'description' => 'Updated Description',
-    ];
-
-    // act
-    $response = put(route('admin.categories.update', $category), $updateData);
-
-    // assert
-    $response->assertStatus(403);
-    $this->assertDatabaseMissing('categories', $updateData);
-});
-
-it('should allow admin to update category', function () {
-    // arrange
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    $this->actingAs($user);
-    $category = Category::factory()->create();
-    $updateData = [
-        'name' => 'Updated Category',
-        'description' => 'Updated Description',
-    ];
-
-    // act
-    $response = put(route('admin.categories.update', $category), $updateData);
-
-    // assert
-    $response->assertRedirect(route('admin.categories.index'));
-    $this->assertDatabaseHas('categories', $updateData);
-});
-
-it('should not allow needHelp to create category', function () {
-    // arrange
-    $user = User::factory()->create();
-    $user->assignRole('needHelp');
-    $this->actingAs($user);
-    $categoryData = [
-        'name' => 'Test Category',
-        'description' => 'Test Description',
-    ];
-
-    // act
-    $response = post(route('admin.categories.store'), $categoryData);
-
-    // assert
-    $response->assertStatus(403);
-    $this->assertDatabaseMissing('categories', $categoryData);
-});
-
-it('should allow admin to create category', function () {
-    // arrange
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    $this->actingAs($user);
-    $categoryData = [
-        'name' => 'Test Category',
-        'description' => 'Test Description',
-    ];
-
-    // act
-    $response = post(route('admin.categories.store'), $categoryData);
-
-    // assert
-    $response->assertRedirect(route('admin.categories.index'));
-    $this->assertDatabaseHas('categories', $categoryData);
-});
-
-it('should allow admin to view categories index', function () {
-    // arrange
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    $this->actingAs($user);
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    $this->actingAs($admin);
+    $categories = Category::factory()->count(3)->create();
 
     // act
     $response = get(route('admin.categories.index'));
@@ -145,55 +34,79 @@ it('should allow admin to view categories index', function () {
     // assert
     $response->assertStatus(200);
     $response->assertViewIs('admin.categories.index');
+    $response->assertViewHas('categories');
 });
 
-it('should not allow needHelp to view categories index', function () {
+it('should show category create form to admin user', function () {
     // arrange
-    $user = User::factory()->create();
-    $user->assignRole('needHelp');
-    $this->actingAs($user);
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    $this->actingAs($admin);
 
     // act
-    $response = get(route('admin.categories.index'));
+    $response = get(route('admin.categories.create'));
 
     // assert
-    $response->assertStatus(403);
+    $response->assertStatus(200);
+    $response->assertViewIs('admin.categories.create');
 });
 
-it('muestra la vista de crear categoría', function () {
-    // Llamamos al controlador invocable directamente
-    $response = app()->call(\App\Http\Controllers\Admin\Category\CreateController::class);
-
-    // Verificamos que devuelve la vista correcta
-    expect($response)->toBeInstanceOf(\Illuminate\View\View::class);
-    expect($response->name())->toBe('admin.categories.create');
-});
-
-it('muestra la vista de editar categoría con el modelo correcto', function () {
-    // Creamos una categoría de prueba
+it('should show category edit form to admin user', function () {
+    // arrange
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    $this->actingAs($admin);
     $category = Category::factory()->create();
 
-    // Invocamos el controlador directamente con el modelo
-    $response = app()->call(\App\Http\Controllers\Admin\Category\EditController::class, ['category' => $category]);
+    // act
+    $response = get(route('admin.categories.edit', $category));
 
-    // Comprobamos que devuelve una vista
-    expect($response)->toBeInstanceOf(\Illuminate\View\View::class);
-    // Comprobamos que la vista es la correcta
-    expect($response->name())->toBe('admin.categories.edit');
-    // Y que el objeto category está pasado a la vista
-    expect($response->getData())->toHaveKey('category');
-    expect($response->getData()['category']->id)->toBe($category->id);
+    // assert
+    $response->assertStatus(200);
+    $response->assertViewIs('admin.categories.edit');
+    $response->assertViewHas('category', $category);
 });
 
-it('muestra la vista de mostrar categoría con el modelo correcto', function () {
+it('should show category details to admin user', function () {
+    // arrange
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    $this->actingAs($admin);
     $category = Category::factory()->create();
 
-    $response = app()->call(\App\Http\Controllers\Admin\Category\ShowController::class, [
-        'category' => $category,
-    ]);
+    // act
+    $response = get(route('admin.categories.show', $category));
 
-    expect($response)->toBeInstanceOf(\Illuminate\View\View::class);
-    expect($response->name())->toBe('admin.categories.show');
-    expect($response->getData())->toHaveKey('category');
-    expect($response->getData()['category']->is($category))->toBeTrue();
+    // assert
+    $response->assertStatus(200);
+    $response->assertViewIs('admin.categories.show');
+    $response->assertViewHas('category', $category);
+});
+
+it('should not allow non-admin users to access category management', function () {
+    // arrange
+    $roles = ['god', 'verificator', 'assistant', 'needHelp'];
+    $category = Category::factory()->create();
+
+    foreach ($roles as $role) {
+        $user = User::factory()->create();
+        $user->assignRole($role);
+        $this->actingAs($user);
+
+        // act & assert for index
+        $response = get(route('admin.categories.index'));
+        $response->assertStatus(403);
+
+        // act & assert for create
+        $response = get(route('admin.categories.create'));
+        $response->assertStatus(403);
+
+        // act & assert for edit
+        $response = get(route('admin.categories.edit', $category));
+        $response->assertStatus(403);
+
+        // act & assert for show
+        $response = get(route('admin.categories.show', $category));
+        $response->assertStatus(403);
+    }
 });

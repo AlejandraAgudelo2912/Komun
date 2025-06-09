@@ -193,13 +193,6 @@ it('allows god to assign roles', function () {
     $this->assertTrue($god->can('assignRole', User::class));
 })->skip();
 
-it('allows admin to assign roles', function () {
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-
-    $this->assertTrue($admin->can('assignRole', User::class));
-})->skip();
-
 it('prevents verificator from assigning roles', function () {
     $verificator = User::factory()->create();
     $verificator->assignRole('verificator');

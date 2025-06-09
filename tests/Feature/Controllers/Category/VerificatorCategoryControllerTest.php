@@ -19,7 +19,23 @@ beforeEach(function () {
     }
 });
 
-it('should allow verificator to view category details', function () {
+it('should show categories index to verificator user', function () {
+    // arrange
+    $verificator = User::factory()->create();
+    $verificator->assignRole('verificator');
+    $this->actingAs($verificator);
+    $categories = Category::factory()->count(3)->create();
+
+    // act
+    $response = get(route('verificator.categories.index'));
+
+    // assert
+    $response->assertStatus(200);
+    $response->assertViewIs('verificator.categories.index');
+    $response->assertViewHas('categories');
+});
+
+it('should show category details to verificator user', function () {
     // arrange
     $verificator = User::factory()->create();
     $verificator->assignRole('verificator');
@@ -35,23 +51,24 @@ it('should allow verificator to view category details', function () {
     $response->assertViewHas('category', $category);
 });
 
-it('should allow verificator to view categories index', function () {
+it('should not allow non-verificator users to access category management', function () {
     // arrange
-    $verificator = User::factory()->create();
-    $verificator->assignRole('verificator');
-    $this->actingAs($verificator);
-    $categories = Category::factory()->count(3)->create();
+    $roles = ['admin', 'god', 'assistant', 'needHelp'];
+    $category = Category::factory()->create();
 
-    // act
-    $response = get(route('verificator.categories.index'));
+    foreach ($roles as $role) {
+        $user = User::factory()->create();
+        $user->assignRole($role);
+        $this->actingAs($user);
 
-    // assert
-    $response->assertStatus(200);
-    $response->assertViewIs('verificator.categories.index');
-    $response->assertViewHas('categories');
-    $response->assertViewHas('categories', function ($viewCategories) use ($categories) {
-        return $viewCategories->count() === $categories->count();
-    });
+        // act & assert for index
+        $response = get(route('verificator.categories.index'));
+        $response->assertStatus(403);
+
+        // act & assert for show
+        $response = get(route('verificator.categories.show', $category));
+        $response->assertStatus(403);
+    }
 });
 
 it('should not allow verificator to create categories', function () {
