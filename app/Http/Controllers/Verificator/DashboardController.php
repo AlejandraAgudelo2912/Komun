@@ -14,7 +14,6 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        // Estadísticas de verificación
         $pendingVerifications = Assistant::where('status', 'pending')->count();
         $verifiedToday = Assistant::where('status', 'verified')
             ->whereDate('updated_at', Carbon::today())
@@ -24,25 +23,21 @@ class DashboardController extends Controller
             ->whereDate('updated_at', Carbon::today())
             ->count();
 
-        // Verificaciones completadas
         $completedVerifications = Assistant::whereIn('status', ['verified', 'rejected'])->count();
         $verificationsThisMonth = Assistant::whereIn('status', ['verified', 'rejected'])
             ->whereMonth('updated_at', Carbon::now()->month)
             ->count();
 
-        // Estadísticas de solicitudes
         $totalRequests = RequestModel::count();
         $requestsThisMonth = RequestModel::whereMonth('created_at', Carbon::now()->month)->count();
         $completedRequests = RequestModel::where('status', 'completed')->count();
         $activeRequests = RequestModel::where('status', 'in_progress')->count();
 
-        // Estadísticas de asistentes
         $totalAssistants = Assistant::count();
         $verifiedAssistants = Assistant::where('status', 'verified')->count();
         $pendingAssistants = Assistant::where('status', 'pending')->count();
         $rejectedAssistants = Assistant::where('status', 'rejected')->count();
 
-        // Tiempos de verificación
         $verifiedAssistantsWithTime = Assistant::whereIn('status', ['verified', 'rejected'])
             ->whereNotNull('updated_at')
             ->whereNotNull('created_at')
@@ -60,7 +55,6 @@ class DashboardController extends Controller
             $lastVerification->updated_at->diffInMinutes($lastVerification->created_at).' min' :
             'N/A';
 
-        // Tasas de aprobación y rechazo
         $totalProcessed = Assistant::whereIn('status', ['verified', 'rejected'])->count();
         $totalVerified = Assistant::where('status', 'verified')->count();
         $totalRejected = Assistant::where('status', 'rejected')->count();
@@ -70,7 +64,6 @@ class DashboardController extends Controller
         $rejectionRate = $totalProcessed > 0 ?
             round(($totalRejected / $totalProcessed) * 100, 1) : 0;
 
-        // Verificaciones por día (últimos 7 días)
         $verificationsByDay = Assistant::whereIn('status', ['verified', 'rejected'])
             ->where('updated_at', '>=', Carbon::now()->subDays(7))
             ->get()
@@ -85,7 +78,6 @@ class DashboardController extends Controller
             })
             ->values();
 
-        // Asegurar que tenemos datos para los últimos 7 días
         $last7Days = collect();
         for ($i = 6; $i >= 0; $i--) {
             $date = Carbon::now()->subDays($i)->format('d/m');
@@ -97,7 +89,6 @@ class DashboardController extends Controller
         }
         $verificationsByDay = $last7Days;
 
-        // Tiempo de verificación por día (últimos 7 días)
         $verificationTime = Assistant::whereIn('status', ['verified', 'rejected'])
             ->where('updated_at', '>=', Carbon::now()->subDays(7))
             ->get()
@@ -116,7 +107,6 @@ class DashboardController extends Controller
             })
             ->values();
 
-        // Asegurar que tenemos datos para los últimos 7 días
         $last7DaysTime = collect();
         for ($i = 6; $i >= 0; $i--) {
             $date = Carbon::now()->subDays($i)->format('d/m');
@@ -128,7 +118,6 @@ class DashboardController extends Controller
         }
         $verificationTime = $last7DaysTime;
 
-        // Actividad mensual de verificaciones
         $monthlyActivity = Assistant::whereYear('updated_at', Carbon::now()->year)
             ->whereIn('status', ['verified', 'rejected'])
             ->get()
@@ -144,14 +133,12 @@ class DashboardController extends Controller
             })
             ->values();
 
-        // Últimas verificaciones
         $latestVerifications = Assistant::with(['user'])
             ->whereIn('status', ['verified', 'rejected'])
             ->latest('updated_at')
             ->take(5)
             ->get();
 
-        // Últimas solicitudes de verificación
         $latestPendingVerifications = Assistant::with(['user'])
             ->where('status', 'pending')
             ->latest()

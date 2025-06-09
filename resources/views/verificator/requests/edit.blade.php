@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Editar Solicitud') }}
+            {{ __('Edit Request') }}
         </h2>
     </x-slot>
 
@@ -15,7 +15,7 @@
 
                         <x-komun.input
                             name="title"
-                            label="Título"
+                            :label="__('Title')"
                             type="text"
                             :value="old('title', $requestModel->title)"
                             required
@@ -23,7 +23,7 @@
                         />
 
                         <div>
-                            <x-komun.label for="description" :value="__('Descripción')" required />
+                            <x-komun.label for="description" :value="__('Description')" required />
                             <textarea
                                 id="description"
                                 name="description"
@@ -36,7 +36,7 @@
 
                         <x-komun.select
                             name="category_id"
-                            label="Categoría"
+                            :label="__('Category')"
                             :options="$categories->pluck('name', 'id')"
                             :selected="old('category_id', $requestModel->category_id)"
                             required
@@ -44,11 +44,11 @@
 
                         <x-komun.select
                             name="priority"
-                            label="Prioridad"
+                            :label="__('Priority')"
                             :options="[
-                                'low' => 'Baja',
-                                'medium' => 'Media',
-                                'high' => 'Alta'
+                                'low' => __('Low'),
+                                'medium' => __('Medium'),
+                                'high' => __('High')
                             ]"
                             :selected="old('priority', $requestModel->priority)"
                             required
@@ -56,12 +56,12 @@
 
                         <x-komun.select
                             name="status"
-                            label="Estado"
+                            :label="__('Status')"
                             :options="[
-                                'pending' => 'Pendiente',
-                                'in_progress' => 'En Progreso',
-                                'completed' => 'Completada',
-                                'cancelled' => 'Cancelada'
+                                'pending' => __('Pending'),
+                                'in_progress' => __('In Progress'),
+                                'completed' => __('Completed'),
+                                'cancelled' => __('Cancelled')
                             ]"
                             :selected="old('status', $requestModel->status)"
                             required
@@ -69,15 +69,15 @@
 
                         <x-komun.date-input
                             name="deadline"
-                            label="Fecha Límite"
+                            :label="__('Deadline')"
                             :value="old('deadline', $requestModel->deadline->format('Y-m-d'))"
                             required
                         />
 
                         <div class="flex items-center gap-4">
-                            <button>{{ __('Actualizar Solicitud') }}</button>
+                            <button>{{ __('Update Request') }}</button>
                             <a href="{{ route('verificator.requests.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                {{ __('Cancelar') }}
+                                {{ __('Cancel') }}
                             </a>
                         </div>
                     </form>

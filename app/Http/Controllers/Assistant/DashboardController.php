@@ -24,7 +24,6 @@ class DashboardController extends Controller
         $inProgressAssignedRequests = $assignedRequests->where('status', 'in_progress')->count();
         $pendingAssignedRequests = $assignedRequests->where('status', 'pending')->count();
 
-        // Estadísticas principales
         $activeRequests = RequestModel::whereHas('applicants', function ($query) use ($user) {
             $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
@@ -50,12 +49,10 @@ class DashboardController extends Controller
             ->distinct('user_id')
             ->count('user_id');
 
-        // Estadísticas de valoraciones
         $reviews = Review::where('assistant_id', $user->id)->get();
         $averageRating = $reviews->avg('rating') ?? 0;
         $totalReviews = $reviews->count();
 
-        // Distribución de valoraciones
         $ratingDistribution = [
             $reviews->where('rating', 1)->count(),
             $reviews->where('rating', 2)->count(),
@@ -64,7 +61,6 @@ class DashboardController extends Controller
             $reviews->where('rating', 5)->count(),
         ];
 
-        // Estadísticas de horas
         $totalHours = RequestModel::whereHas('applicants', function ($query) use ($user) {
             $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
@@ -84,7 +80,6 @@ class DashboardController extends Controller
                 return $request->updated_at->diffInMinutes($request->created_at) / 60;
             });
 
-        // Actividad mensual
         $monthlyActivity = RequestModel::whereHas('applicants', function ($query) use ($user) {
             $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
@@ -105,7 +100,6 @@ class DashboardController extends Controller
             })
             ->values();
 
-        // Últimas solicitudes
         $latestRequests = RequestModel::whereHas('applicants', function ($query) use ($user) {
             $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');
@@ -114,14 +108,12 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        // Últimas reseñas
         $latestReviews = Review::where('assistant_id', $user->id)
             ->with('user')
             ->latest()
             ->take(5)
             ->get();
 
-        // Estadísticas por categoría
         $categoryStats = RequestModel::whereHas('applicants', function ($query) use ($user) {
             $query->where('users.id', $user->id)
                 ->where('request_model_application.status', 'accepted');

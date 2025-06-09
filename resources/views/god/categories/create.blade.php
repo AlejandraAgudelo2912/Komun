@@ -27,8 +27,8 @@
                         <div>
                             <x-label for="is_active" :value="__('Estado')" />
                             <select id="is_active" name="is_active" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                <option value="1" {{ old('is_active') == '1' ? 'selected' : '' }}>Activa</option>
-                                <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Inactiva</option>
+                                <option value="1" {{ old('is_active') == '1' ? 'selected' : '' }}>{{__('Active')}}</option>
+                                <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>{{__('Inactive')}}</option>
                             </select>
                             <x-input-error class="mt-2" :messages="$errors->get('is_active')" />
                         </div>

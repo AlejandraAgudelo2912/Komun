@@ -16,7 +16,6 @@ class CategoryFollowController extends Controller
             return back()->with('error', 'Ya sigues esta categoría');
         }
 
-        // guardar en la tabla pivote
         $user->followedCategories()->attach($category->id);
 
         return back()->with('success', 'Ahora sigues la categoría '.$category->name);

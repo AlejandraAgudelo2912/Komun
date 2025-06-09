@@ -15,9 +15,9 @@
                 <div class="bg-gradient-to-br from-blue-100 to-blue-200 text-gray-900 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all transform hover:scale-[1.03]">
                     <div class="flex justify-between items-center">
                         <div>
-                            <p class="text-sm font-medium">Solicitudes Activas</p>
+                            <p class="text-sm font-medium">{{ __('Active Requests') }}</p>
                             <p class="text-4xl font-bold mt-1">{{ $activeRequests }}</p>
-                            <p class="text-sm mt-2 text-gray-700">{{ $completedRequests }} completadas</p>
+                            <p class="text-sm mt-2 text-gray-700">{{ $completedRequests }} {{ __('completed') }}</p>
                         </div>
                         <div class="p-3 rounded-full bg-blue-300/30">
                             <svg class="w-8 h-8 text-blue-700" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -30,9 +30,9 @@
                 <div class="bg-gradient-to-br from-emerald-100 to-emerald-200 text-gray-900 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all transform hover:scale-[1.03]">
                     <div class="flex justify-between items-center">
                         <div>
-                            <p class="text-sm font-medium">Asistentes Activos</p>
+                            <p class="text-sm font-medium">{{ __('Active Assistants') }}</p>
                             <p class="text-4xl font-bold mt-1">{{ $activeAssistants }}</p>
-                            <p class="text-sm mt-2 text-gray-700">{{ $totalAssistants }} totales</p>
+                            <p class="text-sm mt-2 text-gray-700">{{ $totalAssistants }} {{ __('total') }}</p>
                         </div>
                         <div class="p-3 rounded-full bg-emerald-300/30">
                             <svg class="w-8 h-8 text-emerald-700" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -45,9 +45,9 @@
                 <div class="bg-gradient-to-br from-amber-100 to-amber-200 text-gray-900 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all transform hover:scale-[1.03]">
                     <div class="flex justify-between items-center">
                         <div>
-                            <p class="text-sm font-medium">Horas de Ayuda</p>
+                            <p class="text-sm font-medium">{{ __('Help Hours') }}</p>
                             <p class="text-4xl font-bold mt-1">{{ number_format($totalHours, 1) }}</p>
-                            <p class="text-sm mt-2 text-gray-700">{{ number_format($hoursThisMonth, 1) }} este mes</p>
+                            <p class="text-sm mt-2 text-gray-700">{{ number_format($hoursThisMonth, 1) }} {{ __('this month') }}</p>
                         </div>
                         <div class="p-3 rounded-full bg-amber-300/30">
                             <svg class="w-8 h-8 text-amber-700" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -60,22 +60,22 @@
             <!-- Contenedores de Estadísticas -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="bg-white rounded-2xl shadow-lg p-6">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Actividad Mensual</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Monthly Activity') }}</h3>
                     <div class="h-64">
                         <canvas id="monthlyActivity"></canvas>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-lg p-6">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Últimas Solicitudes</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Latest Requests') }}</h3>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200 text-sm">
                             <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wide">Título</th>
-                                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wide">Categoría</th>
-                                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wide">Estado</th>
-                                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wide">Fecha</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wide">{{ __('Title') }}</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wide">{{ __('Category') }}</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wide">{{ __('Status') }}</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wide">{{ __('Date') }}</th>
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
@@ -88,7 +88,7 @@
                                             {{ $request->status === 'completed' ? 'bg-green-100 text-green-800' :
                                                ($request->status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
                                                'bg-yellow-100 text-yellow-800') }}">
-                                            {{ ucfirst($request->status) }}
+                                            {{ __(ucfirst($request->status)) }}
                                         </span>
                                     </td>
                                     <td class="px-4 py-3 text-gray-500">{{ $request->created_at->diffForHumans() }}</td>
@@ -110,13 +110,13 @@
             data: {
                 labels: {!! json_encode($monthlyActivity->pluck('month')) !!},
                 datasets: [{
-                    label: 'Solicitudes',
+                    label: '{{ __('Requests') }}',
                     data: {!! json_encode($monthlyActivity->pluck('requests')) !!},
                     borderColor: '#3B82F6',
                     tension: 0.4,
                     fill: false
                 }, {
-                    label: 'Horas',
+                    label: '{{ __('Hours') }}',
                     data: {!! json_encode($monthlyActivity->pluck('hours')) !!},
                     borderColor: '#F59E0B',
                     tension: 0.4,

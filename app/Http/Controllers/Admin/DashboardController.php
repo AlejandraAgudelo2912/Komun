@@ -15,35 +15,29 @@ class DashboardController extends Controller
 {
     public function __invoke(): View
     {
-        // Estadísticas de usuarios
         $totalUsers = User::count();
         $newUsersThisMonth = User::whereMonth('created_at', Carbon::now()->month)->count();
         $activeUsers = User::whereHas('requests', function ($query) {
             $query->whereIn('status', ['pending', 'in_progress']);
         })->count();
 
-        // Estadísticas de solicitudes
         $pendingRequests = RequestModel::where('status', 'pending')->count();
         $completedRequests = RequestModel::where('status', 'completed')->count();
         $requestsThisMonth = RequestModel::whereMonth('created_at', Carbon::now()->month)->count();
 
-        // Estadísticas de asistentes
         $activeAssistants = Assistant::where('status', 'active')->count();
         $verifiedAssistants = Assistant::where('is_verified', true)->count();
         $pendingVerifications = Assistant::where('is_verified', false)->count();
 
-        // Estadísticas de verificadores
         $activeVerifiers = User::role('verificator')->count();
         $verificationsThisMonth = Assistant::where('is_verified', true)
             ->whereMonth('updated_at', Carbon::now()->month)
             ->count();
 
-        // Solicitudes por categoría
         $requestsByCategory = Category::withCount(['requests' => function ($query) {
             $query->where('status', 'completed');
         }])->get();
 
-        // Actividad mensual
         $monthlyActivity = RequestModel::whereYear('created_at', Carbon::now()->year)
             ->select(
                 DB::raw('MONTH(created_at) as month'),
@@ -61,13 +55,11 @@ class DashboardController extends Controller
                 ];
             });
 
-        // Últimas solicitudes
         $latestRequests = RequestModel::with(['user', 'category', 'applicants.assistant.user'])
             ->latest()
             ->take(5)
             ->get();
 
-        // Top asistentes
         $topAssistants = Assistant::with(['user.reviews'])
             ->where('status', 'active')
             ->get()

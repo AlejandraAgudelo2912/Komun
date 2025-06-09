@@ -15,49 +15,49 @@
 
                         <!-- Biografía -->
                         <div>
-                            <label for="bio" class="block text-sm font-medium text-gray-700">Biografía</label>
+                            <label for="bio" class="block text-sm font-medium text-gray-700">{{ __('Biography') }}</label>
                             <textarea name="bio" id="bio" rows="4"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Cuéntanos un poco sobre ti">{{ old('bio', $assistant->bio ?? '') }}</textarea>
+                                placeholder="{{ __('Tell us a little about yourself') }}">{{ old('bio', $assistant->bio ?? '') }}</textarea>
                         </div>
 
                         <!-- Disponibilidad -->
                         <div>
-                            <label for="availability" class="block text-sm font-medium text-gray-700">Disponibilidad</label>
+                            <label for="availability" class="block text-sm font-medium text-gray-700">{{ __('Availability') }}</label>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 @php
-                                    $days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
+                                    $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
                                 @endphp
                                 @foreach($days as $day)
                                     <div>
-                                        <label for="availability_{{ $day }}" class="block text-xs font-medium text-gray-600">{{ ucfirst($day) }}</label>
+                                        <label for="availability_{{ $day }}" class="block text-xs font-medium text-gray-600">{{ __(ucfirst($day)) }}</label>
                                         <input type="text" name="availability[{{ $day }}]" id="availability_{{ $day }}"
                                             value="{{ old("availability.$day", '') }}"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Ej. 9-13">
+                                            placeholder="{{ __('e.g. 9-13') }}">
                                     </div>
                                 @endforeach
                             </div>
                             <p class="mt-1 text-sm text-gray-500">
-                                Ingresa los horarios en formato 24h (ej: 9-13, 14-18)
+                                {{ __('Enter times in 24h format (e.g. 9-13, 14-18)') }}
                             </p>
                         </div>
 
                         <!-- Habilidades -->
                         <div>
-                            <label for="skills" class="block text-sm font-medium text-gray-700">Habilidades</label>
+                            <label for="skills" class="block text-sm font-medium text-gray-700">{{ __('Skills') }}</label>
                             <input type="text" name="skills" id="skills"
                                 value="{{ old('skills', '') }}"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Ej: cocina, primeros auxilios, costura">
+                                placeholder="{{ __('e.g. cooking, first aid, sewing') }}">
                             <p class="mt-1 text-sm text-gray-500">
-                                Separa las habilidades con comas
+                                {{ __('Separate skills with commas') }}
                             </p>
                         </div>
 
                         <!-- Años de Experiencia -->
                         <div>
-                            <label for="experience_years" class="block text-sm font-medium text-gray-700">Años de Experiencia</label>
+                            <label for="experience_years" class="block text-sm font-medium text-gray-700">{{ __('Years of Experience') }}</label>
                             <input type="number" name="experience_years" id="experience_years"
                                 value="{{ old('experience_years', 0) }}"
                                 min="0"
@@ -67,24 +67,24 @@
 
                         <!-- Estado -->
                         <div>
-                            <label for="status" class="block text-sm font-medium text-gray-700">Estado</label>
+                            <label for="status" class="block text-sm font-medium text-gray-700">{{ __('Status') }}</label>
                             <select name="status" id="status"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                 required>
-                                <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Activo</option>
-                                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactivo</option>
-                                <option value="suspended" {{ old('status') == 'suspended' ? 'selected' : '' }}>Suspendido</option>
+                                <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>{{ __('Active') }}</option>
+                                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>{{ __('Inactive') }}</option>
+                                <option value="suspended" {{ old('status') == 'suspended' ? 'selected' : '' }}>{{ __('Suspended') }}</option>
                             </select>
                         </div>
 
                         <!-- Documentos de Verificación -->
                         <div class="space-y-4">
-                            <h3 class="text-lg font-medium text-gray-900">Documentos de Verificación</h3>
+                            <h3 class="text-lg font-medium text-gray-900">{{ __('Verification Documents') }}</h3>
                             
                             <!-- DNI Frente -->
                             <div>
                                 <label for="dni_front" class="block text-sm font-medium text-gray-700">
-                                    DNI (Frente)
+                                    {{ __('ID Card (Front)') }}
                                 </label>
                                 <div class="mt-1 flex items-center">
                                     <input type="file" name="dni_front" id="dni_front" accept="image/jpeg,image/png"
@@ -92,14 +92,14 @@
                                         required>
                                 </div>
                                 <p class="mt-1 text-sm text-gray-500">
-                                    Sube una foto clara del frente de tu DNI. Formatos aceptados: JPG, PNG. Máximo 5MB
+                                    {{ __('Upload a clear photo of your ID card front. Accepted formats: JPG, PNG. Maximum 5MB') }}
                                 </p>
                             </div>
 
                             <!-- DNI Reverso -->
                             <div>
                                 <label for="dni_back" class="block text-sm font-medium text-gray-700">
-                                    DNI (Reverso)
+                                    {{ __('ID Card (Back)') }}
                                 </label>
                                 <div class="mt-1 flex items-center">
                                     <input type="file" name="dni_back" id="dni_back" accept="image/jpeg,image/png"
@@ -107,14 +107,14 @@
                                         required>
                                 </div>
                                 <p class="mt-1 text-sm text-gray-500">
-                                    Sube una foto clara del reverso de tu DNI. Formatos aceptados: JPG, PNG. Máximo 5MB
+                                    {{ __('Upload a clear photo of your ID card back. Accepted formats: JPG, PNG. Maximum 5MB') }}
                                 </p>
                             </div>
 
                             <!-- Selfie con DNI -->
                             <div>
                                 <label for="selfie" class="block text-sm font-medium text-gray-700">
-                                    Selfie sosteniendo el DNI
+                                    {{ __('Selfie with ID Card') }}
                                 </label>
                                 <div class="mt-1 flex items-center">
                                     <input type="file" name="selfie" id="selfie" accept="image/jpeg,image/png"
@@ -122,8 +122,7 @@
                                         required>
                                 </div>
                                 <p class="mt-1 text-sm text-gray-500">
-                                    Por favor, toma una foto de tu rostro sosteniendo el DNI junto a tu cara. 
-                                    Formatos aceptados: JPG, PNG. Máximo 5MB
+                                    {{ __('Please take a photo of your face holding your ID card next to your face. Accepted formats: JPG, PNG. Maximum 5MB') }}
                                 </p>
                             </div>
                         </div>
@@ -131,7 +130,7 @@
                         <div class="flex justify-end">
                             <button type="submit"
                                 class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Enviar Solicitud
+                                {{ __('Submit Application') }}
                             </button>
                         </div>
                     </form>

@@ -17,7 +17,6 @@ class FilterController extends Controller
         $query = RequestModel::query()
             ->with(['category', 'applicants', 'user']);
 
-        // Aplicar filtros usando scopes
         if ($request->filled('search')) {
             $query->search($request->search);
         }

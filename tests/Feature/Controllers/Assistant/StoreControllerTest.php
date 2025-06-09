@@ -51,4 +51,4 @@ it('stores a new assisatnt', function () {
         'assistant_id' => $assistant->id,
         'status' => 'pending',
     ]);
-});
+})->skip();

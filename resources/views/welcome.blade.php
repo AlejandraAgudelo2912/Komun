@@ -46,8 +46,8 @@
                         <a href="{{ route('needhelp.requests.create') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
                             <i class="fas fa-plus-circle text-blue-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Crear Solicitud</h3>
-                                <p class="text-sm text-gray-600">Publica una nueva solicitud de ayuda</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Create Request') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Publish a new help request') }}</p>
                             </div>
                         </a>
 
@@ -55,8 +55,8 @@
                         <a href="{{ route('needhelp.requests.index') }}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
                             <i class="fas fa-list text-green-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Mis Solicitudes</h3>
-                                <p class="text-sm text-gray-600">Gestiona tus solicitudes</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('My Requests') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Manage your requests') }}</p>
                             </div>
                         </a>
 
@@ -64,8 +64,8 @@
                         <a href="{{ route('needhelp.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                             <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Categorías</h3>
-                                <p class="text-sm text-gray-600">Explora por categorías</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Categories') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Explore by categories') }}</p>
                             </div>
                         </a>
                     @endif
@@ -75,8 +75,8 @@
                         <a href="{{ route('assistant.requests.index') }}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
                             <i class="fas fa-list text-green-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Solicitudes Disponibles</h3>
-                                <p class="text-sm text-gray-600">Explora solicitudes para ayudar</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Available Requests') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Explore requests to help') }}</p>
                             </div>
                         </a>
 
@@ -84,8 +84,8 @@
                         <a href="{{ route('assistant.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                             <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Categorías</h3>
-                                <p class="text-sm text-gray-600">Explora por categorías</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Categories') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Explore by categories') }}</p>
                             </div>
                         </a>
                     @endif
@@ -95,8 +95,8 @@
                         <a href="{{ route('verificator.requests.index') }}" class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
                             <i class="fas fa-check-circle text-yellow-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Verificar Solicitudes</h3>
-                                <p class="text-sm text-gray-600">Revisa y verifica solicitudes</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Verify Requests') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Review and verify requests') }}</p>
                             </div>
                         </a>
 
@@ -104,8 +104,8 @@
                         <a href="{{ route('verificator.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                             <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Categorías</h3>
-                                <p class="text-sm text-gray-600">Gestiona las categorías</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Categories') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Manage categories') }}</p>
                             </div>
                         </a>
 
@@ -113,8 +113,8 @@
                         <a href="{{ route('verificator.verifications.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
                             <i class="fas fa-user-check text-blue-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Verificaciones</h3>
-                                <p class="text-sm text-gray-600">Gestiona verificaciones de asistentes</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Verifications') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Manage assistant verifications') }}</p>
                             </div>
                         </a>
                     @endif
@@ -124,8 +124,8 @@
                         <a href="{{ route('admin.requests.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
                             <i class="fas fa-list text-blue-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Solicitudes</h3>
-                                <p class="text-sm text-gray-600">Gestiona todas las solicitudes</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Requests') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Manage all requests') }}</p>
                             </div>
                         </a>
 
@@ -133,8 +133,8 @@
                         <a href="{{ route('admin.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                             <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Categorías</h3>
-                                <p class="text-sm text-gray-600">Gestiona las categorías</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Categories') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Manage categories') }}</p>
                             </div>
                         </a>
 
@@ -142,8 +142,8 @@
                         <a href="{{ route('admin.profiles.index') }}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
                             <i class="fas fa-users text-green-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Perfiles</h3>
-                                <p class="text-sm text-gray-600">Gestiona los perfiles de usuario</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Profiles') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Manage user profiles') }}</p>
                             </div>
                         </a>
                     @endif
@@ -153,8 +153,8 @@
                         <a href="{{ route('god.requests.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
                             <i class="fas fa-list text-blue-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Solicitudes</h3>
-                                <p class="text-sm text-gray-600">Gestiona todas las solicitudes</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Requests') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Manage all requests') }}</p>
                             </div>
                         </a>
 
@@ -162,8 +162,8 @@
                         <a href="{{ route('god.categories.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                             <i class="fas fa-tags text-purple-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Categorías</h3>
-                                <p class="text-sm text-gray-600">Gestiona las categorías</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Categories') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Manage categories') }}</p>
                             </div>
                         </a>
 
@@ -171,8 +171,8 @@
                         <a href="{{ route('god.profiles.index') }}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
                             <i class="fas fa-users text-green-600 text-2xl mr-3"></i>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Perfiles</h3>
-                                <p class="text-sm text-gray-600">Gestiona los perfiles de usuario</p>
+                                <h3 class="font-semibold text-gray-900">{{ __('Profiles') }}</h3>
+                                <p class="text-sm text-gray-600">{{ __('Manage user profiles') }}</p>
                             </div>
                         </a>
                     @endif
@@ -218,8 +218,8 @@
                     <a href="{{ route('profile.show') }}" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                         <i class="fas fa-user text-gray-600 text-2xl mr-3"></i>
                         <div>
-                            <h3 class="font-semibold text-gray-900">Mi Perfil</h3>
-                            <p class="text-sm text-gray-600">Gestiona tu perfil</p>
+                            <h3 class="font-semibold text-gray-900">{{ __('My Profile') }}</h3>
+                            <p class="text-sm text-gray-600">{{ __('Manage your profile') }}</p>
                         </div>
                     </a>
                 </div>

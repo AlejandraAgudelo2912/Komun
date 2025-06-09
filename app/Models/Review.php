@@ -37,13 +37,11 @@ class Review extends Model
         return $this->requestModel();
     }
 
-    // Añadir índices únicos para evitar reseñas duplicadas
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($review) {
-            // Verificar si ya existe una reseña para este usuario y asistente en esta solicitud
             $exists = static::where('request_models_id', $review->request_models_id)
                 ->where('user_id', $review->user_id)
                 ->where('assistant_id', $review->assistant_id)

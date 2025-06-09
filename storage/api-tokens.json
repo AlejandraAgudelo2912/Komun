@@ -2,26 +2,26 @@
     "needHelp": {
         "email": "needHelp@komun.com",
         "password": "password",
-        "token": "1|rjdc95nth1yl7Pcg7PfUYmBN78gCJL8U6iXpPRKF2aae0141"
+        "token": "1|Rl8msr4h963arTRXgHrEOqSf1uCrVODRqqZ8VVSSf417957a"
     },
     "assistant": {
         "email": "assistant@komun.com",
         "password": "password",
-        "token": "2|9fNczKjTagG83NsW5tafNJBaUW6DX5qj02UceTU05e923174"
+        "token": "2|9lCos6vgvdXKnprWPF4j4d4BVrDJ7qzbNtDOj77M4c4936e9"
     },
     "admin": {
         "email": "admin@komun.com",
         "password": "password",
-        "token": "3|Tns4j0nUTEFYzEpacXrwBMFJK0yVJyr2fRgE6glj660c288d"
+        "token": "3|K85DA5Mlt72LggmL9wHe40giJqHOpQIabHf8LNNg1839a718"
     },
     "god": {
         "email": "god@komun.com",
         "password": "password",
-        "token": "4|WEqT2SRsV4EvsiTo1UjyuOBZkCkXsuxYm1vDqJasbfe39d66"
+        "token": "4|dys8DgsJqiY5HQw5vKi5mHBmDCGHwM2IR5VY8KUve556d052"
     },
     "verificator": {
         "email": "verificator@komun.com",
         "password": "password",
-        "token": "5|NrlOBmnqysoJYdowaLwWazOwShlJBdfu802yVs7Edbc142d8"
+        "token": "5|GfoSZKCIqyrxbJnnzRLSd5pmVgroHladErt0HBf065b86d07"
     }
 }

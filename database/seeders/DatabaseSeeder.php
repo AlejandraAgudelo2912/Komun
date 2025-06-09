@@ -24,9 +24,11 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             RequestModelSeeder::class,
             AssistantSeeder::class,
+            RequestModelApplicationSeeder::class,
             ReviewSeeder::class,
-            AssistantVerificationDocumentSeeder::class,
+            MessageSeeder::class,
             CommentSeeder::class,
+            AssistantVerificationDocumentSeeder::class,
         ]);
 
         User::factory()->create([
